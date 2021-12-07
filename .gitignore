@@ -11,8 +11,9 @@
 .cloud
 .google.token
 www
+tts
 
-# Ignore Homeassistant files
+# Ignore Homeassistant log and db files
 home-assistant.log
 home-assistant.log.1
 home-assistant.log.fault
