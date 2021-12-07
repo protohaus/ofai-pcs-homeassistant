@@ -1,32 +1,26 @@
-# Prerequisites
-*.d
+# Example .gitignore file for your config dir.
+# An * ensures that everything will be ignored.
+*
+# You can whitelist files/folders with !, these will not be ignored.
+!*.yaml
+!.gitignore
+!*.md
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Ignore folders.
+.storage
+.cloud
+.google.token
+www
 
-# Precompiled Headers
-*.gch
-*.pch
+# Ignore Homeassistant files
+home-assistant.log
+home-assistant.log.1
+home-assistant.log.fault
+home-assistant_v2.db
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
