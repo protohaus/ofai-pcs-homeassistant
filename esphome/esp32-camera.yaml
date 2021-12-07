@@ -1,0 +1,44 @@
+esphome:
+  name: esp32camera
+  platform: ESP32
+  board: esp32dev
+  #board: esp-wrover-kit
+  #arduino_version: 1.0.2
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "7de64f407fb8b783986851e62280b35b"
+
+wifi:
+  ssid: OFAI_PCS_HOMEASSISTANT_AP
+  password: be1698b6d2e0a721ee82f36a64b2ca22
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32Camera Fallback Hotspot"
+    password: "dERLMgZIERDN"
+  
+captive_portal:
+
+
+# Example configuration entry
+esp32_camera:
+  name: My Camera
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 640x480
+  jpeg_quality: 10
+  idle_framerate: 0.0166666666 fps
