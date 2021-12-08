@@ -14,8 +14,8 @@ ota:
   password: "7de64f407fb8b783986851e62280b35b"
 
 wifi:
-  ssid: OFAI_PCS_HOMEASSISTANT_AP
-  password: be1698b6d2e0a721ee82f36a64b2ca22
+  ssid: !secret wifi_ap_ssid
+  password: !secret wifi_ap_pw
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
