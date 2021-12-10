@@ -40,16 +40,16 @@ esp32_camera:
   pixel_clock_pin: GPIO22
   power_down_pin: GPIO32
   #resolution: 400x296
-  #resolution: 640x480
+  resolution: 640x480
   #resolution: 800x600
-  resolution: 1024x768
+  #resolution: 1024x768
   #resolution: 1280x1024
   jpeg_quality: 10
   contrast: 0 # values from -2 ... 2
   brightness: 0 # values from -2 ... 2
   saturation: 0 # values from -2 ... 2
-  idle_framerate: 0.0166666666 fps
+  idle_framerate: 0.1 fps
   vertical_flip: false
   horizontal_mirror: false
-  max_framerate: 30 fps
+  max_framerate: 10 fps
   test_pattern: false
