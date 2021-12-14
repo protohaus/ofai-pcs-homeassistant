@@ -6,7 +6,6 @@ esphome:
 packages:
   common_wifi: !include /config/esphome/common/wifi.yaml
   common_base: !include /config/esphome/common/base.yaml
-  common_deep_sleep: !include /config/esphome/common/deep_sleep.yaml
   
 esp32_camera_web_server:
   - port: 8081
@@ -14,7 +13,7 @@ esp32_camera_web_server:
 
 # Example configuration entry
 esp32_camera:
-  name: ${camera_name_upper}
+  name: ${device_name_upper} Camera
   external_clock:
     pin: GPIO0
     frequency: 20MHz
@@ -39,11 +38,11 @@ esp32_camera:
   
 switch:
   - platform: gpio
-    name: ${camera_name_upper} Flashlight
-    id: ${camera_name}_flashlight
+    name: ${device_name_upper} Flashlight
+    id: ${device_name}_flashlight
     pin: GPIO04
     
 button:
   - platform: restart
-    name: ${camera_name_upper} Restart
-    id: ${camera_name}_restart
+    name: ${device_name_upper} Restart
+    id: ${device_name}_restart
