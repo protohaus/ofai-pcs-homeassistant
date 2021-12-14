@@ -30,7 +30,7 @@ esp32_camera:
   contrast: 0                   # values from -2 to 2
   brightness: 0                 # values from -2 to 2
   saturation: 0                 # values from -2 to 2
-  idle_framerate: 0.1 fps
+  idle_framerate: 0 fps
   vertical_flip: false
   horizontal_mirror: false
   max_framerate: 10 fps
