@@ -5,17 +5,14 @@ deep_sleep:
   sleep_duration: ${custom_sleep_duration}
 
 mqtt:
-  broker: !secret host_wlan0_static_ip
-  username: !secret mqtt_usr
-  password: !secret mqtt_pw
-  discovery: false
+  <<: !include mqtt.yaml
+  # Messages to control the deep sleep component
   on_message:
   - topic: maintenance/ota_mode/${device_name}
     payload: 'ON'
     then:
-      - deep_sleep.prevent: deep_sleep_1
+    - deep_sleep.prevent: deep_sleep_1
   - topic: maintenance/deep_sleep/${device_name}
     payload: 'ON'
     then:
-      - deep_sleep.enter: deep_sleep_1
-
+    - deep_sleep.enter: deep_sleep_1

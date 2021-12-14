@@ -6,6 +6,7 @@ esphome:
 packages:
   common_wifi: !include /config/esphome/common/wifi.yaml
   common_base: !include /config/esphome/common/base.yaml
+  common_deep_sleep: !include /config/esphome/common/deep_sleep.yaml  
   
 esp32_camera_web_server:
   - port: 8081
