@@ -4,5 +4,7 @@ substitutions:
   camera_name: ${device_name}_camera
   camera_name_upper: ${device_name_upper} Camera  
   deep_sleep_name: ${device_name}_deepsleep
+  custom_run_duration: 2min
+  custom_sleep_duration: 10min
 
 <<: !include /config/esphome/camera/esp32cam.yaml

@@ -1,8 +1,8 @@
 # Dees sleep ESP32 cam to prevent overheating
 deep_sleep:
   id: deep_sleep_1
-  run_duration: 60min
-  sleep_duration: 0.1min
+  run_duration: ${custom_run_duration}
+  sleep_duration: ${custom_sleep_duration}
 
 mqtt:
   broker: !secret host_wlan0_static_ip
