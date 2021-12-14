@@ -24,9 +24,3 @@ wifi:
   fast_connect: true
   
 captive_portal:
-
-switch:
-  - platform: gpio
-    name: "Camera Wake Up Trigger"
-    id: camera_wakeup_trigger
-    pin: GPIO12

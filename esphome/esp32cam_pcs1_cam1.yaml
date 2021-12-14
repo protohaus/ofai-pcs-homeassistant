@@ -1,0 +1,8 @@
+substitutions:
+  device_name: esp32cam_pcs1_unit1
+  device_name_upper: ESP32Cam PCS 1 Unit 1
+  camera_name: ${device_name}_camera
+  camera_name_upper: ${device_name_upper} Camera  
+  deep_sleep_name: ${device_name}_deepsleep
+
+<<: !include /config/esphome/camera/esp32cam.yaml
