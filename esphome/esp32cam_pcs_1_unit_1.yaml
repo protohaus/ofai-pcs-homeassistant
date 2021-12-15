@@ -1,13 +1,13 @@
 substitutions:
-  host_name: esp32cam-pcs-1-unit-1
-  device_name: esp32cam_pcs_1_unit_1
-  device_name_upper: esp32cam PCS 1 Unit 1
+  host_name: ${_esp32cam_pcs1_unit_1_host_name}
+  device_name: ${_esp32cam_pcs1_unit_1_device_name}
+  device_name_upper: ${_esp32cam_pcs1_unit_1_device_name_upper}
   custom_run_duration: "2min"
   custom_sleep_duration: "10min"
   custom_idle_framerate: "0 fps"
   
 esphome:
-  name: ${device_name}
+  name: ${host_name}
   platform: ESP32
   board: esp32dev
 
@@ -15,6 +15,7 @@ preferences:
   flash_write_interval: 1min
   
 packages:
+  camera_config: !include camera/config.yaml
   common_wifi: !include common/wifi.yaml
   common_base: !include common/base.yaml
   #common_deep_sleep: !include common/deep_sleep.yaml  

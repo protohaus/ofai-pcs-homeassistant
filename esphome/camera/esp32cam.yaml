@@ -28,3 +28,8 @@ switch:
     name: ${device_name_upper} Flashlight
     id: ${device_name}_flashlight
     pin: GPIO04
+
+button:
+  - platform: template
+    name: ${device_name_upper} Snapshot
+    id: ${device_name}_snapshot
