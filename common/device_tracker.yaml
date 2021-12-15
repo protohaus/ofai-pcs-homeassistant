@@ -1,0 +1,4 @@
+# Device Tracker Integration (scans IPs in Adress Range)
+device_tracker:
+  - platform: nmap_tracker
+    hosts: !secret device_tracker_hosts_range
