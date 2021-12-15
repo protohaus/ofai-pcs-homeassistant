@@ -11,7 +11,6 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-# Device Tracker Integration (scans IPs in Adress Range)
-device_tracker:
-  - platform: nmap_tracker
-    hosts: !secret device_tracker_hosts_range
+homeassistant:
+  packages:
+    common_device_tracker: !include common/device_tracker.yaml
