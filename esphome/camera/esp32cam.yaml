@@ -1,17 +1,3 @@
-esphome:
-  name: ${device_name}
-  platform: ESP32
-  board: esp32dev
-
-packages:
-  common_wifi: !include /config/esphome/common/wifi.yaml
-  common_base: !include /config/esphome/common/base.yaml
-  common_deep_sleep: !include /config/esphome/common/deep_sleep.yaml  
-  
-esp32_camera_web_server:
-  - port: 8081
-    mode: snapshot
-
 # Example configuration entry
 esp32_camera:
   name: ${device_name_upper} Camera
@@ -31,7 +17,7 @@ esp32_camera:
   contrast: 0                   # values from -2 to 2
   brightness: 0                 # values from -2 to 2
   saturation: 0                 # values from -2 to 2
-  idle_framerate: 0 fps
+  idle_framerate: ${custom_idle_framerate}
   vertical_flip: false
   horizontal_mirror: false
   max_framerate: 10 fps
@@ -42,8 +28,3 @@ switch:
     name: ${device_name_upper} Flashlight
     id: ${device_name}_flashlight
     pin: GPIO04
-    
-button:
-  - platform: restart
-    name: ${device_name_upper} Restart
-    id: ${device_name}_restart

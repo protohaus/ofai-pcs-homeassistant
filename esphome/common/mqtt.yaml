@@ -1,0 +1,6 @@
+# MQTT Broker Settings
+mqtt:
+  broker: !secret host_wlan0_static_ip
+  username: !secret mqtt_usr
+  password: !secret mqtt_pw
+  discovery: false

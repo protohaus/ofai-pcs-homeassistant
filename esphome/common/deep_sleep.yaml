@@ -4,9 +4,11 @@ deep_sleep:
   run_duration: ${custom_run_duration}
   sleep_duration: ${custom_sleep_duration}
 
+packages:
+  mqtt: !include mqtt.yaml
+  
 mqtt:
-  <<: !include mqtt.yaml
-  # Messages to control the deep sleep component
+  #Messages to control the deep sleep component
   on_message:
   - topic: maintenance/ota_mode/${device_name}
     payload: 'ON'

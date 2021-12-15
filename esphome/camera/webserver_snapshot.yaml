@@ -1,0 +1,3 @@
+esp32_camera_web_server:
+  - port: 8081
+    mode: snapshot

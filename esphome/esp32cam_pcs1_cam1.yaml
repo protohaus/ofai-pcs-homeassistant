@@ -1,8 +1,23 @@
 substitutions:
-  device_name_camelcase: esp32camPcs01Unit01
-  device_name: esp32cam_pcs01_unit01
-  device_name_upper: ESP32Cam PCS 01 Unit 01
-  custom_run_duration: 2min
-  custom_sleep_duration: 10min
+  host_name: esp32cam-pcs-1-unit-1
+  device_name: esp32cam_pcs_1_unit_1
+  device_name_upper: esp32cam PCS 1 Unit 1
+  custom_run_duration: "2min"
+  custom_sleep_duration: "10min"
+  custom_idle_framerate: "0 fps"
+  
+esphome:
+  name: ${device_name}
+  platform: ESP32
+  board: esp32dev
 
-<<: !include /config/esphome/camera/esp32cam.yaml
+preferences:
+  flash_write_interval: 1min
+  
+packages:
+  common_wifi: !include common/wifi.yaml
+  common_base: !include common/base.yaml
+  #common_deep_sleep: !include common/deep_sleep.yaml  
+  common_restart: !include common/restart.yaml
+  camera_esp32cam: !include camera/esp32cam.yaml
+  camera_webserver: !include camera/webserver_snapshot.yaml
