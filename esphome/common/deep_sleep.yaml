@@ -1,20 +1,35 @@
 # Dees sleep ESP32 cam to prevent overheating
 deep_sleep:
-  id: deep_sleep_1
-  run_duration: ${custom_run_duration}
+  id: control_deep_sleep
   sleep_duration: ${custom_sleep_duration}
-
-packages:
-  mqtt: !include mqtt.yaml
+  run_duration: ${custom_run_duration}
   
-mqtt:
-  #Messages to control the deep sleep component
-  on_message:
-  - topic: maintenance/ota_mode/${device_name}
-    payload: 'ON'
+binary_sensor:
+  - platform: homeassistant
+    internal: true
+    id: prevent_deep_sleep
+    name: Prevent Deep Sleep
+    entity_id: input_boolean.prevent_deep_sleep
+    on_state:
+      then:
+        if:
+          condition:
+            - binary_sensor.is_off: prevent_deep_sleep
+          then:
+            - delay: ${custom_run_duration}
+            - if:
+                condition:
+                  - binary_sensor.is_off: prevent_deep_sleep
+                then:
+                  - deep_sleep.enter: control_deep_sleep
+          else:
+            - deep_sleep.prevent: control_deep_sleep
+          
+interval:
+  - interval: 1s
     then:
-    - deep_sleep.prevent: deep_sleep_1
-  - topic: maintenance/deep_sleep/${device_name}
-    payload: 'ON'
-    then:
-    - deep_sleep.enter: deep_sleep_1
+      if:
+        condition:
+          - binary_sensor.is_on: prevent_deep_sleep
+        then:
+          - deep_sleep.prevent: control_deep_sleep

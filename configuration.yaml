@@ -14,3 +14,8 @@ scene: !include scenes.yaml
 homeassistant:
   packages:
     common_device_tracker: !include common/device_tracker.yaml
+    
+input_boolean:
+  prevent_deep_sleep:
+    name: Prevent Deep Sleep
+    icon: mdi:sleep-off

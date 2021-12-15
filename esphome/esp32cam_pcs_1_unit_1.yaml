@@ -2,8 +2,8 @@ substitutions:
   host_name: ${_esp32cam_pcs1_unit_1_host_name}
   device_name: ${_esp32cam_pcs1_unit_1_device_name}
   device_name_upper: ${_esp32cam_pcs1_unit_1_device_name_upper}
-  custom_run_duration: "2min"
-  custom_sleep_duration: "10min"
+  custom_run_duration: "60s"
+  custom_sleep_duration: "10s"
   custom_idle_framerate: "0 fps"
   
 esphome:
@@ -18,7 +18,7 @@ packages:
   camera_config: !include camera/config.yaml
   common_wifi: !include common/wifi.yaml
   common_base: !include common/base.yaml
-  #common_deep_sleep: !include common/deep_sleep.yaml  
+  common_deep_sleep: !include common/deep_sleep.yaml  
   common_restart: !include common/restart.yaml
   camera_esp32cam: !include camera/esp32cam.yaml
   camera_webserver: !include camera/webserver_snapshot.yaml
