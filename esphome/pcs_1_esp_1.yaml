@@ -1,7 +1,7 @@
 substitutions:
-  host_name: esp32cam-pcs-1-unit-1
-  device_name: esp32cam_pcs_1_unit_1
-  device_name_upper: ESP32CAM PCS 1 Unit 1
+  host_name: pcs-1-esp-1
+  device_name: pcs_1_esp_1
+  device_name_upper: PCS-1 ESP-1
   custom_idle_framerate: 0.1 fps
   #custom_adress_bme280: 0x77
   
