@@ -44,13 +44,34 @@ light:
     id: ${device_name}_status_led
     pin: 
       number: ${status_led_pin}
-      
+    internal: true
+    
 # Example configuration entry
 binary_sensor:
   - platform: status
     name: ${device_name_upper} Status
     id: ${device_name}_status
-    
+
+interval:
+  - interval: 20s
+    then:
+      if:
+        condition:
+          - binary_sensor.is_on: ${device_name}_status
+        then:
+          - light.turn_on: ${device_name}_status_led
+          - delay: 1s
+          - light.turn_off: ${device_name}_status_led
+  - interval: 5s
+    then:
+      if:
+        condition:
+          - binary_sensor.is_off: ${device_name}_status
+        then:
+          - light.turn_on: ${device_name}_status_led
+          - delay: 1s
+          - light.turn_off: ${device_name}_status_led
+        
 i2c:
   - id: bus_b
     sda: ${i2c_bus_b_sda}
