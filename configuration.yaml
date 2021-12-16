@@ -15,7 +15,15 @@ homeassistant:
   packages:
     common_device_tracker: !include common/device_tracker.yaml
     
+switch:
+  - platform: momentary
+    name: Camera Snapshots
+    mode: on
+    toggle_for: 1
+      
 input_boolean:
   prevent_deep_sleep:
     name: Prevent Deep Sleep
     icon: mdi:sleep-off
+    
+  

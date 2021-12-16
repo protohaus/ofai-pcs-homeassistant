@@ -1,6 +1,6 @@
 # Enable Home Assistant API
 api:
-  reboot_timeout: 15min
+  reboot_timeout: 5min
   password: !secret esphome_api_pw
 
 # enable ota updates
