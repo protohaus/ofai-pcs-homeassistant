@@ -1,8 +1,0 @@
-substitutions:
-  _esp32cam_pcs1_unit_1_host_name: esp32cam-pcs-1-unit-1
-  _esp32cam_pcs1_unit_1_device_name: esp32cam_pcs_1_unit_1
-  _esp32cam_pcs1_unit_1_device_name_upper: ESP32CAM PCS 1 Unit 1
-  
-  _esp32controller_pcs1_unit1_host_name: esp32controller-pcs-1-unit-1 
-  _esp32controller_pcs1_unit1_device_name: esp32controller_pcs_1_unit_1 
-  _esp32controller_pcs1_unit1_device_name_upper: ESP32Controller PCS 1 Unit 1 

@@ -1,3 +1,11 @@
+substitutions:
+  status_led_pin: GPIO12
+  i2c_bus_b_sda: GPIO13
+  i2c_bus_b_scl: GPIO15
+  bme_280_update_interval: "10s"
+  bh1750_update_interval: "10s"
+  measurement_duration_bh1750: "69" #31 Sunny light (121556 lx), 69: default (54612.5 lx), 254  for low light situation (14835 lx)
+  
 # Example configuration entry
 esp32_camera:
   name: ${device_name_upper} Camera
@@ -33,3 +41,62 @@ button:
   - platform: template
     name: ${device_name_upper} Snapshot
     id: ${device_name}_snapshot
+
+# Example configuration entry
+light:
+  - platform: status_led
+    name: ${device_name_upper} Status LED
+    id: ${device_name}_status_led
+    pin: 
+      number: ${status_led_pin}
+         
+# Example configuration entry
+i2c:
+  - id: bus_b
+    sda: ${i2c_bus_b_sda}
+    scl: ${i2c_bus_b_scl}
+    scan: true
+     
+# Example configuration entry
+sensor:
+  # BMP280 (later should be BME280 with humidity)
+  - platform: bmp280
+    i2c_id: bus_b
+    temperature:
+      name: "${device_name_upper} BMP280 1 Temperature"
+      id: ${device_name}_bmp280_1_temperature
+      oversampling: 16x
+    pressure:
+      name: "${device_name_upper} BMP280 1 Pressure"
+      id: ${device_name}_bmp280_1_pressure
+    address: 0x76
+    update_interval: ${bme_280_update_interval}
+  - platform: bmp280
+    i2c_id: bus_b
+    temperature:
+      name: "${device_name_upper} BMP280 2 Temperature"
+      id: ${device_name}_bmp280_2_temperature
+      oversampling: 16x
+    pressure:
+      name: "${device_name_upper} BMP280 2 Pressure"
+      id: ${device_name}_bmp280_2_pressure
+    address: 0x77
+    update_interval: ${bme_280_update_interval}
+    
+  # BH1750 Illuminance  
+  - platform: bh1750
+    i2c_id: bus_b
+    name: "${device_name_upper} BH1750 1 Illuminance"
+    id: "${device_name}_bh1750_1_illuminance"
+    address: 0x23
+    measurement_duration: ${measurement_duration_bh1750}
+    update_interval: ${bh1750_update_interval}
+    resolution: 0.5 # values from 0.5 to 4.0
+  - platform: bh1750
+    i2c_id: bus_b
+    name: "${device_name_upper} BH1750 2 Illuminance"
+    id: "${device_name}_bh1750_2_illuminance"
+    address: 0x5C
+    measurement_duration: ${measurement_duration_bh1750}
+    update_interval: ${bh1750_update_interval}
+    resolution: 0.5 # values from 0.5 to 4.0
