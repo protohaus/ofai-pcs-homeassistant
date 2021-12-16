@@ -2,7 +2,7 @@ substitutions:
   host_name: pcs-1-esp-1
   device_name: pcs_1_esp_1
   device_name_upper: PCS-1 ESP-1
-  custom_idle_framerate: 0.1 fps
+  custom_idle_framerate: "0 fps"
   #custom_adress_bme280: 0x77
   
 esphome:
