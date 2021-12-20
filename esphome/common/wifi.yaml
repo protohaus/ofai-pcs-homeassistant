@@ -8,3 +8,9 @@ wifi:
     password: !secret esphome_fallback_ap_pw
   
   fast_connect: true
+
+sensor:
+  - platform: wifi_signal
+    name: "${device_name_upper} WiFi Signal"
+    id: ${device_name}_wifi_signal
+    update_interval: 60s

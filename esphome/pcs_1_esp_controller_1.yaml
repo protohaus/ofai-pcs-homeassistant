@@ -1,0 +1,18 @@
+substitutions:
+  host_name: pcs-1-esp-controller-1
+  device_name: pcs_1_esp_controller_1
+  device_name_upper: PCS-1 ESP-Controller-1
+  custom_idle_framerate: "0 fps"
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+
+preferences:
+  flash_write_interval: 1min
+  
+packages:
+  common_wifi: !include common/wifi.yaml
+  common_base: !include common/base.yaml
+  common_restart: !include common/restart.yaml
