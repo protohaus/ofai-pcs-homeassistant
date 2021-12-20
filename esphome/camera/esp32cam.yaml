@@ -1,4 +1,5 @@
 substitutions:
+  custom_idle_framerate: "0 fps"
   i2c_bus_b_sda: GPIO13
   i2c_bus_b_scl: GPIO15
   bme_280_update_interval: "10s"
@@ -36,26 +37,6 @@ switch:
     name: ${device_name_upper} Flashlight
     id: ${device_name}_flashlight
     pin: GPIO04
-
-interval:
-  - interval: 20s
-    then:
-      if:
-        condition:
-          - binary_sensor.is_on: ${device_name}_status
-        then:
-          - light.turn_on: ${device_name}_status_led
-          - delay: 1s
-          - light.turn_off: ${device_name}_status_led
-  - interval: 5s
-    then:
-      if:
-        condition:
-          - binary_sensor.is_off: ${device_name}_status
-        then:
-          - light.turn_on: ${device_name}_status_led
-          - delay: 1s
-          - light.turn_off: ${device_name}_status_led
         
 i2c:
   - id: bus_b
@@ -69,22 +50,22 @@ sensor:
   - platform: bmp280
     i2c_id: bus_b
     temperature:
-      name: "${device_name_upper} BMP280 1 Temperature"
+      name: "${device_name_upper} BMP280 1 Temperature [°C]"
       id: ${device_name}_bmp280_1_temperature
       oversampling: 16x
     pressure:
-      name: "${device_name_upper} BMP280 1 Pressure"
+      name: "${device_name_upper} BMP280 1 Pressure [hPa]"
       id: ${device_name}_bmp280_1_pressure
     address: 0x76
     update_interval: ${bme_280_update_interval}
   - platform: bmp280
     i2c_id: bus_b
     temperature:
-      name: "${device_name_upper} BMP280 2 Temperature"
+      name: "${device_name_upper} BMP280 2 Temperature [°C]"
       id: ${device_name}_bmp280_2_temperature
       oversampling: 16x
     pressure:
-      name: "${device_name_upper} BMP280 2 Pressure"
+      name: "${device_name_upper} BMP280 2 Pressure [hPa]"
       id: ${device_name}_bmp280_2_pressure
     address: 0x77
     update_interval: ${bme_280_update_interval}
@@ -92,7 +73,7 @@ sensor:
   # BH1750 Illuminance  
   - platform: bh1750
     i2c_id: bus_b
-    name: "${device_name_upper} BH1750 1 Illuminance"
+    name: "${device_name_upper} BH1750 1 Illuminance [lx]"
     id: "${device_name}_bh1750_1_illuminance"
     address: 0x23
     measurement_duration: ${bh1750_measurement_duration}
@@ -100,7 +81,7 @@ sensor:
     resolution: ${bh1750_resolution}
   - platform: bh1750
     i2c_id: bus_b
-    name: "${device_name_upper} BH1750 2 Illuminance"
+    name: "${device_name_upper} BH1750 2 Illuminance [lx]"
     id: "${device_name}_bh1750_2_illuminance"
     address: 0x5C
     measurement_duration: ${bh1750_measurement_duration}

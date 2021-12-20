@@ -6,3 +6,23 @@ light:
     pin: 
       number: ${status_led_pin}
     internal: true
+    
+interval:
+  - interval: 20s
+    then:
+      if:
+        condition:
+          - binary_sensor.is_on: ${device_name}_status
+        then:
+          - light.turn_on: ${device_name}_status_led
+          - delay: 1s
+          - light.turn_off: ${device_name}_status_led
+  - interval: 5s
+    then:
+      if:
+        condition:
+          - binary_sensor.is_off: ${device_name}_status
+        then:
+          - light.turn_on: ${device_name}_status_led
+          - delay: 1s
+          - light.turn_off: ${device_name}_status_led
