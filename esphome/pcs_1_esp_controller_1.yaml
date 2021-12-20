@@ -3,6 +3,7 @@ substitutions:
   device_name: pcs_1_esp_controller_1
   device_name_upper: PCS-1 ESP-Controller-1
   custom_idle_framerate: "0 fps"
+  status_led_pin: GPIO12
   
 esphome:
   name: ${host_name}
@@ -15,4 +16,6 @@ preferences:
 packages:
   common_wifi: !include common/wifi.yaml
   common_base: !include common/base.yaml
+  common_status: !include common/status.yaml
+  common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml

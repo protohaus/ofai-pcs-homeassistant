@@ -1,0 +1,5 @@
+# Example configuration entry
+binary_sensor:
+  - platform: status
+    name: ${device_name_upper} Status
+    id: ${device_name}_status

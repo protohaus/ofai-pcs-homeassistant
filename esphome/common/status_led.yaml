@@ -1,0 +1,8 @@
+# Status LED
+light:
+  - platform: status_led
+    name: ${device_name_upper} Status LED
+    id: ${device_name}_status_led
+    pin: 
+      number: ${status_led_pin}
+    internal: true

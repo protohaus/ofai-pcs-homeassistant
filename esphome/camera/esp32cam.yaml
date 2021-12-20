@@ -1,5 +1,4 @@
 substitutions:
-  status_led_pin: GPIO12
   i2c_bus_b_sda: GPIO13
   i2c_bus_b_scl: GPIO15
   bme_280_update_interval: "10s"
@@ -37,21 +36,6 @@ switch:
     name: ${device_name_upper} Flashlight
     id: ${device_name}_flashlight
     pin: GPIO04
-
-# Example configuration entry
-light:
-  - platform: status_led
-    name: ${device_name_upper} Status LED
-    id: ${device_name}_status_led
-    pin: 
-      number: ${status_led_pin}
-    internal: true
-    
-# Example configuration entry
-binary_sensor:
-  - platform: status
-    name: ${device_name_upper} Status
-    id: ${device_name}_status
 
 interval:
   - interval: 20s
