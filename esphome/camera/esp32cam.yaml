@@ -9,7 +9,7 @@ substitutions:
   
 # Example configuration entry
 esp32_camera:
-  name: ${device_name_upper} Camera
+  name: ${device_name_upper}.camera
   external_clock:
     pin: GPIO0
     frequency: 20MHz
@@ -34,56 +34,6 @@ esp32_camera:
 
 switch:
   - platform: gpio
-    name: ${device_name_upper} Flashlight
+    name: ${device_name_upper}.flashlight
     id: ${device_name}_flashlight
     pin: GPIO04
-        
-i2c:
-  - id: bus_b
-    sda: ${i2c_bus_b_sda}
-    scl: ${i2c_bus_b_scl}
-    scan: true
-     
-# Example configuration entry
-sensor:
-  # BMP280 (later should be BME280 with humidity)
-  - platform: bmp280
-    i2c_id: bus_b
-    temperature:
-      name: "${device_name_upper} BMP280 1 Temperature [°C]"
-      id: ${device_name}_bmp280_1_temperature
-      oversampling: 16x
-    pressure:
-      name: "${device_name_upper} BMP280 1 Pressure [hPa]"
-      id: ${device_name}_bmp280_1_pressure
-    address: 0x76
-    update_interval: ${bme_280_update_interval}
-  - platform: bmp280
-    i2c_id: bus_b
-    temperature:
-      name: "${device_name_upper} BMP280 2 Temperature [°C]"
-      id: ${device_name}_bmp280_2_temperature
-      oversampling: 16x
-    pressure:
-      name: "${device_name_upper} BMP280 2 Pressure [hPa]"
-      id: ${device_name}_bmp280_2_pressure
-    address: 0x77
-    update_interval: ${bme_280_update_interval}
-    
-  # BH1750 Illuminance  
-  - platform: bh1750
-    i2c_id: bus_b
-    name: "${device_name_upper} BH1750 1 Illuminance [lx]"
-    id: "${device_name}_bh1750_1_illuminance"
-    address: 0x23
-    measurement_duration: ${bh1750_measurement_duration}
-    update_interval: ${bh1750_update_interval}
-    resolution: ${bh1750_resolution}
-  - platform: bh1750
-    i2c_id: bus_b
-    name: "${device_name_upper} BH1750 2 Illuminance [lx]"
-    id: "${device_name}_bh1750_2_illuminance"
-    address: 0x5C
-    measurement_duration: ${bh1750_measurement_duration}
-    update_interval: ${bh1750_update_interval}
-    resolution: ${bh1750_resolution} 

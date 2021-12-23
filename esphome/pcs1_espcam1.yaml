@@ -1,7 +1,7 @@
 substitutions:
-  host_name: pcs-1-esp-cam-1
-  device_name: pcs_1_esp_cam_1
-  device_name_upper: PCS-1 ESP-CAM-1
+  host_name: pcs1-espcam1
+  device_name: pcs1_espcam1
+  device_name_upper: pcs1.espcam1
   status_led_pin: GPIO12
   
 esphome:
@@ -19,4 +19,5 @@ packages:
   common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
   camera_esp32cam: !include camera/esp32cam.yaml
+  #camera_esp32cam: !include camera/sensors.yaml
   #camera_webserver: !include camera/webserver_snapshot.yaml

@@ -1,0 +1,271 @@
+substitutions:
+  stepper_motor_id_upper: ${device_name_upper}.stepper
+  stepper_motor_id: ${device_name}_stepper
+  step_pin: GPIO26
+  dir_pin: GPIO27
+  sleep_pin: GPIO25
+  invert_direction: "true" 
+  max_speed: "250"
+  acceleration: "inf"
+  deceleration: "inf"
+  initial_full_turn_steps: "12000"
+
+# include c++ code
+#esphome:
+#  includes:
+#    - stepper/helper_functions.h
+
+stepper:
+  - platform: a4988
+    id: ${stepper_motor_id}
+    step_pin: ${step_pin}
+    dir_pin:
+      number: ${dir_pin}
+      inverted: ${invert_direction}  
+    max_speed: "${max_speed} steps/s"
+
+    # Optional:
+    # sleep pin makes issues, not needed since the controller is active by default anyways
+    sleep_pin: ${sleep_pin} 
+    acceleration: ${acceleration}
+    deceleration: ${deceleration}
+
+globals:
+
+  - id: target_position
+    type: int
+    restore_value: no
+    initial_value: "0"
+
+  - id: motor_enabled
+    type: bool
+    restore_value: no
+    initial_value: "false"    
+    
+  - id: step_width
+    type: int
+    restore_value: no
+    initial_value: "0"
+  
+  - id: endless_mode
+    type: bool
+    restore_value: yes
+    initial_value: "false"
+  
+  - id: direction_forward
+    type: bool
+    restore_value: no
+    initial_value: "true"
+    
+  - id: full_turn_steps
+    type: int
+    restore_value: yes
+    initial_value: ${initial_full_turn_steps}
+
+  #nonstop mode, motor drives in endless loop
+  - id: stepper_mode
+    type: int
+    restore_value: no
+    initial_value: "0" # 0: target-mode, 1: step-mode, 2: drive-mode, 3: 360-mode, 4: 1/6-mode
+   
+sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.position_now"
+    id: ${stepper_motor_id}_position_now
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id($stepper_motor_id).current_position;
+    update_interval: 0.1s
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.position_target"
+    id: ${stepper_motor_id}_target_position
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id(target_position);
+    update_interval: 0.1s
+
+binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.active"
+    id: ${stepper_motor_id}_active
+    lambda: |-
+      if (id($stepper_motor_id).current_position != id($stepper_motor_id).target_position) 
+      {
+        // Motor is still moving
+        return true;
+      }else 
+      {
+        // Motor is at target position
+        return false;
+      }
+
+switch:
+  - platform: template
+    name: ${stepper_motor_id_upper}.enable_motor
+    id: ${stepper_motor_id}_enable_motor
+    lambda: |-
+      if (id(motor_enabled) == true)
+        return true;
+      else
+        return false;
+    
+    turn_on_action:
+      - globals.set:
+          id: motor_enabled
+          value: "true"  
+    turn_off_action:
+      - globals.set:
+          id: motor_enabled
+          value: "false"
+      - globals.set: 
+          id: endless_mode
+          value: "false"
+      - button.press: ${stepper_motor_id}_stop    
+     
+   
+button:
+  - platform: template
+    name: ${stepper_motor_id_upper}.start
+    id: ${stepper_motor_id}_start
+    internal: "true"
+    on_press:
+      - logger.log: "Start Motor"
+      - stepper.set_target:
+          id: ${stepper_motor_id}
+          target: !lambda 'return (id(motor_enabled) == true) ? id(target_position) : id($stepper_motor_id).current_position;'
+            
+  - platform: template
+    name: ${stepper_motor_id_upper}.stop
+    id: ${stepper_motor_id}_stop
+    internal: "true"
+    on_press:
+      - logger.log: "Stop Motor"
+      - stepper.set_target:
+            id: ${stepper_motor_id}
+            target: !lambda 'return id($stepper_motor_id).current_position;' 
+      - globals.set: 
+          id: endless_mode
+          value: "false"
+        
+  - platform: template
+    name: ${stepper_motor_id_upper}.step_forward
+    id: ${stepper_motor_id}_step_forward
+    on_press:
+      - globals.set: 
+          id: target_position
+          value: !lambda 'return id($stepper_motor_id).current_position + id(step_width);'   
+      - button.press: ${stepper_motor_id}_start
+      
+  - platform: template
+    name: ${stepper_motor_id_upper}.step_backward
+    id: ${stepper_motor_id}_step_backward
+    on_press:
+      - globals.set: 
+          id: target_position
+          value: !lambda 'return id($stepper_motor_id).current_position - id(step_width);'   
+      - button.press: ${stepper_motor_id}_start   
+  
+  - platform: template
+    name: ${stepper_motor_id_upper}.set_zero_position
+    id: ${stepper_motor_id}_set_zero_position
+    on_press:
+      - logger.log: "Set current position to zero"
+      - button.press: ${stepper_motor_id}_stop
+      - stepper.report_position:
+          id: ${stepper_motor_id}
+          position: 0 
+      - button.press: ${stepper_motor_id}_stop
+    
+  - platform: template
+    name: ${stepper_motor_id_upper}.drive_forward
+    id: ${stepper_motor_id}_drive_forward
+    on_press:
+      - globals.set:
+          id: direction_forward
+          value: "true"
+      - globals.set: 
+          id: target_position
+          value: !lambda 'return id($stepper_motor_id).current_position + ${max_speed}*2;'  
+      - globals.set: 
+          id: endless_mode
+          value: "true"
+      - button.press: ${stepper_motor_id}_start
+    
+  - platform: template
+    name: ${stepper_motor_id_upper}.drive_backward
+    id: ${stepper_motor_id}_drive_backward
+    on_press:
+      - globals.set:
+          id: direction_forward
+          value: "false"
+      - globals.set: 
+          id: target_position
+          value: !lambda 'return id($stepper_motor_id).current_position - ${max_speed}*2;'  
+      - globals.set: 
+          id: endless_mode
+          value: "true"
+      - button.press: ${stepper_motor_id}_start
+      
+interval:
+  - interval: 1s
+    then:
+      if:
+        condition:
+          lambda: |-
+            return id(endless_mode) == true;
+        then:
+          - globals.set: 
+              id: target_position
+              value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(${max_speed})*1.5);'        
+          - button.press: ${stepper_motor_id}_start
+
+api:
+  services:      
+    - service: stepper_set_absolute_target
+      variables:
+        target: int
+      then:
+        - logger.log: "Set stepper absolute target value"
+        - globals.set: 
+            id: target_position
+            value: !lambda 'return target;' 
+        - button.press: ${stepper_motor_id}_start 
+            
+    - service: stepper_set_step_width
+      variables:
+        step_width: int
+      then:
+        - logger.log: "Set stepper step width"
+        - globals.set: 
+            id: step_width
+            value: !lambda 'return step_width;' 
+            
+    - service: stepper_set_speed
+      variables:
+        speed: int
+      then:
+        - logger.log: "Set stepper speed"
+        - stepper.set_speed:
+            id: ${stepper_motor_id}
+            speed: !lambda 'return speed;'  
+            
+    - service: stepper_set_acceleration
+      variables:
+        acceleration: int
+      then:
+        - logger.log: "Set stepper acceleration"
+        - stepper.set_acceleration:
+            id: ${stepper_motor_id}
+            acceleration: !lambda 'return acceleration;' 
+    
+    - service: stepper_set_deceleration
+      variables:
+        deceleration: int
+      then:
+        - logger.log: "Set stepper deceleration"
+        - stepper.set_deceleration:
+            id: ${stepper_motor_id}
+            deceleration: !lambda 'return deceleration;'  

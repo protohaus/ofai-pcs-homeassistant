@@ -11,6 +11,6 @@ wifi:
 
 sensor:
   - platform: wifi_signal
-    name: "${device_name_upper} WiFi Signal"
+    name: "${device_name_upper}.wifi_signal"
     id: ${device_name}_wifi_signal
     update_interval: 60s

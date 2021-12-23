@@ -1,0 +1,10 @@
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: true
+    name: ${device_name_upper}.button
+    id: ${device_name}_button
+    filters:
+      - delayed_on: 10ms
