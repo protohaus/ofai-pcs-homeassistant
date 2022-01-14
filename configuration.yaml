@@ -14,7 +14,13 @@ scene: !include scenes.yaml
 homeassistant:
   packages:
     common_device_tracker: !include common/device_tracker.yaml
-    
+
+recorder:
+  db_url: !secret mariadb_url
+  purge_keep_days: 7
+  purge_interval: 1
+  commit_interval: 30 
+  
 switch:
   - platform: momentary
     name: Camera Snapshots
