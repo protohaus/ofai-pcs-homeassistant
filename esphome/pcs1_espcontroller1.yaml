@@ -19,4 +19,5 @@ packages:
   common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
   stepper_a4988: !include stepper/a4988.yaml
-  stepper_button: !include stepper/button.yaml
+  #stepper_tmc2209: !include stepper/tmc2209.yaml
+  #stepper_button: !include stepper/button.yaml

@@ -1,0 +1,16 @@
+# Example configuration entry
+sensor:
+  - platform: bme280
+    i2c_id: ${bme280_2_i2c_bus}
+    temperature:
+      name: "${device_name_upper}.${bme280_2_name}.temperature"
+      id: ${device_name}_${bme280_2_name}_temperature
+      oversampling: ${bme280_2_oversampling}
+    pressure:
+      name: "${device_name_upper}.${bme280_2_name}.pressure"
+      id: ${device_name}_${bme280_2_name}_pressure
+    humidity:
+      name: "${device_name_upper}.${bme280_2_name}.humidity"
+      id: ${device_name}_${bme280_2_name}_humidity 
+    address: ${bme280_2_adress}
+    update_interval: ${bme280_2_update_interval}

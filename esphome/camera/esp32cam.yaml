@@ -1,12 +1,3 @@
-substitutions:
-  custom_idle_framerate: "0 fps"
-  i2c_bus_b_sda: GPIO13
-  i2c_bus_b_scl: GPIO15
-  bme_280_update_interval: "10s"
-  bh1750_update_interval: "10s"
-  bh1750_resolution: "0.5" # values from 0.5 to 4.0
-  bh1750_measurement_duration: "69" #31 Sunny light (121556 lx), 69: default (54612.5 lx), 254  for low light situation (14835 lx)
-  
 # Example configuration entry
 esp32_camera:
   name: ${device_name_upper}.camera
@@ -21,19 +12,19 @@ esp32_camera:
   href_pin: GPIO23
   pixel_clock_pin: GPIO22
   power_down_pin: GPIO32
-  resolution: 1600x1200         # Possible values: 400x296, 640x480, 800x600, 1024x768, 1280x1024, 1600x1200
-  jpeg_quality: 10              # values from 10 to 63 (10: best, 63: worst)
-  contrast: 0                   # values from -2 to 2
-  brightness: 0                 # values from -2 to 2
-  saturation: 0                 # values from -2 to 2
-  idle_framerate: ${custom_idle_framerate}
-  vertical_flip: false
-  horizontal_mirror: false
-  max_framerate: 10 fps
+  resolution: ${esp32cam_resolution} # Possible values: 400x296, 640x480, 800x600, 1024x768, 1280x1024, 1600x1200
+  jpeg_quality: 10                   # values from 10 to 63 (10: best, 63: worst)
+  contrast: 0                        # values from -2 to 2
+  brightness: 0                      # values from -2 to 2
+  saturation: 0                      # values from -2 to 2
+  idle_framerate: ${esp32cam_custom_idle_framerate}  # set to "0" to turn off idle mode
+  vertical_flip: ${esp32cam_vertical_flip}
+  horizontal_mirror: ${esp32cam_horizontal_mirror}
+  max_framerate: ${esp32cam_max_framerate}
   test_pattern: false
 
 switch:
   - platform: gpio
     name: ${device_name_upper}.flashlight
     id: ${device_name}_flashlight
-    pin: GPIO04
+    pin: ${esp32cam_flashlight_pin}

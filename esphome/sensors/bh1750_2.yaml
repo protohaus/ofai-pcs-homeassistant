@@ -1,0 +1,12 @@
+# Example configuration entry
+sensor:
+  - platform: bh1750
+    i2c_id: ${bh1750_2_i2c_bus}
+    name: "${device_name_upper}.${bh1750_2_name}.illuminance"
+    id: "${device_name}_${bh1750_2_name}_illuminance"
+    address: ${bh1750_2_adress}
+    measurement_duration: ${bh1750_2_measurement_duration}    #31: Sunny light (121556 lx), 
+                                                            #69: default (54612.5 lx)
+                                                            #254: for low light situation (14835 lx)
+    update_interval: ${bh1750_2_update_interval}
+    resolution: ${bh1750_2_resolution}                        # values from 0.5 to 4.0

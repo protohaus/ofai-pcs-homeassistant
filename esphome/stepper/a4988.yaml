@@ -5,7 +5,7 @@ substitutions:
   dir_pin: GPIO27
   sleep_pin: GPIO25
   invert_direction: "true" 
-  max_speed: "250"
+  max_speed: "1000"
   acceleration: "inf"
   deceleration: "inf"
   initial_full_turn_steps: "12000"
@@ -101,7 +101,20 @@ binary_sensor:
         // Motor is at target position
         return false;
       }
-
+      
+  - platform: gpio
+    pin: 
+      number: GPIO33
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+    name: ${device_name_upper}.diag_pin
+    id: ${device_name}_diag_pin
+    filters:
+      - delayed_on: 10ms
+    
+      
 switch:
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
@@ -130,7 +143,6 @@ button:
   - platform: template
     name: ${stepper_motor_id_upper}.start
     id: ${stepper_motor_id}_start
-    internal: "true"
     on_press:
       - logger.log: "Start Motor"
       - stepper.set_target:
@@ -140,7 +152,6 @@ button:
   - platform: template
     name: ${stepper_motor_id_upper}.stop
     id: ${stepper_motor_id}_stop
-    internal: "true"
     on_press:
       - logger.log: "Stop Motor"
       - stepper.set_target:
