@@ -1,57 +1,58 @@
 substitutions:
   stepper_motor_id_upper: ${device_name_upper}.stepper
   stepper_motor_id: ${device_name}_stepper
-  step_pin: GPIO26
-  dir_pin: GPIO27
-  sleep_pin: GPIO25
-  invert_direction: "true" 
-  max_speed: "1000"
-  acceleration: "inf"
-  deceleration: "inf"
-  initial_full_turn_steps: "12000"
 
-# include c++ code
-#esphome:
-#  includes:
-#    - stepper/helper_functions.h
+esphome: 
+  on_boot:
+    priority: 799 # Highest priority, ensures enable pin to be turned off first
+    then:
+      - output.turn_on: ${stepper_motor_id}_enable_pin # set the enable pin to HIGH -> disables all motor functions
+      - homeassistant.service:
+          service: esphome.${stepper_motor_id_upper}_set_step_width
+          data:
+            step_width: '100'
+      - homeassistant.service:
+          service: esphome.${stepper_motor_id_upper}_set_speed
+          data:
+            speed: !lambda 'return id(current_speed);'           
 
+# make sure the stepper does not run while the ota update is performed            
+ota:
+  on_begin:
+    then:
+      - button.press: ${stepper_motor_id}_stop  
+      - switch.turn_off: ${stepper_motor_id}_enable_motor
+      
+output:
+  - platform: gpio
+    pin: ${stepper_enable_pin}
+    id: ${stepper_motor_id}_enable_pin
+    
 stepper:
   - platform: a4988
     id: ${stepper_motor_id}
-    step_pin: ${step_pin}
+    step_pin: ${stepper_step_pin}
     dir_pin:
-      number: ${dir_pin}
-      inverted: ${invert_direction}  
-    max_speed: "${max_speed} steps/s"
+      number: ${stepper_dir_pin}
+      inverted: ${stepper_invert_direction}  
+    max_speed: "${stepper_max_speed} steps/s"
 
-    # Optional:
-    # sleep pin makes issues, not needed since the controller is active by default anyways
-    sleep_pin: ${sleep_pin} 
-    acceleration: ${acceleration}
-    deceleration: ${deceleration}
-
+    sleep_pin: ${stepper_sleep_pin} 
+    acceleration: ${stepper_acceleration}
+    deceleration: ${stepper_deceleration}
+      
 globals:
-
-  - id: target_position
-    type: int
-    restore_value: no
-    initial_value: "0"
-
+  
   - id: motor_enabled
     type: bool
     restore_value: no
-    initial_value: "false"    
+    initial_value: "false"  
     
-  - id: step_width
-    type: int
-    restore_value: no
-    initial_value: "0"
-  
   - id: endless_mode
     type: bool
-    restore_value: yes
+    restore_value: no
     initial_value: "false"
-  
+    
   - id: direction_forward
     type: bool
     restore_value: no
@@ -60,13 +61,38 @@ globals:
   - id: full_turn_steps
     type: int
     restore_value: yes
-    initial_value: ${initial_full_turn_steps}
+    initial_value: ${stepper_initial_full_turn_steps}
+    
+  - id: target_position
+    type: int
+    restore_value: no
+    initial_value: "0"
+  
+  - id: current_speed
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_speed}
+  
+  - id: current_acceleration
+    type: int
+    restore_value: no
+    initial_value: ${stepper_acceleration}
+  
+  - id: current_deceleration
+    type: int
+    restore_value: no
+    initial_value: ${stepper_deceleration}
+    
+  - id: step_width
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_step_width}
 
   #nonstop mode, motor drives in endless loop
   - id: stepper_mode
     type: int
     restore_value: no
-    initial_value: "0" # 0: target-mode, 1: step-mode, 2: drive-mode, 3: 360-mode, 4: 1/6-mode
+    initial_value: "0" # 0: target-mode, 1: step-mode, 2: drive-mode, 3: 360-mode, 4: 1/6-mode, 5: homing-mode
    
 sensor:
   - platform: template
@@ -85,7 +111,43 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return id(target_position);
-    update_interval: 0.1s
+    update_interval: 1s
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.current_speed"
+    id: ${stepper_motor_id}_current_speed
+    unit_of_measurement: "steps/s"
+    state_class: "measurement"
+    lambda: |-
+      return id(current_speed);
+    update_interval: 1s
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.current_acceleration"
+    id: ${stepper_motor_id}_current_acceleration
+    unit_of_measurement: "steps/s^2"
+    state_class: "measurement"
+    lambda: |-
+      return id(current_acceleration);
+    update_interval: 1s
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.current_deceleration"
+    id: ${stepper_motor_id}_current_deceleration
+    unit_of_measurement: "steps/s^2"
+    state_class: "measurement"
+    lambda: |-
+      return id(current_deceleration);
+    update_interval: 1s
+   
+  - platform: template
+    name: "${stepper_motor_id_upper}.step_width"
+    id: ${stepper_motor_id}_step_width
+    unit_of_measurement: "steps/s^2"
+    state_class: "measurement"
+    lambda: |-
+      return id(step_width);
+    update_interval: 1s   
 
 binary_sensor:
   - platform: template
@@ -103,18 +165,30 @@ binary_sensor:
       }
       
   - platform: gpio
+    name: ${device_name_upper}.diag_pin
+    id: ${device_name}_diag_pin
     pin: 
       number: GPIO33
       mode:
         input: true
         pullup: true
       inverted: false
-    name: ${device_name_upper}.diag_pin
-    id: ${device_name}_diag_pin
-    filters:
-      - delayed_on: 10ms
     
-      
+  - platform: gpio
+    name: ${device_name_upper}.sleep_state_pin
+    id: ${device_name}_sleep_state_pin
+    pin:
+      number: ${stepper_sleep_state_pin}
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    on_press:
+      then:
+        - output.turn_on: ${stepper_motor_id}_enable_pin
+    on_release:
+        - output.turn_off: ${stepper_motor_id}_enable_pin
+    
 switch:
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
@@ -137,8 +211,7 @@ switch:
           id: endless_mode
           value: "false"
       - button.press: ${stepper_motor_id}_stop    
-     
-   
+    
 button:
   - platform: template
     name: ${stepper_motor_id_upper}.start
@@ -188,6 +261,9 @@ button:
       - stepper.report_position:
           id: ${stepper_motor_id}
           position: 0 
+      - globals.set: 
+          id: target_position
+          value: "0"
       - button.press: ${stepper_motor_id}_stop
     
   - platform: template
@@ -199,7 +275,7 @@ button:
           value: "true"
       - globals.set: 
           id: target_position
-          value: !lambda 'return id($stepper_motor_id).current_position + ${max_speed}*2;'  
+          value: !lambda 'return id($stepper_motor_id).current_position + ${stepper_max_speed}*2;'  
       - globals.set: 
           id: endless_mode
           value: "true"
@@ -214,7 +290,7 @@ button:
           value: "false"
       - globals.set: 
           id: target_position
-          value: !lambda 'return id($stepper_motor_id).current_position - ${max_speed}*2;'  
+          value: !lambda 'return id($stepper_motor_id).current_position - ${stepper_max_speed}*2;'  
       - globals.set: 
           id: endless_mode
           value: "true"
@@ -230,7 +306,7 @@ interval:
         then:
           - globals.set: 
               id: target_position
-              value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(${max_speed})*1.5);'        
+              value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(current_speed)*1.5);'        
           - button.press: ${stepper_motor_id}_start
 
 api:
@@ -262,6 +338,9 @@ api:
         - stepper.set_speed:
             id: ${stepper_motor_id}
             speed: !lambda 'return speed;'  
+        - globals.set: 
+            id: current_speed
+            value: !lambda 'return speed;' 
             
     - service: stepper_set_acceleration
       variables:
@@ -271,7 +350,10 @@ api:
         - stepper.set_acceleration:
             id: ${stepper_motor_id}
             acceleration: !lambda 'return acceleration;' 
-    
+        - globals.set: 
+            id: current_acceleration
+            value: !lambda 'return acceleration;' 
+            
     - service: stepper_set_deceleration
       variables:
         deceleration: int
@@ -280,3 +362,6 @@ api:
         - stepper.set_deceleration:
             id: ${stepper_motor_id}
             deceleration: !lambda 'return deceleration;'  
+        - globals.set: 
+            id: current_deceleration
+            value: !lambda 'return deceleration;' 

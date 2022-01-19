@@ -1,8 +1,24 @@
 substitutions:
+  #general settings
   host_name: pcs1-espcontroller1
   device_name: pcs1_espcontroller1
   device_name_upper: pcs1.espcontroller1
   status_led_pin: "GPIO13"
+  
+  #stepper settings
+  stepper_step_pin: GPIO26
+  stepper_dir_pin: GPIO27
+  stepper_sleep_pin: GPIO25
+  stepper_enable_pin: GPIO12
+  stepper_sleep_state_pin: GPIO14
+  stepper_invert_direction: "false" 
+  stepper_max_speed: "4000"
+  stepper_initial_speed: "500"
+  stepper_acceleration: "400"     #"inf"
+  stepper_deceleration: "1000"    #"inf"
+  stepper_initial_step_width: "2000"
+  stepper_initial_full_turn_steps: "779902"
+  
   
 esphome:
   name: ${host_name}
