@@ -3,7 +3,11 @@ substitutions:
   host_name: pcs1-espcam1
   device_name: pcs1_espcam1
   device_name_upper: pcs1.espcam1
-  status_led_pin: GPIO12
+  status_led_pin: GPIO33
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  
+  #i2c settings
   i2c_bus_b_name: bus_b
   i2c_bus_b_sda: GPIO13
   i2c_bus_b_scl: GPIO15 

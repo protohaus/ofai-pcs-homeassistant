@@ -1,0 +1,36 @@
+esphome: 
+  on_boot:
+    priority: -200 # Highest priority, ensures enable pin to be turned off first
+    then:
+      - output.turn_off: ${stepper_motor_id}_enable_pin # set the enable pin to HIGH -> disables all motor functions
+      
+output:
+  - platform: gpio
+    pin: ${stepper_enable_pin}
+    id: ${stepper_motor_id}_enable_pin
+    
+binary_sensor:
+  - platform: gpio
+    name: ${device_name_upper}.diag_pin
+    id: ${device_name}_diag_pin
+    pin: 
+      number: ${stepper_diag_pin}
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+    
+  - platform: gpio
+    name: ${device_name_upper}.sleep_state_pin
+    id: ${device_name}_sleep_state_pin
+    pin:
+      number: ${stepper_sleep_state_pin}
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    on_press:
+      then:
+        - output.turn_on: ${stepper_motor_id}_enable_pin
+    on_release:
+        - output.turn_off: ${stepper_motor_id}_enable_pin

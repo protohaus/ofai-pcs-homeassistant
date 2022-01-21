@@ -15,12 +15,35 @@ homeassistant:
   packages:
     common_device_tracker: !include common/device_tracker.yaml
 
+#http:
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+  
 recorder:
   db_url: !secret mariadb_url
   purge_keep_days: 7
   purge_interval: 1
   commit_interval: 30 
-  
+
+history:
+
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: !secret influxdb_user
+  password: !secret influxdb_pw
+  ssl: false
+  max_retries: 3
+  default_measurement: state  
+  measurement_attr: entity_id
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+      - switch
+      - input_number
+      - button
 switch:
   - platform: momentary
     name: Camera Snapshots
@@ -34,51 +57,66 @@ input_boolean:
     
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
-  stepper_set_absolute_target:
-    name: stepper.set_absolute_target
+  stepper_set_requested_target_position:
+    name: stepper.set_requested_target_position
     initial: 0
-    min: -150000
-    max: 150000
+    min: -9999999
+    max: 9999999
+    max: 9999999
     step: 1
-    mode: slider
+    mode: box
   stepper_set_step_width:
     name: stepper.set_step_width
     initial: 0
     min: 0
-    max: 3000
+    max: 10000
     step: 1
-    mode: slider
+    mode: box
   stepper_set_speed:
     name: stepper.set_speed
-    initial: 250
+    initial: 500
     min: 0
-    max: 1000
+    max: 4000
     step: 1
-    mode: slider
+    mode: box
   stepper_set_acceleration:
     name: stepper.set_acceleration
     initial: 500
     min: 0
     max: 1000
     step: 1
-    mode: slider
+    mode: box
   stepper_set_deceleration:
     name: stepper.set_deceleration
     initial: 1000
     min: 0
     max: 1000
     step: 1
-    mode: slider
+    mode: box
+  stepper_set_zero_position:
+    name: stepper.set_zero_position
+    initial: 0
+    min: -9999999
+    max: 9999999
+    step: 1
+    mode: box
+  stepper_set_full_turn_steps:
+    name: stepper.set_full_turn_steps
+    initial: 779902
+    min: -9999999
+    max: 9999999
+    step: 1
+    mode: box
   
 # Do something when the slider changes
-automation stepper_send_absolute_target:
+automation stepper_send_requested_target_position:
   - alias: Send absolute target value to controller
     id: stepper_send_absolute_target 
     trigger:
       platform: state
-      entity_id: input_number.stepper_set_absolute_target
+      entity_id: input_number.stepper_set_requested_target_position
     action:
-      - service: esphome.pcs1_espcontroller1_stepper_set_absolute_target
+      - service: esphome.pcs1_espcontroller1_stepper_set_requested_target_position
         data_template:
           target: '{{ trigger.to_state.state | int }}'
 
@@ -133,3 +171,27 @@ automation stepper_send_step_width:
       - service: esphome.pcs1_espcontroller1_stepper_set_step_width
         data_template:
           step_width: '{{ trigger.to_state.state | int }}'  
+
+automation stepper_send_zero_position:
+  - alias: Send zero_position value to controller
+    id: stepper_send_zero_position
+    trigger:
+      platform: state
+      entity_id: input_number.stepper_set_zero_position
+    action:
+      # Replace livingroom with the name you gave the ESP
+      - service: esphome.pcs1_espcontroller1_stepper_set_zero_position
+        data_template:
+          zero_position: '{{ trigger.to_state.state | int }}'  
+          
+automation stepper_full_turn_steps:
+  - alias: Send full_turn_steps value to controller
+    id: stepper_send_full_turn_steps
+    trigger:
+      platform: state
+      entity_id: input_number.stepper_set_full_turn_steps
+    action:
+      # Replace livingroom with the name you gave the ESP
+      - service: esphome.pcs1_espcontroller1_stepper_set_full_turn_steps
+        data_template:
+          full_turn_steps: '{{ trigger.to_state.state | int }}'            

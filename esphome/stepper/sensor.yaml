@@ -1,0 +1,81 @@
+sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.position_now"
+    id: ${stepper_motor_id}_position_now
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id($stepper_motor_id).current_position;
+    update_interval: ${update_interval_realtime}
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.target_position"
+    id: ${stepper_motor_id}_target_position
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id(target_position);
+    update_interval: ${update_interval_fast}
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.requested_target_position"
+    id: ${stepper_motor_id}_requested_target_position
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id(requested_target_position);
+    update_interval: ${update_interval_fast} 
+    
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.speed"
+    id: ${stepper_motor_id}_speed
+    unit_of_measurement: "steps/s"
+    state_class: "measurement"
+    lambda: |-
+      return id(speed);
+    update_interval: ${update_interval_fast}
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.acceleration"
+    id: ${stepper_motor_id}_acceleration
+    unit_of_measurement: "steps/s^2"
+    state_class: "measurement"
+    lambda: |-
+      return id(acceleration);
+    update_interval: ${update_interval_fast}
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.deceleration"
+    id: ${stepper_motor_id}_deceleration
+    unit_of_measurement: "steps/s^2"
+    state_class: "measurement"
+    lambda: |-
+      return id(deceleration);
+    update_interval: ${update_interval_fast}
+   
+  - platform: template
+    name: "${stepper_motor_id_upper}.step_width"
+    id: ${stepper_motor_id}_step_width
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id(step_width);
+    update_interval: ${update_interval_fast}   
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.full_turn_steps"
+    id: ${stepper_motor_id}full_turn_steps
+    unit_of_measurement: "steps"
+    state_class: "measurement"
+    lambda: |-
+      return id(full_turn_steps);
+    update_interval: ${update_interval_mid}   
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.mode"
+    id: ${stepper_motor_id}_mode
+    state_class: ""
+    lambda: |-
+      return id(stepper_mode);
+    update_interval: ${update_interval_fast}  

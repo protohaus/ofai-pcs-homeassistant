@@ -8,7 +8,7 @@ light:
     internal: true
     
 interval:
-  - interval: 20s
+  - interval: ${status_led_interval_ok}
     then:
       if:
         condition:
@@ -17,7 +17,7 @@ interval:
           - light.turn_on: ${device_name}_status_led
           - delay: 1s
           - light.turn_off: ${device_name}_status_led
-  - interval: 5s
+  - interval: ${status_led_interval_booting}
     then:
       if:
         condition:

@@ -1,0 +1,14 @@
+binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.active"
+    id: ${stepper_motor_id}_active
+    lambda: |-
+      if (id($stepper_motor_id).current_position != id($stepper_motor_id).target_position) 
+      {
+        // Motor is still moving
+        return true;
+      }else 
+      {
+        // Motor is at target position
+        return false;
+      }
