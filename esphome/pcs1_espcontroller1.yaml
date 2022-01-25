@@ -21,6 +21,7 @@ substitutions:
   stepper_deceleration: "1000"    #"inf"
   stepper_initial_step_width: "2000"
   stepper_initial_full_turn_steps: "779902"
+  stepper_fan_pin: GPIO18
   
   # update interval settings
   update_interval_realtime: 0.1s
@@ -46,4 +47,4 @@ packages:
   stepper_a4988: !include stepper/a4988.yaml
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
   #stepper_tmc2209: !include stepper/tmc2209.yaml
-  #stepper_button: !include stepper/button.yaml
+  stepper_button: !include stepper/button.yaml

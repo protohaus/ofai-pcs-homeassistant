@@ -1,10 +1,22 @@
 binary_sensor:
-  - platform: gpio
-    pin: 
-      number: GPIO14
-      mode: INPUT_PULLUP
-      inverted: true
-    name: ${device_name_upper}.button
-    id: ${device_name}_button
-    filters:
-      - delayed_on: 10ms
+  #- platform: gpio
+  #  pin: 
+  #    number: GPIO32
+  #    mode: INPUT_PULLUP
+  #    inverted: true
+  #  name: ${device_name_upper}.button
+  #  id: ${device_name}_button
+  #  filters:
+  #    - delayed_on: 10ms
+      
+  #- platform: gpio
+  #  pin: 
+  #    number: GPIO32
+  #    mode:
+  #      input: true
+  #      pullup: false
+  #    #inverted: true
+  #  name: ${device_name_upper}.inductive_sensor
+  #  id: ${device_name}_inductive_sensor
+  #  filters:
+  #    - delayed_on: 10ms

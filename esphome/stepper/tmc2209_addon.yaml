@@ -3,11 +3,19 @@ esphome:
     priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - output.turn_off: ${stepper_motor_id}_enable_pin # set the enable pin to HIGH -> disables all motor functions
+      - switch.turn_off: ${stepper_motor_id}_fan
       
 output:
   - platform: gpio
     pin: ${stepper_enable_pin}
     id: ${stepper_motor_id}_enable_pin
+
+switch:
+  - platform: gpio
+    pin: ${stepper_fan_pin}
+    id: ${stepper_motor_id}_fan
+    name: ${stepper_motor_id_upper}.fan
+    inverted: "true"
     
 binary_sensor:
   - platform: gpio
@@ -32,5 +40,20 @@ binary_sensor:
     on_press:
       then:
         - output.turn_on: ${stepper_motor_id}_enable_pin
+        - switch.turn_off: ${stepper_motor_id}_fan
     on_release:
         - output.turn_off: ${stepper_motor_id}_enable_pin
+        - switch.turn_on: ${stepper_motor_id}_fan
+      
+interval:
+  - interval: 60s
+    then:
+      if:
+        condition:
+          binary_sensor.is_off: ${device_name}_sleep_state_pin
+        then:
+          - switch.turn_on: ${stepper_motor_id}_fan
+          - delay: 40s
+          - switch.turn_off: ${stepper_motor_id}_fan
+        else:
+          - switch.turn_off: ${stepper_motor_id}_fan
