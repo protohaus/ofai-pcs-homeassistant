@@ -78,11 +78,4 @@ sensor:
     state_class: ""
     lambda: |-
       return id(stepper_mode);
-    update_interval: ${update_interval_fast}  
-
-  - platform: adc
-    pin: GPIO32
-    name: "Inductivity Sensor Raw Output"
-    update_interval: 0.1s
-    #filters:
-    #  - multiply: 3.3
+    update_interval: ${update_interval_fast}

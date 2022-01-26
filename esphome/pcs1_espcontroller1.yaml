@@ -13,7 +13,9 @@ substitutions:
   stepper_sleep_pin: GPIO25
   stepper_enable_pin: GPIO15
   stepper_sleep_state_pin: GPIO14
-  stepper_diag_pin: GPIO33
+  stepper_diag_pin_1: GPIO33
+  stepper_diag_pin_2: GPIO5
+  stepper_diag_pin_3: GPIO19
   stepper_invert_direction: "false" 
   stepper_max_speed: "4000"
   stepper_initial_speed: "500"

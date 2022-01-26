@@ -9,5 +9,6 @@ ota:
 
 # Enable logging
 logger:
+  level: DEBUG
   
 captive_portal:

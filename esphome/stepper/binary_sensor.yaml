@@ -12,3 +12,23 @@ binary_sensor:
         // Motor is at target position
         return false;
       }
+      
+  - platform: gpio
+    name: ${device_name_upper}.inductivity_pinoin_wheel_rods
+    id: ${device_name}_inductivity_pinoin_wheel_rods
+    pin: 
+      number: GPIO32
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+      
+  - platform: gpio
+    name: ${device_name_upper}.inductivity_home
+    id: ${device_name}_inductivity_home
+    pin: 
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true
+      inverted: false

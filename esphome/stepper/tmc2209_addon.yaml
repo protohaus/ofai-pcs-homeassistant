@@ -16,17 +16,53 @@ switch:
     id: ${stepper_motor_id}_fan
     name: ${stepper_motor_id_upper}.fan
     inverted: "true"
+    internal: "true"
     
 binary_sensor:
   - platform: gpio
-    name: ${device_name_upper}.diag_pin
-    id: ${device_name}_diag_pin
+    name: ${device_name_upper}.diag_pin_1
+    id: ${device_name}_diag_pin_1
     pin: 
-      number: ${stepper_diag_pin}
+      number: ${stepper_diag_pin_1}
       mode:
         input: true
         pullup: true
       inverted: false
+    on_press:
+      - button.press: ${stepper_motor_id}_stop
+      - logger.log:
+          format: "Stepper 1 is losing steps: emergency stop"
+          level: ERROR
+      
+  - platform: gpio
+    name: ${device_name_upper}.diag_pin_2
+    id: ${device_name}_diag_pin_2
+    pin: 
+      number: ${stepper_diag_pin_2}
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+    on_press:
+      - button.press: ${stepper_motor_id}_stop
+      - logger.log:
+          format: "Stepper 2 is losing steps: emergency stop"
+          level: ERROR
+      
+  - platform: gpio
+    name: ${device_name_upper}.diag_pin_3
+    id: ${device_name}_diag_pin_3
+    pin: 
+      number: ${stepper_diag_pin_3}
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+    on_press:
+      - button.press: ${stepper_motor_id}_stop
+      - logger.log:
+          format: "Stepper 3 is losing steps: emergency stop"
+          level: ERROR
     
   - platform: gpio
     name: ${device_name_upper}.sleep_state_pin
