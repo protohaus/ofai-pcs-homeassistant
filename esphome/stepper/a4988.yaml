@@ -6,6 +6,7 @@ packages:
   include_globals: !include globals.yaml
   include_sensor: !include sensor.yaml
   include_binary_sensor: !include binary_sensor.yaml
+  include_modes: !include modes.yaml
   
 esphome: 
   on_boot:
@@ -34,6 +35,63 @@ stepper:
     sleep_pin: ${stepper_sleep_pin} 
     acceleration: ${stepper_acceleration}
     deceleration: ${stepper_deceleration}
+
+globals:
+  - id: motor_enabled
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+    
+  - id: direction_forward
+    type: bool
+    restore_value: no
+    initial_value: "true"
+  
+  - id: initial_full_turn_steps
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_full_turn_steps}
+    
+  - id: full_turn_steps
+    type: int
+    restore_value: yes
+    initial_value: ${stepper_initial_full_turn_steps}
+  
+  - id: requested_target_position
+    type: int
+    restore_value: no
+    initial_value: "0"  
+  
+  - id: target_position
+    type: int
+    restore_value: no
+    initial_value: "0"
+  
+  - id: speed
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_speed}
+  
+  - id: requested_speed
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_speed}
+    
+  - id: acceleration
+    type: int
+    restore_value: no
+    initial_value: ${stepper_acceleration}
+  
+  - id: deceleration
+    type: int
+    restore_value: no
+    initial_value: ${stepper_deceleration}
+    
+  - id: step_width
+    type: int
+    restore_value: no
+    initial_value: ${stepper_initial_step_width}   
+
     
 switch:    
   - platform: template
@@ -61,18 +119,30 @@ switch:
           id: stepper_mode
           value: !lambda 'return id(stepper_mode_off);'
       - component.update: ${stepper_motor_id}_mode
-    
+      
 button:
   - platform: template
     name: ${stepper_motor_id_upper}.start
     id: ${stepper_motor_id}_start
     internal: true
     on_press:
-      - logger.log: "Start Motor"
-      - stepper.set_target:
-          id: ${stepper_motor_id}
-          target: !lambda 'return (id(motor_enabled) == true) ? id(target_position) : id($stepper_motor_id).current_position;'
-            
+      if:
+        condition:
+          lambda: |-
+            return id(motor_enabled);
+        then:
+          - logger.log: "Start Motor"
+          - stepper.set_target:
+              id: ${stepper_motor_id}
+              target: !lambda 'return (id(motor_enabled) == true) ? id(target_position) : id($stepper_motor_id).current_position;'  
+        else:
+          - logger.log: "Motor is not enabled!"
+          - globals.set:
+              id: stepper_mode
+              value: !lambda 'return id(stepper_mode_off);'
+          - component.update: ${stepper_motor_id}_mode
+          
+      
   - platform: template
     name: ${stepper_motor_id_upper}.stop
     id: ${stepper_motor_id}_stop
@@ -80,12 +150,22 @@ button:
       - logger.log: "Stop Motor"
       - stepper.set_target:
             id: ${stepper_motor_id}
-            target: !lambda 'return id($stepper_motor_id).current_position;' 
+            target: !lambda 'return id($stepper_motor_id).current_position;'  
       - globals.set:
           id: stepper_mode
           value: !lambda 'return id(stepper_mode_ready);'
       - component.update: ${stepper_motor_id}_mode
-        
+  
+  - platform: template
+    name: ${stepper_motor_id_upper}.pause
+    id: ${stepper_motor_id}_pause
+    internal: "true"
+    on_press:
+      - logger.log: "Pause Motor"
+      - stepper.set_target:
+            id: ${stepper_motor_id}
+            target: !lambda 'return id($stepper_motor_id).current_position;'  
+  
   - platform: template
     name: ${stepper_motor_id_upper}.step_forward
     id: ${stepper_motor_id}_step_forward
@@ -97,7 +177,9 @@ button:
           id: stepper_mode
           value: !lambda 'return id(stepper_mode_step_step_width);'
       - component.update: ${stepper_motor_id}_mode            
-      - button.press: ${stepper_motor_id}_start
+      - button.press: ${stepper_motor_id}_start 
+          
+      
       
   - platform: template
     name: ${stepper_motor_id_upper}.step_backward
@@ -110,22 +192,22 @@ button:
           id: stepper_mode
           value: !lambda 'return id(stepper_mode_step_step_width);'
       - component.update: ${stepper_motor_id}_mode          
-      - button.press: ${stepper_motor_id}_start   
-      
+      - button.press: ${stepper_motor_id}_start  
+          
   
   - platform: template
     name: ${stepper_motor_id_upper}.set_zero_position
     id: ${stepper_motor_id}_set_zero_position
     on_press:
       - logger.log: "Set current position as zero point"
-      - button.press: ${stepper_motor_id}_stop
+      - button.press: ${stepper_motor_id}_pause
       - stepper.report_position:
           id: ${stepper_motor_id}
           position: 0 
       - globals.set: 
           id: target_position
           value: "0"
-      - button.press: ${stepper_motor_id}_stop
+      - button.press: ${stepper_motor_id}_pause
     
   - platform: template
     name: ${stepper_motor_id_upper}.drive_forward
@@ -142,6 +224,7 @@ button:
           value: !lambda 'return id(stepper_mode_drive);'
       - component.update: ${stepper_motor_id}_mode
       - button.press: ${stepper_motor_id}_start
+      
     
   - platform: template
     name: ${stepper_motor_id_upper}.drive_backward
@@ -159,35 +242,44 @@ button:
       - component.update: ${stepper_motor_id}_mode
       - button.press: ${stepper_motor_id}_start
       
+      
   - platform: template
     name: ${stepper_motor_id_upper}.goto_home
     id: ${stepper_motor_id}_goto_home
     on_press:
-       - globals.set: 
-           id: target_position
-           value: "0" 
-       - globals.set:
+      - globals.set: 
+          id: target_position
+          value: "0" 
+      - globals.set:
           id: stepper_mode
           value: !lambda 'return id(stepper_mode_target);'
-       - component.update: ${stepper_motor_id}_mode
-       - button.press: ${stepper_motor_id}_start
+      - component.update: ${stepper_motor_id}_mode
+      - button.press: ${stepper_motor_id}_start
+          
+       
        
   - platform: template
     name: ${stepper_motor_id_upper}.goto_requested_target_position
     id: ${stepper_motor_id}_goto_requested_target_position
     on_press:
-       - globals.set: 
+      - globals.set: 
           id: target_position
           value: !lambda 'return id(requested_target_position);'
-       - globals.set:
-          id: stepper_mode
-          value: !lambda 'return id(stepper_mode_target);'
-       - component.update: ${stepper_motor_id}_mode
-       - button.press: ${stepper_motor_id}_start 
-      
+      - globals.set:
+         id: stepper_mode
+         value: !lambda 'return id(stepper_mode_target);'
+      - component.update: ${stepper_motor_id}_mode
+      - button.press: ${stepper_motor_id}_start 
+    
 interval:
   - interval: 1s
     then:
+    
+      #####################################################
+      # normal driving forward operation, 
+      # sets target position forward/backward every second, 
+      # depending on direction
+      #####################################################
       if:
         condition:
           lambda: |-
@@ -197,6 +289,7 @@ interval:
               id: target_position
               value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(speed)*1.5);'        
           - button.press: ${stepper_motor_id}_start
+                    
 
 api:
   services:      
@@ -229,6 +322,9 @@ api:
         - globals.set: 
             id: speed
             value: !lambda 'return speed;' 
+        - globals.set: 
+            id: requested_speed
+            value: !lambda 'return speed;' 
             
     - service: stepper_set_acceleration
       variables:
@@ -259,18 +355,18 @@ api:
         zero_position: int
       then:
         - logger.log: "Set zero position"
-        - button.press: ${stepper_motor_id}_stop
+        - button.press: ${stepper_motor_id}_pause
         - stepper.report_position:
             id: ${stepper_motor_id}
             position: !lambda 'return id($stepper_motor_id).current_position - zero_position;'   
-        - button.press: ${stepper_motor_id}_stop
+        - button.press: ${stepper_motor_id}_pause
         
     - service: stepper_set_full_turn_steps
       variables:
         full_turn_steps: int
       then:
         - logger.log: "Set full_turn_steps"
-        - button.press: ${stepper_motor_id}_stop
+        - button.press: ${stepper_motor_id}_pause
         - globals.set: 
             id: full_turn_steps
             value: !lambda 'return full_turn_steps;'   

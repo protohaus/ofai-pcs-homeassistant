@@ -1,0 +1,56 @@
+globals:
+  #stepper modes
+  - id: stepper_mode                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "0"  
+    
+  - id: stepper_mode_off                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "0"    
+    
+  - id: stepper_mode_ready                   
+    type: int                           
+    restore_value: no                   
+    initial_value: "1"       
+    
+  - id: stepper_mode_homing                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "2" 
+  
+  - id: stepper_mode_measure_full_turn_steps                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "3" 
+    
+  - id: stepper_mode_drive                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "10"  
+    
+  - id: stepper_mode_target                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "11" 
+    
+  - id: stepper_mode_step_step_width                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "12" 
+    
+  - id: stepper_mode_step_30deg                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "20"  
+    
+  - id: stepper_mode_step_60deg                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "21"  
+    
+  - id: stepper_mode_step_360deg                    
+    type: int                           
+    restore_value: no                   
+    initial_value: "22"   

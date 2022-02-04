@@ -17,19 +17,24 @@ substitutions:
   stepper_diag_pin_2: GPIO5
   stepper_diag_pin_3: GPIO19
   stepper_invert_direction: "false" 
-  stepper_max_speed: "4000"
+  stepper_max_speed: "8000"
   stepper_initial_speed: "500"
+  stepper_homing_high_speed: "8000"
+  stepper_homing_low_speed: "50"
   stepper_acceleration: "400"     #"inf"
   stepper_deceleration: "1000"    #"inf"
   stepper_initial_step_width: "2000"
   stepper_initial_full_turn_steps: "779902"
   stepper_fan_pin: GPIO18
+  stepper_inductivity_pinion_wheel_rods_pin: GPIO32
+  stepper_inductivity_home_pin: GPIO4
+  stepper_inductivity_global_home_pin: GPIO2
   
-  # update interval settings
-  update_interval_realtime: 0.1s
-  update_interval_fast: 1s
-  update_interval_mid: 10s
-  update_interval_slow: 60s
+  # sensor update interval settings
+  sensor_update_interval_realtime: 0.1s
+  sensor_update_interval_fast: 1s
+  sensor_update_interval_mid: 10s
+  sensor_update_interval_slow: 60s
   
   
 esphome:
@@ -48,5 +53,7 @@ packages:
   common_restart: !include common/restart.yaml
   stepper_a4988: !include stepper/a4988.yaml
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
-  #stepper_tmc2209: !include stepper/tmc2209.yaml
-  stepper_button: !include stepper/button.yaml
+  stepper_homing: !include stepper/homing.yaml
+  stepper_measure_full_turn_steps: !include stepper/measure_full_turn_steps.yaml
+  stepper_pioniowheel_counter: !include stepper/pioniowheel_counter.yaml
+  #stepper_error_handling: !include stepper/error_handling.yaml

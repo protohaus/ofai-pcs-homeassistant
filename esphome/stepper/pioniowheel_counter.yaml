@@ -1,0 +1,11 @@
+binary_sensor:
+  - platform: gpio
+    name: ${device_name_upper}.inductivity_pinion_wheel_rods
+    id: ${device_name}_inductivity_pinion_wheel_rods
+    pin: 
+      number: ${stepper_inductivity_pinion_wheel_rods_pin}
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 50ms
