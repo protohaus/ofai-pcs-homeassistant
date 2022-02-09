@@ -1,4 +1,13 @@
+esphome:
+  includes: stepper/helper_functions.h
+  
 globals:
+
+  - id: homing_valid
+    type: bool
+    restore_value: no
+    initial_value: "false"
+    
   - id: homing_started
     type: bool
     restore_value: no
@@ -7,39 +16,67 @@ globals:
   - id: homing_high_speed
     type: int
     restore_value: no
-    initial_value: ${stepper_homing_high_speed}
+    initial_value: ${homing_high_speed}
+    
+  - id: homing_mid_speed
+    type: int
+    restore_value: no
+    initial_value: ${homing_mid_speed}
     
   - id: homing_low_speed
     type: int
     restore_value: no
-    initial_value: ${stepper_homing_low_speed}   
+    initial_value: ${homing_low_speed}   
 
   - id: homing_enable_sensor
     type: bool
     restore_value: no
-    initial_value: "false"
+    initial_value: "false" 
     
-  - id: homing_found_global_home
+  - id: homing_found_low_precision
     type: bool
     restore_value: no
-    initial_value: "false"    
+    initial_value: "false"
+  
+  - id: homing_found_high_precision
+    type: bool
+    restore_value: no
+    initial_value: "false"
+  
+  - id: rangeestimation_started
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+  
+  - id: rangeestimation_found_home_counter
+    type: int
+    restore_value: no
+    initial_value: "0"  
     
-  - id: homing_found_home_low_precision
-    type: bool
+  - id: rangeestimation_ranges
+    type: int[5]
     restore_value: no
-    initial_value: "false"
-  
-  - id: homing_found_home_high_precision
-    type: bool
+    initial_value: "{0,0,0,0,0}"
+    
+  - id: rangeestimation_range_0
+    type: int
     restore_value: no
-    initial_value: "false"
+    initial_value: "0"  
   
+  - id: rangeestimation_range_1
+    type: int
+    restore_value: no
+    initial_value: "0"
   
-
+  - id: rangeestimation_range_average
+    type: float
+    restore_value: true
+    initial_value: "0" 
+    
 button:
   - platform: template
-    name: ${stepper_motor_id_upper}.set_homing_high_speed
-    id: ${stepper_motor_id}_set_homing_high_speed
+    name: ${stepper_motor_id_upper}.homing.set_high_speed
+    id: ${stepper_motor_id}_homing_set_high_speed
     internal: true
     on_press:
       - logger.log: "Set speed to homing high speed"
@@ -51,8 +88,21 @@ button:
           value: !lambda 'return id(homing_high_speed);' 
   
   - platform: template
-    name: ${stepper_motor_id_upper}.set_homing_low_speed
-    id: ${stepper_motor_id}_set_homing_low_speed
+    name: ${stepper_motor_id_upper}.homing.set_mid_speed
+    id: ${stepper_motor_id}_homing_set_mid_speed
+    internal: true
+    on_press:
+      - logger.log: "Set speed to homing mid speed"
+      - stepper.set_speed:
+          id: ${stepper_motor_id}
+          speed: !lambda 'return id(homing_mid_speed);'  
+      - globals.set: 
+          id: speed
+          value: !lambda 'return id(homing_mid_speed);' 
+          
+  - platform: template
+    name: ${stepper_motor_id_upper}.homing.set_low_speed
+    id: ${stepper_motor_id}_homing_set_low_speed
     internal: true
     on_press:
       - logger.log: "Set speed to homing low speed"
@@ -62,255 +112,297 @@ button:
       - globals.set: 
           id: speed
           value: !lambda 'return id(homing_low_speed);' 
-           
-  - platform: template
-    name: ${stepper_motor_id_upper}.set_requested_speed
-    id: ${stepper_motor_id}_set_requested_speed
-    internal: true
-    on_press:
-      - logger.log: "Set speed to requested speed"
-      - stepper.set_speed:
-          id: ${stepper_motor_id}
-          speed: !lambda 'return id(requested_speed);'  
-      - globals.set: 
-          id: speed
-          value: !lambda 'return id(requested_speed);' 
   
   - platform: template
-    name: ${stepper_motor_id_upper}.start_homing
-    id: ${stepper_motor_id}_start_homing
+    name: ${stepper_motor_id_upper}.homing.start
+    id: ${stepper_motor_id}_homing_start
     on_press:
       - logger.log: "Start homing"
       - globals.set:
           id: stepper_mode
-          value: !lambda 'return id(stepper_mode_homing);'
+          value: !lambda 'return STEPPER_MODE_HOMING;'
       - component.update: ${stepper_motor_id}_mode
-  
-binary_sensor:
-  - platform: gpio
-    name: ${device_name_upper}.inductivity_global_home_pin
-    id: ${device_name}_inductivity_global_home_pin
-    pin: 
-      number: ${stepper_inductivity_global_home_pin}
-      mode:
-        input: true
-        pullup: true
-    filters:
-      - delayed_on: 100ms
+
+  - platform: template
+    name: ${stepper_motor_id_upper}.rangeestimation.start
+    id: ${stepper_motor_id}_rangeestimation_start
     on_press:
-      then:
-        - globals.set:
-            id: homing_found_global_home 
-            value: "true"
-    on_release:
-      then:
-        - globals.set:
-            id: homing_found_global_home  
-            value: "false"
-            
-            
+      lambda: |-
+        id(${stepper_motor_id}_homing_set_high_speed).press();
+        id(rangeestimation_found_home_counter) = 0;
+        id(stepper_mode) = STEPPER_MODE_RANGEESTIMATION;
+        id(${stepper_motor_id}_mode).update();
+  
+      
+binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.homing.valid"
+    id: ${stepper_motor_id}_homing_valid
+    lambda: |-
+      if (id(homing_valid)) 
+      {
+        // homing is valid
+        return true;
+      }else 
+      {
+        // homing is invalid
+        return false;
+      }
+      
   - platform: gpio
-    name: ${device_name_upper}.inductivity_home
-    id: ${device_name}_inductivity_home
+    name: ${device_name_upper}.proximity_switch.global_home
+    id: ${device_name}_proximity_switch_global_home
     pin: 
-      number: ${stepper_inductivity_home_pin}
+      number: ${sensor_proximity_switch_global_home_pin}
       mode:
         input: true
         pullup: true
     filters:
       - delayed_on: 50ms
-     
+            
+            
+  - platform: gpio
+    name: ${device_name_upper}.proximity_switch.home
+    id: ${device_name}_proximity_switch_home
+    pin: 
+      number: ${sensor_proximity_switch_home_pin}
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 50ms    
+    
     on_press:
       then:
-        if:
-          condition:
-            lambda: |-
-              if (id(homing_found_global_home) && 
-                  id(homing_enable_sensor) && 
-                  id(homing_started))
-                return true;
-          then:
-            if:
-              condition:
-                lambda: |-
-                  return !id(homing_found_home_low_precision);
-              then:
-                - button.press: ${stepper_motor_id}_pause
-                - globals.set:
-                    id: homing_found_home_low_precision
-                    value: "true"
-                - globals.set:
-                    id: homing_enable_sensor
-                    value: "false"  
-                - button.press: ${stepper_motor_id}_pause
-            #else:
-            #  if:
-            #    condition:
-            #      lambda: |-
-            #        if (id(homing_enable_sensor) && id(measuring_full_turn_steps_started))
-            #          return true;      
-            #      then:
-            #        if:
-            #          condition:
-            #            lambda: |-
-            #              return !id(homing_found_full_turn_steps_low_precision);
-            #          then:
-            #            - button.press: ${stepper_motor_id}_pause
-            #            - globals.set:
-            #                id: homing_found_full_turn_steps_low_precision
-            #                value: "true"
-            #            - globals.set:
-            #                id: homing_enable_sensor
-            #                value: "false"  
-            #            - button.press: ${stepper_motor_id}_pause
+        lambda: |-
+          switch(id(stepper_mode))
+          {
+            case STEPPER_MODE_HOMING:
+            {
+              if(id(${device_name}_proximity_switch_global_home).state && 
+                    id(homing_enable_sensor) && 
+                    id(homing_started))
+              {
+                if(!id(homing_found_low_precision))
+                {
+                  id(${stepper_motor_id}_pause).press();
+                  id(homing_found_low_precision) = true;
+                  id(homing_enable_sensor) =false;
+                  id(${stepper_motor_id}_pause).press();
+                }
+              }
+              break;
+            }
+            case STEPPER_MODE_RANGEESTIMATION:
+            {
+              if (id(rangeestimation_started))
+              {
+                id(${stepper_motor_id}_homing_set_mid_speed).press();
+              }
+              break;
+            } 
+            default:
+            {
+              break;
+            }
+          }               
           
     on_release:
       then:
-        if:
-          condition:
-            lambda: |-
-              if (id(homing_found_global_home) && 
+        lambda: |-
+          switch(id(stepper_mode))
+          {
+            case STEPPER_MODE_HOMING:
+            {
+              if(id(${device_name}_proximity_switch_global_home).state && 
                   id(homing_enable_sensor) && 
                   id(homing_started))
-                return true; 
-          then:
-            if:
-              condition:
-                lambda: |-
-                  return id(homing_found_home_low_precision);
-              then:
-                if:
-                  condition:
-                    lambda: |-
-                      return !id(homing_found_home_high_precision);
-                  then:
-                    - button.press: ${stepper_motor_id}_pause
-                    - globals.set:
-                        id: homing_found_home_high_precision
-                        value: "true"
-                    - globals.set:
-                        id: homing_enable_sensor
-                        value: "false"  
-                    - button.press: ${stepper_motor_id}_pause
-          #else:        
-          #  if:
-          #    condition:
-          #      lambda: |-
-          #        if (id(homing_enable_sensor) && id(measuring_full_turn_steps_started))
-          #          return true;      
-          #      then:       
-          #        if:
-          #          condition:
-          #            lambda: |-
-          #              return id(homing_found_full_turn_steps_low_precision);
-          #          then:
-          #            if:
-          #              condition:
-          #                lambda: |-
-          #                  return !id(homing_found_full_turn_steps_high_precision);
-          #              then:
-          #                - button.press: ${stepper_motor_id}_pause
-          #                - globals.set:
-          #                    id: homing_found_full_turn_steps_high_precision
-          #                    value: "true"
-          #                - globals.set:
-          #                    id: homing_enable_sensor
-          #                    value: "false"  
-          #                - button.press: ${stepper_motor_id}_pause
-                      
-    
-    
+              {
+                if(id(homing_found_low_precision))
+                {
+                  if(!id(homing_found_high_precision))
+                  {
+                    id(${stepper_motor_id}_pause).press();
+                    id(homing_found_high_precision) = true;
+                    id(homing_enable_sensor) = false;
+                    id(${stepper_motor_id}_pause).press();
+                  }
+                }
+              }
+              break;
+            }
+            case STEPPER_MODE_RANGEESTIMATION:
+            {
+              if (id(rangeestimation_started))
+              {
+                int size = sizeof(id(rangeestimation_ranges)) / sizeof(int);
+                if (id(rangeestimation_found_home_counter) == 0)
+                {
+                  id(rangeestimation_range_0) = id($stepper_motor_id).current_position;
+                  id(${stepper_motor_id}_homing_set_high_speed).press();
+                  id(rangeestimation_found_home_counter) += 1;
+                }else if((id(rangeestimation_found_home_counter) > 0) && 
+                         (id(rangeestimation_found_home_counter) <= size + 1))
+                {
+                  id(rangeestimation_range_1) = id($stepper_motor_id).current_position;
+                  id(rangeestimation_ranges)[id(rangeestimation_found_home_counter) - 1] =
+                           id(rangeestimation_range_1) - id(rangeestimation_range_0);
+                  int sum = 0;
+                  int sum_size = id(rangeestimation_found_home_counter);
+                  for (int i = 0; i < sum_size; i++)
+                  {
+                    sum += id(rangeestimation_ranges)[i];
+                  }
+                  id(rangeestimation_range_average) = (double)sum/sum_size;   
+                  
+                  int full_turn_steps_loc = (int)round(id(rangeestimation_range_average));
+                  if(std::abs((full_turn_steps_loc / ${stepper_initial_full_turn_steps}) - 1) < ${stepper_error_full_turn_steps})
+                  {
+                    id(full_turn_steps) = (int)round(id(rangeestimation_range_average));
+                  }else
+                  {
+                    id(full_turn_steps) = ${stepper_initial_full_turn_steps};
+                  }
+                  
+                  //id(full_turn_steps) = (int)round(id(rangeestimation_range_average));
+                  id(rangeestimation_range_0) = id(rangeestimation_range_1);
+                  id(${stepper_motor_id}_homing_set_high_speed).press();
+                  id(rangeestimation_found_home_counter) += 1;
+                }    
+              }
+              break;
+            }
+            default:
+            {
+              break;
+            }
+          }
+       
     
 interval:
   - interval: 1s
     then:
-      #####################################################
-      # homing mode: find out, if we already are on the homing position/sensor is already active
-      # if so: drive backward until sensor turns off
-      # then, start homing procedure:
-      # drive forward with homing high speed until sensor detects home position at low accuracy
-      # drive slowly forward until sensor detects "on_release" and set home position to this point
-      #####################################################
-      if:
-        condition:
-          lambda: |-
-            return id(stepper_mode) == id(stepper_mode_homing);
-        then:
-          if:
-            condition:
-              lambda: |-
-                return !id(homing_started);
-            then:
-              if:
-                condition:
-                  binary_sensor.is_on: ${device_name}_inductivity_home
-                then:
-                  - button.press: ${stepper_motor_id}_set_homing_high_speed
-                  - globals.set: 
-                      id: direction_forward
-                      value: "false"
-                  - globals.set: 
-                      id: target_position
-                      value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(speed)*3);'        
-                  - button.press: ${stepper_motor_id}_start
-                else:
-                  - globals.set: 
-                      id: homing_started
-                      value: "true"
-            else:
-              if:
-                condition:
-                  lambda: |-
-                    return !id(homing_found_home_low_precision);
-                then:
-                  - button.press: ${stepper_motor_id}_set_homing_high_speed    
-                  - globals.set:
-                      id: homing_enable_sensor
-                      value: "true"   
-                  - globals.set:
-                      id: direction_forward
-                      value: "true"                            
-                  - globals.set: 
-                        id: target_position
-                        value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(speed)*1.5);'        
-                  - button.press: ${stepper_motor_id}_start
-                else:
-                  if:
-                    condition:
-                      lambda: |-
-                        return !id(homing_found_home_high_precision);
-                    then:
-                      - button.press: ${stepper_motor_id}_set_homing_low_speed  
-                      - globals.set:
-                          id: homing_enable_sensor
-                          value: "true"                            
-                      - globals.set:
-                          id: direction_forward
-                          value: "false"   
-                      - globals.set: 
-                            id: target_position
-                            value: !lambda 'return (id($stepper_motor_id).current_position + (id(direction_forward) == true ? 1 : -1) *  id(speed)*1.5);'        
-                      - button.press: ${stepper_motor_id}_start  
-                    else:
-                      - button.press: ${stepper_motor_id}_set_zero_position
-                      - globals.set:
-                          id: stepper_mode
-                          value: !lambda 'return id(stepper_mode_ready);'
-                      - component.update: ${stepper_motor_id}_mode
-                      - globals.set:
-                          id: homing_enable_sensor
-                          value: "false" 
-                      - button.press: ${stepper_motor_id}_set_requested_speed     
-        else:
-          - globals.set:
-              id: homing_started
-              value: "false"
-          - globals.set:
-              id: homing_found_home_low_precision
-              value: "false"
-          - globals.set:
-              id: homing_found_home_high_precision
-              value: "false" 
-          - globals.set:
-              id: homing_enable_sensor
-              value: "false" 
+
+      lambda: |-
+        switch(id(stepper_mode))
+        {
+          //////////////////////////////////////////////////////////////////////////////////////////////
+          // homing mode: find out, if we already are on the homing position/sensor is already active
+          // if so: drive backward until sensor turns off
+          // then, start homing procedure:
+          // drive forward with homing high speed until sensor detects home position at low accuracy
+          // drive slowly forward until sensor detects "on_release" and set home position to this point
+          //////////////////////////////////////////////////////////////////////////////////////////////
+          case STEPPER_MODE_HOMING:
+          {
+            if(!id(homing_started))
+            {
+              // drive backward until we are out of range from the homing position stop
+              if(id(${device_name}_proximity_switch_home).state)
+              {
+                 id(${stepper_motor_id}_homing_set_high_speed).press();
+                 id(direction_forward) = false;
+                 id(target_position) = increment_target_position(id($stepper_motor_id).current_position, 
+                                                                 id(direction_forward),
+                                                                 id(speed),
+                                                                 3);
+                 id(${stepper_motor_id}_start).press();
+              }else
+              {
+                id(homing_started) = true;
+              }
+            }else
+            {
+              if(!id(homing_found_low_precision))
+              { 
+                id(${stepper_motor_id}_homing_set_high_speed).press();
+                id(direction_forward) = true; 
+                id(homing_enable_sensor) = true;               
+                id(target_position) = increment_target_position(id($stepper_motor_id).current_position, 
+                                                                id(direction_forward),
+                                                                id(speed),
+                                                                1.5);
+                id(${stepper_motor_id}_start).press();
+              }else
+              {
+                if(!id(homing_found_high_precision))
+                {
+                  id(${stepper_motor_id}_homing_set_low_speed).press();
+                  id(direction_forward) = false; 
+                  id(homing_enable_sensor) = true;               
+                  id(target_position) = increment_target_position(id($stepper_motor_id).current_position, 
+                                                                  id(direction_forward),
+                                                                  id(speed),
+                                                                  1.5);
+                  id(${stepper_motor_id}_start).press();
+                }else
+                {
+                  id(${stepper_motor_id}_set_zero_position).press();
+                  id(homing_valid) = true;
+                  id(stepper_mode) = STEPPER_MODE_READY;
+                  id(${stepper_motor_id}_mode).update();
+                  id(homing_enable_sensor) = false;
+                  id(${stepper_motor_id}_set_requested_speed).press();
+                }
+              }
+            }
+            break;
+          }
+          //////////////////////////////////////////////////////////////////////////////////////////////
+          // measure full turn steps: go two rounds and calculate
+          // the difference in steps between both "on_release" triggers
+          // of the distance sensor
+          // and check if the result is reasonable, 
+          // TODO: if not reasonable -> set an error condition
+          //////////////////////////////////////////////////////////////////////////////////////////////
+          
+          case STEPPER_MODE_RANGEESTIMATION:
+          {
+            if(!id(rangeestimation_started))
+            {
+              // drive backward until we are out of range from the homing position stop
+              if(id(${device_name}_proximity_switch_home).state)
+              {
+                 id(${stepper_motor_id}_homing_set_high_speed).press();
+                 id(direction_forward) = false;
+                 id(target_position) = increment_target_position(id($stepper_motor_id).current_position, 
+                                                                 id(direction_forward),
+                                                                 id(speed),
+                                                                 3);
+                 id(${stepper_motor_id}_start).press();
+              }else
+              {
+                id(rangeestimation_started) = true;
+              }
+            }else
+            {
+              int size = sizeof(id(rangeestimation_ranges)) / sizeof(int);
+              if (id(rangeestimation_found_home_counter) <= size + 1)
+              {
+                id(direction_forward) = true;
+                id(target_position) = increment_target_position(id($stepper_motor_id).current_position, 
+                                                                id(direction_forward),
+                                                                id(speed),
+                                                                1.5);
+                id(${stepper_motor_id}_start).press();
+              }else
+              {
+                id(${stepper_motor_id}_stop).press();
+                id(rangeestimation_found_home_counter) = 0;
+                id(rangeestimation_range_0) = 0;
+                id(rangeestimation_range_1) = 0;
+                id(rangeestimation_started) = false;
+                id(${stepper_motor_id}_set_requested_speed).press();
+                id(stepper_mode) = STEPPER_MODE_READY;
+                id(${stepper_motor_id}_mode).update();
+              }
+            }
+            break;
+          }
+          default:
+            id(homing_started) = false;
+            id(homing_found_low_precision) = false;
+            id(homing_found_high_precision) = false;
+            id(homing_enable_sensor) = false; 
+            break;
+        }

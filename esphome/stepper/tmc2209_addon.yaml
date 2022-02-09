@@ -3,7 +3,7 @@ esphome:
     priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - output.turn_off: ${stepper_motor_id}_enable_pin # set the enable pin to HIGH -> disables all motor functions
-      - switch.turn_off: ${stepper_motor_id}_fan
+      - switch.turn_off: ${device_name}_fan
       
 output:
   - platform: gpio
@@ -12,16 +12,16 @@ output:
 
 switch:
   - platform: gpio
-    pin: ${stepper_fan_pin}
-    id: ${stepper_motor_id}_fan
-    name: ${stepper_motor_id_upper}.fan
+    pin: ${fan_pin}
+    name: ${device_name_upper}.fan
+    id: ${device_name}_fan
     inverted: "true"
     internal: "true"
     
 binary_sensor:
   - platform: gpio
-    name: ${device_name_upper}.diag_pin_1
-    id: ${device_name}_diag_pin_1
+    name: ${stepper_motor_id_upper}.diag_pin_1
+    id: ${stepper_motor_id}_diag_pin_1
     pin: 
       number: ${stepper_diag_pin_1}
       mode:
@@ -33,10 +33,12 @@ binary_sensor:
       - logger.log:
           format: "Stepper 1 is losing steps: emergency stop"
           level: ERROR
+      - lambda: |-
+          id(stepper_error) = STEPPER_ERROR_DIAG;
       
   - platform: gpio
-    name: ${device_name_upper}.diag_pin_2
-    id: ${device_name}_diag_pin_2
+    name: ${stepper_motor_id_upper}.diag_pin_2
+    id: ${stepper_motor_id}_diag_pin_2
     pin: 
       number: ${stepper_diag_pin_2}
       mode:
@@ -48,10 +50,12 @@ binary_sensor:
       - logger.log:
           format: "Stepper 2 is losing steps: emergency stop"
           level: ERROR
+      - lambda: |-
+          id(stepper_error) = STEPPER_ERROR_DIAG;
       
   - platform: gpio
-    name: ${device_name_upper}.diag_pin_3
-    id: ${device_name}_diag_pin_3
+    name: ${stepper_motor_id_upper}.diag_pin_3
+    id: ${stepper_motor_id}_diag_pin_3
     pin: 
       number: ${stepper_diag_pin_3}
       mode:
@@ -63,10 +67,12 @@ binary_sensor:
       - logger.log:
           format: "Stepper 3 is losing steps: emergency stop"
           level: ERROR
+      - lambda: |-
+          id(stepper_error) = STEPPER_ERROR_DIAG;
     
   - platform: gpio
-    name: ${device_name_upper}.sleep_state_pin
-    id: ${device_name}_sleep_state_pin
+    name: ${stepper_motor_id_upper}.sleep_state
+    id: ${stepper_motor_id}_sleep_state
     pin:
       number: ${stepper_sleep_state_pin}
       mode:
@@ -76,20 +82,20 @@ binary_sensor:
     on_press:
       then:
         - output.turn_on: ${stepper_motor_id}_enable_pin
-        - switch.turn_off: ${stepper_motor_id}_fan
+        - switch.turn_off: ${device_name}_fan
     on_release:
         - output.turn_off: ${stepper_motor_id}_enable_pin
-        - switch.turn_on: ${stepper_motor_id}_fan
+        - switch.turn_on: ${device_name}_fan
       
 interval:
   - interval: 60s
     then:
       if:
         condition:
-          binary_sensor.is_off: ${device_name}_sleep_state_pin
+          binary_sensor.is_off: ${stepper_motor_id}_sleep_state
         then:
-          - switch.turn_on: ${stepper_motor_id}_fan
+          - switch.turn_on: ${device_name}_fan
           - delay: 40s
-          - switch.turn_off: ${stepper_motor_id}_fan
+          - switch.turn_off: ${device_name}_fan
         else:
-          - switch.turn_off: ${stepper_motor_id}_fan
+          - switch.turn_off: ${device_name}_fan

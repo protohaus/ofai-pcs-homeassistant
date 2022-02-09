@@ -17,20 +17,39 @@ substitutions:
   stepper_diag_pin_2: GPIO5
   stepper_diag_pin_3: GPIO19
   stepper_invert_direction: "false" 
-  stepper_max_speed: "8000"
+  stepper_max_speed: "12000"
+  stepper_max_acceleration: "2000"
+  stepper_max_deceleration: "2000"
   stepper_initial_speed: "500"
-  stepper_homing_high_speed: "8000"
-  stepper_homing_low_speed: "50"
-  stepper_acceleration: "400"     #"inf"
+  stepper_acceleration: "1000"     #"inf"
   stepper_deceleration: "1000"    #"inf"
   stepper_initial_step_width: "2000"
-  stepper_initial_full_turn_steps: "779902"
-  stepper_fan_pin: GPIO18
-  stepper_inductivity_pinion_wheel_rods_pin: GPIO32
-  stepper_inductivity_home_pin: GPIO4
-  stepper_inductivity_global_home_pin: GPIO2
+  stepper_initial_full_turn_steps: "764586"
+  stepper_error_pinion_wheels: "2"
+  stepper_error_full_turn_steps: "0.05"
   
-  # sensor update interval settings
+  # homing settings
+  homing_high_speed: "12000"
+  homing_mid_speed: "250"
+  homing_low_speed: "100"
+
+  # kinematics
+  kinematics_plant_gear_teeth: "12"
+  kinematics_pinion_wheel_rods_upper: "40"
+  kinematics_pinion_wheel_rods_lower: "64"
+  kinematics_transmission_gear_big_teeth: "15"
+  kinematics_transmission_gear_small_teeth: "140"
+  kinematics_steps_per_rotation: "200"
+  kinematics_microsteps_per_step: "64"
+  kinematics_motor_gear_teeth: "10"
+  
+  #fans
+  fan_pin: GPIO18
+  
+  # sensor settings
+  sensor_proximity_switch_pinion_wheel_pin: GPIO32
+  sensor_proximity_switch_home_pin: GPIO4
+  sensor_proximity_switch_global_home_pin: GPIO2
   sensor_update_interval_realtime: 0.1s
   sensor_update_interval_fast: 1s
   sensor_update_interval_mid: 10s
@@ -54,6 +73,6 @@ packages:
   stepper_a4988: !include stepper/a4988.yaml
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
   stepper_homing: !include stepper/homing.yaml
-  stepper_measure_full_turn_steps: !include stepper/measure_full_turn_steps.yaml
   stepper_pioniowheel_counter: !include stepper/pioniowheel_counter.yaml
-  #stepper_error_handling: !include stepper/error_handling.yaml
+  stepper_sensor: !include stepper/sensor.yaml
+  stepper_error_handling: !include stepper/error_handling.yaml
