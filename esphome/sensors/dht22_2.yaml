@@ -1,0 +1,9 @@
+sensor:
+  - platform: dht
+    pin: ${dht22_2_pin}
+    temperature:
+      name: "${device_name_upper}.${dht22_2_name}.temperature"
+    humidity:
+      name: "${device_name_upper}.${dht22_2_name}.humidity"
+    update_interval: ${dht22_2_update_interval}
+    model: DHT22
