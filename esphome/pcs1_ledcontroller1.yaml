@@ -22,3 +22,75 @@ packages:
   common_status: !include common/status.yaml
   common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
+  
+output:
+  - platform: ledc
+    pin: "GPIO16"
+    id: led_panel
+    
+light:
+  - platform: monochromatic
+    output: led_panel
+    name: "PCS LED light"
+    id: pcs_led_light
+
+globals:
+  - id: led_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"   
+      
+switch:
+  - platform: template
+    name: turn_on_led
+    id: turn_on_led
+    lambda: |-
+       if (id(led_is_on) == true)
+         return true;
+       else
+         return false;
+    turn_on_action:
+      then:
+        - output.turn_on: led_panel
+        - globals.set:
+            id: led_is_on
+            value: "true"
+    turn_off_action:
+      then:
+        - output.turn_off: led_panel  
+        - globals.set:
+           id: led_is_on
+           value: "false"        
+        
+api:
+  services:      
+    - service: led_set_frequency
+      variables:
+        led_frequency: int
+      then:
+        - logger.log: "Set led led_frequency"
+        - output.ledc.set_frequency:
+           id: led_panel
+           frequency: !lambda 'return led_frequency;'
+           #frequency: !lambda |-
+           #  std::string unit = "Hz";
+           #  std::string result;
+           #  char numstr[21]; // enough to hold all numbers up to 64-bits
+           #  sprintf(numstr, "%d", id(led_frequency));
+           #  result = numstr + unit;
+           #  return result;
+    - service: led_set_level
+      variables:
+        led_level: int
+      then:
+        - logger.log: "Set led led_level"
+        - output.set_level:
+           id: led_panel
+           level: !lambda 'return led_level;'
+           #level: !lambda |-
+           #  std::string unit = "%";
+           #  std::string result;
+           #  char numstr[21]; // enough to hold all numbers up to 64-bits
+           #  sprintf(numstr, "%d", id(led_level));
+           #  result = numstr + unit;
+           #  return result;

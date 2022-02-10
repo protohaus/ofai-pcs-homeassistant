@@ -62,37 +62,36 @@ input_number:
     initial: 0
     min: -9999999
     max: 9999999
-    max: 9999999
     step: 1
-    mode: box
+    mode: slider
   stepper_set_step_width:
     name: stepper.set_step_width
     initial: 0
     min: 0
     max: 10000
     step: 1
-    mode: box
+    mode: slider
   stepper_set_speed:
     name: stepper.set_speed
     initial: 500
     min: 0
-    max: 4000
+    max: 12000
     step: 1
-    mode: box
+    mode: slider
   stepper_set_acceleration:
     name: stepper.set_acceleration
     initial: 500
     min: 0
-    max: 1000
+    max: 2000
     step: 1
-    mode: box
+    mode: slider
   stepper_set_deceleration:
     name: stepper.set_deceleration
     initial: 1000
     min: 0
-    max: 1000
+    max: 2000
     step: 1
-    mode: box
+    mode: slider
   stepper_set_zero_position:
     name: stepper.set_zero_position
     initial: 0
@@ -107,6 +106,21 @@ input_number:
     max: 9999999
     step: 1
     mode: box
+    
+  led_set_frequency:
+    name: led.set_frequency
+    initial: 1220
+    min: 1220
+    max: 19531
+    step: 1
+    mode: slider
+  led_set_level:
+    name: led.set_level
+    initial: 10
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
   
 # Do something when the slider changes
 automation stepper_send_requested_target_position:
@@ -194,4 +208,26 @@ automation stepper_full_turn_steps:
       # Replace livingroom with the name you gave the ESP
       - service: esphome.pcs1_espcontroller1_stepper_set_full_turn_steps
         data_template:
-          full_turn_steps: '{{ trigger.to_state.state | int }}'            
+          full_turn_steps: '{{ trigger.to_state.state | int }}'   
+          
+automation controller_led_frequency:
+  - alias: Send frequency value to led controller
+    id: led_send_frequency
+    trigger:
+      platform: state
+      entity_id: input_number.led_set_frequency
+    action:
+      - service: esphome.pcs1_ledcontroller1_led_set_frequency
+        data_template:
+          led_frequency: '{{ trigger.to_state.state | float }}'
+
+automation controller_led_level:
+  - alias: Send level value to led controller
+    id: led_send_level
+    trigger:
+      platform: state
+      entity_id: input_number.led_set_level
+    action:
+      - service: esphome.pcs1_ledcontroller1_led_set_level
+        data_template:
+          led_level: '{{ trigger.to_state.state | float }}'

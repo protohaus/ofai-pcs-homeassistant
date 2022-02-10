@@ -1,0 +1,12 @@
+output:
+  - platform: ledc
+    ######################################################
+    # One buzzer leg connected to GPIO12, the other to GND
+    ######################################################
+    pin: "GPIO33"
+    id: led_panel
+    
+light:
+  - platform: monochromatic
+    output: "GPIO33"
+    name: "PCS LED light"
