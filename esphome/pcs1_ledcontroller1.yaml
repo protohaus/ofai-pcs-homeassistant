@@ -20,26 +20,72 @@ packages:
   common_wifi: !include common/wifi.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
-  common_status_led: !include common/status_led.yaml
+  #common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
   
 output:
   - platform: ledc
     pin: "GPIO16"
     id: led_panel
+    frequency: 2000Hz
     
-light:
-  - platform: monochromatic
-    output: led_panel
-    name: "PCS LED light"
-    id: pcs_led_light
+#light:
+#  - platform: monochromatic
+#    output: led_panel
+#    name: "PCS LED light"
+#    id: pcs_led_light
 
 globals:
   - id: led_is_on
     type: bool
     restore_value: no
-    initial_value: "false"   
-      
+    initial_value: "false"  
+    
+button:
+  - platform: template
+    name: led_0_percent
+    id: led_0_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel
+           level: "0%" 
+  
+  - platform: template
+    name: led_10_percent
+    id: led_10_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel
+           level: "10%" 
+           
+  - platform: template
+    name: led_50_percent
+    id: led_50_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel
+           level: "50%" 
+           
+  - platform: template
+    name: led_90_percent
+    id: led_90_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel
+           level: "90%" 
+           
+  - platform: template
+    name: led_100_percent
+    id: led_100_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel
+           level: "100%" 
 switch:
   - platform: template
     name: turn_on_led
@@ -66,13 +112,17 @@ api:
   services:      
     - service: led_set_frequency
       variables:
-        led_frequency: int
+        led_frequency: float
       then:
         - logger.log: "Set led led_frequency"
         - output.ledc.set_frequency:
            id: led_panel
            frequency: !lambda 'return led_frequency;'
            #frequency: !lambda |-
+           #  std::string unit = "Hz";
+           #  std::string result = to_string(led_frequency) + unit;
+           #  return result.c_str();
+           #  
            #  std::string unit = "Hz";
            #  std::string result;
            #  char numstr[21]; // enough to hold all numbers up to 64-bits
@@ -81,7 +131,7 @@ api:
            #  return result;
     - service: led_set_level
       variables:
-        led_level: int
+        led_level: float
       then:
         - logger.log: "Set led led_level"
         - output.set_level:
