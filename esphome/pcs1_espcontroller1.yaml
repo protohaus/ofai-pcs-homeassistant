@@ -75,4 +75,4 @@ packages:
   stepper_homing: !include stepper/homing.yaml
   stepper_pioniowheel_counter: !include stepper/pioniowheel_counter.yaml
   stepper_sensor: !include stepper/sensor.yaml
-  stepper_error_handling: !include stepper/error_handling.yaml
+  #stepper_error_handling: !include stepper/error_handling.yaml

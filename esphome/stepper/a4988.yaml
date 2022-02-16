@@ -1,9 +1,16 @@
 substitutions:
+  stepper_id: stepper
+  controller_id: controller
   stepper_motor_id_upper: ${device_name_upper}.stepper
-  stepper_motor_id: ${device_name}_stepper
+  stepper_motor_id: ${device_name}_${stepper_id}
   
 esphome: 
-  includes: stepper/helper_functions.h
+  includes: 
+    - stepper/helper_functions.h
+    - stepper/steppercontroller.h
+    - stepper/stepper_modes.h
+    - stepper/stepper_error.h
+    
   on_boot:
     priority: 790 # Highest priority, ensures enable pin to be turned off first
     then:
@@ -12,6 +19,23 @@ esphome:
           data:
             speed: !lambda 'return id(speed);'    
   
+custom_component:
+  - id: ${stepper_motor_id}_${controller_id}
+    lambda: |-
+      auto controller = new cStepperController(${stepper_initial_full_turn_steps},
+                                               ${stepper_initial_speed},
+                                               ${stepper_acceleration},
+                                               ${stepper_deceleration},
+                                               ${stepper_initial_step_width},
+                                               "${device_name}",
+                                               "${stepper_id}",
+                                               "${controller_id}",
+                                               id(${stepper_motor_id}));
+      controller->set_component_source("steppercontroller"); 
+      App.register_component(controller); 
+      return {controller}; 
+        
+      
   
 # make sure the stepper does not run while the ota update is performed            
 ota:
@@ -31,9 +55,9 @@ stepper:
     sleep_pin: ${stepper_sleep_pin} 
     acceleration: ${stepper_acceleration}
     deceleration: ${stepper_deceleration}
-
+    
 globals:
-
+    
   - id: stepper_mode                    
     type: int                           
     restore_value: no                   
@@ -101,25 +125,26 @@ binary_sensor:
     lambda: |-
       if (id($stepper_motor_id).current_position != id($stepper_motor_id).target_position) 
       {
-        // Motor is still moving
         return true;
       }else 
       {
         // Motor is at target position
         return false;
-      }
-
+      } 
+     
     
 switch:    
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
     id: ${stepper_motor_id}_enable_motor
     lambda: |-
-      if (id(motor_enabled) == true)
+      if (get_controller(id(${stepper_motor_id}_controller))->motor_enabled() == true)
         return true;
       else
         return false;
     turn_on_action:
+      - lambda: |- 
+          get_controller(id(${stepper_motor_id}_controller))->motor_enabled(true);
       - globals.set:
           id: motor_enabled
           value: "true"  
@@ -128,6 +153,8 @@ switch:
             value: !lambda 'return STEPPER_MODE_READY;'
       - component.update: ${stepper_motor_id}_mode
     turn_off_action:
+      - lambda: |- 
+          get_controller(id(${stepper_motor_id}_controller))->motor_enabled(false);
       - globals.set:
           id: motor_enabled
           value: "false"
@@ -146,12 +173,13 @@ button:
       if:
         condition:
           lambda: |-
-            return id(motor_enabled);
+            return get_controller(id(${stepper_motor_id}_controller))->motor_enabled();
+            //return id(motor_enabled);
         then:
           - logger.log: "Start Motor"
           - stepper.set_target:
               id: ${stepper_motor_id}
-              target: !lambda 'return (id(motor_enabled) == true) ? id(target_position) : id($stepper_motor_id).current_position;'  
+              target: !lambda 'return (get_controller(id(${stepper_motor_id}_controller))->motor_enabled() == true) ? id(target_position) : id($stepper_motor_id).current_position;'  
         else:
           - logger.log: "Motor is not enabled!"
           - globals.set:
@@ -181,7 +209,7 @@ button:
       - logger.log: "Pause Motor"
       - stepper.set_target:
             id: ${stepper_motor_id}
-            target: !lambda 'return id($stepper_motor_id).current_position;'  
+            target: !lambda 'return id($stepper_motor_id).current_position;' 
   
   - platform: template
     name: ${stepper_motor_id_upper}.step_forward
@@ -281,7 +309,7 @@ button:
     on_press:
       - globals.set: 
           id: target_position
-          value: !lambda 'return id(requested_target_position);'
+          value: !lambda 'return id(requested_target_position);'   
       - globals.set:
          id: stepper_mode
          value: !lambda 'return STEPPER_MODE_TARGET;'
@@ -392,7 +420,7 @@ api:
         - button.press: ${stepper_motor_id}_pause
         - stepper.report_position:
             id: ${stepper_motor_id}
-            position: !lambda 'return id($stepper_motor_id).current_position - zero_position;'   
+            position: !lambda 'return id(${stepper_motor_id}).current_position - zero_position;'   
         - button.press: ${stepper_motor_id}_pause
         
     - service: stepper_set_full_turn_steps

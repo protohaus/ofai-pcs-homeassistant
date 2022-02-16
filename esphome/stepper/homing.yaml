@@ -1,5 +1,7 @@
 esphome:
-  includes: stepper/helper_functions.h
+  includes:  
+    - stepper/stepper_modes.h
+    - stepper/stepper_error.h
   
 globals:
 
