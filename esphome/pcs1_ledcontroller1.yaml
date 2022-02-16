@@ -26,121 +26,172 @@ packages:
 output:
   - platform: ledc
     pin: "GPIO16"
-    id: led_panel
-    frequency: 2000Hz
-    
-#light:
-#  - platform: monochromatic
-#    output: led_panel
-#    name: "PCS LED light"
-#    id: pcs_led_light
+    id: led_panel_1
+    frequency: 1000Hz
+  
+  - platform: ledc
+    pin: "GPIO18"
+    id: led_panel_2
+    frequency: 1000Hz
 
 globals:
-  - id: led_is_on
+  - id: led_1_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+  - id: led_2_is_on
     type: bool
     restore_value: no
     initial_value: "false"  
     
 button:
   - platform: template
-    name: led_0_percent
-    id: led_0_percent
+    name: led_1_0_percent
+    id: led_1_0_percent
     on_press:
       then:
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
            level: "0%" 
   
   - platform: template
-    name: led_10_percent
-    id: led_10_percent
+    name: led_1_10_percent
+    id: led_1_10_percent
     on_press:
       then:
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
            level: "10%" 
            
   - platform: template
-    name: led_50_percent
-    id: led_50_percent
+    name: led_1_50_percent
+    id: led_1_50_percent
     on_press:
       then:
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
            level: "50%" 
            
   - platform: template
-    name: led_90_percent
-    id: led_90_percent
+    name: led_1_90_percent
+    id: led_1_90_percent
     on_press:
       then:
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
            level: "90%" 
            
   - platform: template
-    name: led_100_percent
-    id: led_100_percent
+    name: led_1_100_percent
+    id: led_1_100_percent
     on_press:
       then:
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
+           level: "100%" 
+  - platform: template
+    name: led_2_0_percent
+    id: led_2_0_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel_2
+           level: "0%" 
+  
+  - platform: template
+    name: led_2_10_percent
+    id: led_2_10_percent_2
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel_2
+           level: "10%" 
+           
+  - platform: template
+    name: led_2_50_percent
+    id: led_2_50_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel_2
+           level: "50%" 
+           
+  - platform: template
+    name: led_2_90_percent
+    id: led_2_90_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel_2
+           level: "90%" 
+           
+  - platform: template
+    name: led_2_100_percent
+    id: led_2_100_percent
+    on_press:
+      then:
+        - output.set_level:
+           id: led_panel_2
            level: "100%" 
 switch:
   - platform: template
-    name: turn_on_led
-    id: turn_on_led
+    name: turn_on_led_1
+    id: turn_on_led_1
     lambda: |-
-       if (id(led_is_on) == true)
+       if (id(led_1_is_on) == true)
          return true;
        else
          return false;
     turn_on_action:
       then:
-        - output.turn_on: led_panel
+        - output.turn_on: led_panel_1
         - globals.set:
-            id: led_is_on
+            id: led_1_is_on
             value: "true"
     turn_off_action:
       then:
-        - output.turn_off: led_panel  
+        - output.turn_off: led_panel_1  
         - globals.set:
-           id: led_is_on
-           value: "false"        
+           id: led_1_is_on
+           value: "false"     
+
+  - platform: template
+    name: turn_on_led_2
+    id: turn_on_led_2
+    lambda: |-
+       if (id(led_2_is_on) == true)
+         return true;
+       else
+         return false;
+    turn_on_action:
+      then:
+        - output.turn_on: led_panel_2
+        - globals.set:
+            id: led_2_is_on
+            value: "true"
+    turn_off_action:
+      then:
+        - output.turn_off: led_panel_2 
+        - globals.set:
+           id: led_2_is_on
+           value: "false"               
         
 api:
   services:      
-    - service: led_set_frequency
-      variables:
-        led_frequency: float
-      then:
-        - logger.log: "Set led led_frequency"
-        - output.ledc.set_frequency:
-           id: led_panel
-           frequency: !lambda 'return led_frequency;'
-           #frequency: !lambda |-
-           #  std::string unit = "Hz";
-           #  std::string result = to_string(led_frequency) + unit;
-           #  return result.c_str();
-           #  
-           #  std::string unit = "Hz";
-           #  std::string result;
-           #  char numstr[21]; // enough to hold all numbers up to 64-bits
-           #  sprintf(numstr, "%d", id(led_frequency));
-           #  result = numstr + unit;
-           #  return result;
-    - service: led_set_level
+    - service: led_1_set_level
       variables:
         led_level: float
       then:
-        - logger.log: "Set led led_level"
+        - logger.log: "Set led led_1_level"
         - output.set_level:
-           id: led_panel
+           id: led_panel_1
            level: !lambda 'return led_level;'
-           #level: !lambda |-
-           #  std::string unit = "%";
-           #  std::string result;
-           #  char numstr[21]; // enough to hold all numbers up to 64-bits
-           #  sprintf(numstr, "%d", id(led_level));
-           #  result = numstr + unit;
-           #  return result;
+           
+    - service: led_2_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_2_level"
+        - output.set_level:
+           id: led_panel_2
+           level: !lambda 'return led_level;'
