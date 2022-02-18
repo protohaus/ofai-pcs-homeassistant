@@ -28,6 +28,7 @@ substitutions:
   stepper_error_pinion_wheels: "2"
   stepper_error_full_turn_steps: "0.05"
   stepper_update_interval_ms: "1000"
+  
   # homing settings
   homing_high_speed: "12000"
   homing_mid_speed: "250"
@@ -50,10 +51,16 @@ substitutions:
   sensor_proximity_switch_pinion_wheel_pin: GPIO15 
   sensor_proximity_switch_home_pin: GPIO4
   sensor_proximity_switch_global_home_pin: GPIO2
+  
   sensor_update_interval_realtime: 0.1s
   sensor_update_interval_fast: 1s
   sensor_update_interval_mid: 10s
   sensor_update_interval_slow: 60s
+  
+  sensor_update_interval_realtime_ms: "100"
+  sensor_update_interval_fast_ms: "1000"
+  sensor_update_interval_mid_ms: "10000"
+  sensor_update_interval_slow_ms: "60000"
   
   
 esphome:

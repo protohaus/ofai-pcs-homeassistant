@@ -5,7 +5,7 @@ sensor:
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      return id($stepper_motor_id).current_position;
+      return get_controller(id(${stepper_motor_id}_controller))->current_position();
     update_interval: ${sensor_update_interval_realtime}
     
   - platform: template
@@ -14,7 +14,7 @@ sensor:
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      return id(target_position);
+      return get_controller(id(${stepper_motor_id}_controller))->target_position();
     update_interval: ${sensor_update_interval_fast}
     
   - platform: template
@@ -23,8 +23,7 @@ sensor:
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      return id(requested_target_position);
-      //return get_controller(id(${stepper_motor_id}_controller))->get_requested_target_position();
+      return get_controller(id(${stepper_motor_id}_controller))->requested_target_position();
     update_interval: ${sensor_update_interval_fast} 
     
     
@@ -34,7 +33,7 @@ sensor:
     unit_of_measurement: "steps/s"
     state_class: "measurement"
     lambda: |-
-      return id(speed);
+      return get_controller(id(${stepper_motor_id}_controller))->speed();
     update_interval: ${sensor_update_interval_fast}
     
   - platform: template
@@ -43,7 +42,7 @@ sensor:
     unit_of_measurement: "steps/s^2"
     state_class: "measurement"
     lambda: |-
-      return id(acceleration);
+      return get_controller(id(${stepper_motor_id}_controller))->acceleration();
     update_interval: ${sensor_update_interval_fast}
     
   - platform: template
@@ -52,7 +51,7 @@ sensor:
     unit_of_measurement: "steps/s^2"
     state_class: "measurement"
     lambda: |-
-      return id(deceleration);
+      return get_controller(id(${stepper_motor_id}_controller))->deceleration();
     update_interval: ${sensor_update_interval_fast}
    
   - platform: template
@@ -61,7 +60,7 @@ sensor:
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      return id(step_width);
+      return get_controller(id(${stepper_motor_id}_controller))->step_width();
     update_interval: ${sensor_update_interval_fast}   
   
   - platform: template
@@ -70,7 +69,6 @@ sensor:
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      //return id(full_turn_steps);
       return get_controller(id(${stepper_motor_id}_controller))->full_turn_steps();
     update_interval: ${sensor_update_interval_mid}   
     

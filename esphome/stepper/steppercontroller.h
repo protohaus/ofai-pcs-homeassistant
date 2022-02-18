@@ -18,44 +18,89 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		********************************************************************************/
 		cStepperController
 		(
-		  int initial_full_turn_steps,
-		  int initial_speed,
-		  int max_speed,
-		  int acceleration,
-		  int max_acceleration,
-		  int deceleration,
-		  int max_deceleration,
-		  int step_width,
-		  std::string device_name,
-		  std::string stepper_id,
-		  std:: string controller_id,
-		  a4988::A4988 *stepper,
-		  int update_interval_ms
+		  int initial_full_turn_steps_,
+		  int initial_speed_,
+		  int max_speed_,
+		  int acceleration_,
+		  int max_acceleration_,
+		  int deceleration_,
+		  int max_deceleration_,
+		  int step_width_,
+		  std::string device_name_,
+		  std::string stepper_id_,
+		  std:: string controller_id_,
+		  a4988::A4988 *stepper_,
+		  int update_interval_ms_,
+		  int sensor_update_interval_slow_,
+		  int sensor_update_interval_mid_,
+		  int sensor_update_interval_fast_,
+		  int sensor_update_interval_realtime_
 		)
 		:
-		  PollingComponent(update_interval_ms),
+		  PollingComponent(update_interval_ms_),
 		  CustomAPIDevice(),
-		  m_initial_full_turn_steps(initial_full_turn_steps),
-		  m_speed(initial_speed),
-		  m_max_speed(max_speed),
-		  m_requested_speed(initial_speed),
-		  m_acceleration(acceleration),
-		  m_max_acceleration(max_acceleration),
-		  m_deceleration(deceleration),
-		  m_max_deceleration(max_deceleration),
-		  m_step_width(step_width),
-		  m_device_name(device_name),
-		  m_stepper_id(stepper_id),
-		  m_controller_id(controller_id),
-		  m_stepper(stepper),
-		  m_update_interval_ms(update_interval_ms)
-		{
-			// attention: duplicated hashes may lead to problems 
-			// watch out: esphome autopgenerates hashes itself (check main.cpp)
-			m_full_turn_steps = new globals::RestoringGlobalsComponent<int>(initial_full_turn_steps);
+		  m_initial_full_turn_steps(initial_full_turn_steps_),
+		  m_max_speed(max_speed_),
+		  m_max_acceleration(max_acceleration_),
+		  m_max_deceleration(max_deceleration_),
+		  m_device_name(device_name_),
+		  m_stepper_id(stepper_id_),
+		  m_controller_id(controller_id_),
+		  m_stepper(stepper_),
+		  m_update_interval_ms(update_interval_ms_),
+		  m_sensor_update_interval_slow(sensor_update_interval_slow_),
+		  m_sensor_update_interval_mid(sensor_update_interval_mid_),
+		  m_sensor_update_interval_fast(sensor_update_interval_fast_),
+		  m_sensor_update_interval_realtime(sensor_update_interval_realtime_)
+		{	
+			// initialize stepper parameters with set functions to check wromg input
+			speed(initial_speed_);
+			requested_speed(initial_speed_);
+			acceleration(acceleration_);
+			deceleration(deceleration_);
+			step_width(step_width_);
+			
+			// initialize permanent global variable
+			// !!! attention: duplicated hashes may cause problems 
+			// !!! watch out: esphome autopgenerates hashes itself (check main.cpp)
+			m_full_turn_steps = new globals::RestoringGlobalsComponent<int>(initial_full_turn_steps_);
 			m_full_turn_steps->set_component_source("globals");
 			m_full_turn_steps->set_name_hash(659212362);
 			App.register_component(m_full_turn_steps);
+			
+			/***************************************
+			// initialize sensors
+			***************************************/
+			
+			// binary_sensor_active
+			binary_sensor_active = new template_::TemplateBinarySensor();
+            binary_sensor_active->set_component_source("template.binary_sensor");
+            App.register_component(binary_sensor_active);
+            App.register_binary_sensor(binary_sensor_active);
+            binary_sensor_active->set_name(m_device_name + "." + m_stepper_id + "." + m_controller_id + "." + "active");
+            binary_sensor_active->set_disabled_by_default(false);
+			
+			binary_sensor_active->set_template([=]() -> optional<bool> 
+			{
+                return is_active();
+            });
+			
+			// sensor_stepper_mode
+			sensor_stepper_mode = new template_::TemplateSensor();
+			sensor_stepper_mode->set_update_interval(m_sensor_update_interval_mid);
+			sensor_stepper_mode->set_component_source("template.sensor");
+			App.register_component(sensor_stepper_mode);
+			App.register_sensor(sensor_stepper_mode);
+			sensor_stepper_mode->set_name(m_device_name + "." + m_stepper_id + "." + m_controller_id + "." + "mode");
+			sensor_stepper_mode->set_disabled_by_default(false);
+			sensor_stepper_mode->set_state_class(sensor::STATE_CLASS_NONE);
+			sensor_stepper_mode->set_accuracy_decimals(1);
+			sensor_stepper_mode->set_force_update(false);
+			
+			sensor_stepper_mode->set_template([=]() -> optional<float> 
+			{
+                return static_cast<float>(stepper_mode());
+            });
 		}
 		
 		/********************************************************************************
@@ -162,7 +207,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			m_target_position = target_position_;
 		}
 		
-		int target_position(){return m_target_position;}
+		int target_position(){return m_stepper->target_position;}
 		
 		
 		/***************************************
@@ -262,7 +307,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void stepper_mode(int stepper_mode_)
 		{
 			m_stepper_mode = static_cast<eStepperModes>(stepper_mode_);
-			// TODO: update stepper mode sensor
+			sensor_stepper_mode->update();
 		}
 		
 		eStepperModes stepper_mode(){return m_stepper_mode;}
@@ -389,7 +434,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			start();
 		}
 		void drive_forward(){drive(true);}
-		void drive_backward(){drive(true);}
+		void drive_backward(){drive(false);}
 
 		void step(bool direction_forward_)
 		{
@@ -401,6 +446,18 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void step_forward(){step(true);}
 		void step_backward(){step(false);}
 		
+		bool is_active()
+		{
+			if(current_position() != target_position())
+				return true;
+			else
+				return false;
+		}
+		
+		void set_speed_to_requested_speed()
+		{
+			speed(requested_speed());
+		}
 		
     protected:
 	    
@@ -427,7 +484,15 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		std::string m_controller_id{std::string("")};
 		a4988::A4988 *m_stepper;
 	    
-		int m_update_interval_ms;
+		int m_update_interval_ms{1000};
+		int m_sensor_update_interval_slow{60000};
+		int m_sensor_update_interval_mid{10000};
+		int m_sensor_update_interval_fast{1000};
+		int m_sensor_update_interval_realtime{100};
+		
+		// Sensors
+		template_::TemplateBinarySensor* binary_sensor_active;
+		template_::TemplateSensor* sensor_stepper_mode;
 		
 		/***************************************
 	    ** target methods:

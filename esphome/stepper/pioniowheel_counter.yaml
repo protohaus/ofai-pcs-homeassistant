@@ -39,7 +39,7 @@ binary_sensor:
     name: "${device_name_upper}.motor_state"
     id: ${stepper_motor_id}_motor_state
     lambda: |-
-      if (id(${stepper_motor_id}_active).state) 
+      if (get_controller(id(${controller}))->is_active()) 
       {
         return true;
       }else 
@@ -122,7 +122,7 @@ sensor:
     id: ${stepper_motor_id}_speed_requested_steps
     state_class: "measurement"
     lambda: |-
-      if(id(${stepper_motor_id}_active).state)
+      if(get_controller(id(${controller}))->is_active())
       {
         return id(speed);
       }
@@ -138,7 +138,7 @@ sensor:
     id: ${stepper_motor_id}_speed_requested_deg
     state_class: "measurement"
     lambda: |-
-      if(id(${stepper_motor_id}_active).state)
+      if(get_controller(id(${controller}))->is_active())
       {
         return 60 * id(speed) * (360.0 / id(full_turn_steps)) ;
       }

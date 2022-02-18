@@ -19,6 +19,26 @@ switch:
     internal: "true"
     
 binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.sleep"
+    id: ${stepper_motor_id}_sleep
+    lambda: |-
+      if (!get_controller(id(${controller}))->is_active()) 
+      {
+        return true;
+      }else 
+      {
+        // Motor is at target position
+        return false;
+      } 
+    on_press:
+      then:
+        - output.turn_on: ${stepper_motor_id}_enable_pin
+        - switch.turn_off: ${device_name}_fan
+    on_release:
+        - output.turn_off: ${stepper_motor_id}_enable_pin
+        - switch.turn_on: ${device_name}_fan
+
   - platform: gpio
     name: ${stepper_motor_id_upper}.diag_pin_1
     id: ${stepper_motor_id}_diag_pin_1
@@ -69,30 +89,21 @@ binary_sensor:
           level: ERROR
       - lambda: |-
           id(stepper_error) = STEPPER_ERROR_DIAG;
-    
-  - platform: gpio
-    name: ${stepper_motor_id_upper}.sleep_state
-    id: ${stepper_motor_id}_sleep_state
-    pin:
-      number: ${stepper_sleep_state_pin}
-      mode:
-        input: true
-        pullup: true
-      inverted: true
-    on_press:
-      then:
-        - output.turn_on: ${stepper_motor_id}_enable_pin
-        - switch.turn_off: ${device_name}_fan
-    on_release:
-        - output.turn_off: ${stepper_motor_id}_enable_pin
-        - switch.turn_on: ${device_name}_fan
       
 interval:
   - interval: 60s
     then:
       if:
         condition:
-          binary_sensor.is_off: ${stepper_motor_id}_sleep_state
+          lambda: |-
+            if (get_controller(id(${controller}))->is_active() && 
+                get_controller(id(${controller}))->motor_enabled())
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
         then:
           - switch.turn_on: ${device_name}_fan
           - delay: 40s
