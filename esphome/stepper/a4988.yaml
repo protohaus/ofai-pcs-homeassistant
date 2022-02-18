@@ -3,6 +3,7 @@ substitutions:
   controller_id: controller
   stepper_motor_id_upper: ${device_name_upper}.stepper
   stepper_motor_id: ${device_name}_${stepper_id}
+  controller: ${stepper_motor_id}_${controller_id}
   
 esphome: 
   includes: 
@@ -18,9 +19,33 @@ esphome:
           service: esphome.${stepper_motor_id_upper}_set_speed
           data:
             speed: !lambda 'return id(speed);'    
-  
+
+#sensor:
+#  - platform: custom
+#    id: ${stepper_motor_id}_${controller_id}
+#    lambda: |-
+#      auto controller = new cStepperController(${stepper_initial_full_turn_steps},
+#                                               ${stepper_initial_speed},
+#                                               ${stepper_max_speed},
+#                                               ${stepper_acceleration},
+#                                               ${stepper_max_acceleration},
+#                                               ${stepper_deceleration},
+#                                               ${stepper_max_deceleration},
+#                                               ${stepper_initial_step_width},
+#                                               "${device_name}",
+#                                               "${stepper_id}",
+#                                               "${controller_id}",
+#                                               id(${stepper_motor_id}),
+#                                               ${stepper_update_interval_ms});
+#      controller->set_component_source("steppercontroller"); 
+#      App.register_component(controller); 
+#      return {controller}; 
+#  
+#    sensors:
+#      name: ${stepper_motor_id}_${controller_id}_sensor
+
 custom_component:
-  - id: ${stepper_motor_id}_${controller_id}
+  - id: ${controller}
     lambda: |-
       auto controller = new cStepperController(${stepper_initial_full_turn_steps},
                                                ${stepper_initial_speed},
@@ -33,7 +58,8 @@ custom_component:
                                                "${device_name}",
                                                "${stepper_id}",
                                                "${controller_id}",
-                                               id(${stepper_motor_id}));
+                                               id(${stepper_motor_id}),
+                                               ${stepper_update_interval_ms});
       controller->set_component_source("steppercontroller"); 
       App.register_component(controller); 
       return {controller}; 
@@ -141,7 +167,7 @@ switch:
     name: ${stepper_motor_id_upper}.enable_motor
     id: ${stepper_motor_id}_enable_motor
     lambda: |-
-      return get_controller(id(${stepper_motor_id}_controller))->motor_enabled();
+      return get_controller(id(${controller}))->motor_enabled();
     turn_on_action:
       - lambda: |- 
           get_controller(id(${stepper_motor_id}_controller))->enable_motor();
@@ -154,7 +180,7 @@ switch:
       - component.update: ${stepper_motor_id}_mode
     turn_off_action:
       - lambda: |- 
-          get_controller(id(${stepper_motor_id}_controller))->disable_motor();
+          get_controller(id(${controller}))->disable_motor();
       - globals.set:
           id: motor_enabled
           value: "false"
@@ -173,13 +199,13 @@ button:
       if:
         condition:
           lambda: |-
-            return get_controller(id(${stepper_motor_id}_controller))->motor_enabled();
+            return get_controller(id(${controller}))->motor_enabled();
             //return id(motor_enabled);
         then:
           - logger.log: "Start Motor"
           - stepper.set_target:
               id: ${stepper_motor_id}
-              target: !lambda 'return (get_controller(id(${stepper_motor_id}_controller))->motor_enabled() == true) ? id(target_position) : id($stepper_motor_id).current_position;'  
+              target: !lambda 'return (get_controller(id(${controller}))->motor_enabled() == true) ? id(target_position) : id($stepper_motor_id).current_position;'  
         else:
           - logger.log: "Motor is not enabled!"
           - globals.set:

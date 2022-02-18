@@ -5,9 +5,13 @@
 #include <stepper_error.h>
 #define get_controller(constructor) static_cast<cStepperController *>(const_cast<esphome::custom_component::CustomComponentConstructor *>(&constructor)->get_component(0))
 
-class cStepperController : public Component, public CustomAPIDevice {
+#define SECONDS_TO_MILLISECONDS 1000
+
+class cStepperController : public PollingComponent, public CustomAPIDevice {
 	public:
 	    
+		float get_setup_priority() const override { return esphome::setup_priority::PROCESSOR; }
+		
 	    /********************************************************************************
 	    ** cCustomController Constructor
 		**  loads all settings and other external objects like stepper, sensors, buttons
@@ -25,10 +29,11 @@ class cStepperController : public Component, public CustomAPIDevice {
 		  std::string device_name,
 		  std::string stepper_id,
 		  std:: string controller_id,
-		  a4988::A4988 *stepper
+		  a4988::A4988 *stepper,
+		  int update_interval_ms
 		)
 		:
-		  Component(),
+		  PollingComponent(update_interval_ms),
 		  CustomAPIDevice(),
 		  m_initial_full_turn_steps(initial_full_turn_steps),
 		  m_speed(initial_speed),
@@ -42,7 +47,8 @@ class cStepperController : public Component, public CustomAPIDevice {
 		  m_device_name(device_name),
 		  m_stepper_id(stepper_id),
 		  m_controller_id(controller_id),
-		  m_stepper(stepper)
+		  m_stepper(stepper),
+		  m_update_interval_ms(update_interval_ms)
 		{
 			// attention: duplicated hashes may lead to problems 
 			// watch out: esphome autopgenerates hashes itself (check main.cpp)
@@ -92,7 +98,18 @@ class cStepperController : public Component, public CustomAPIDevice {
 						{"zero_position"});
 		    
 						
-        };					 
+        };	
+
+
+		/********************************************************************************
+	    ** Overloading Update method of PollingComponent class
+		** called every m_update_interval_ms milliseconds
+		********************************************************************************/
+		void update() override 
+		{
+          // This will be called every "update_interval" milliseconds.
+		  main_loop();
+        }
 		
 		/*************************************************************************
 		*************** GETTER, SETTER AND SERVICE METHOD DEFINITIONS ************
@@ -367,7 +384,7 @@ class cStepperController : public Component, public CustomAPIDevice {
 		void drive(bool direction_forward_)
 		{
 			direction_forward(direction_forward_);
-			set_target(current_position() + (direction_sign() * m_max_speed * 2 ));
+			set_target(increment_target_position(2.0));
 			stepper_mode(STEPPER_MODE_DRIVE);
 			start();
 		}
@@ -401,6 +418,7 @@ class cStepperController : public Component, public CustomAPIDevice {
 		int m_step_width{0};
 		eStepperError m_stepper_error{STEPPER_ERROR_NONE};
 		eStepperModes m_stepper_mode{STEPPER_MODE_OFF};
+		eStepperModes m_stepper_mode_last{STEPPER_MODE_OFF};
 		bool m_motor_enabled{false};
 		int m_requested_target_position{0}; 
 		
@@ -409,6 +427,7 @@ class cStepperController : public Component, public CustomAPIDevice {
 		std::string m_controller_id{std::string("")};
 		a4988::A4988 *m_stepper;
 	    
+		int m_update_interval_ms;
 		
 		/***************************************
 	    ** target methods:
@@ -416,12 +435,203 @@ class cStepperController : public Component, public CustomAPIDevice {
 		***************************************/
 		void set_target(int target)
 		{
-			m_stepper->set_target((m_motor_enabled == true) ? target : m_stepper->current_position);
+			m_stepper->set_target((m_motor_enabled == true) ? target : current_position());
 		}
 		
 		void set_position(int position)
 		{
 			m_stepper->report_position(position);
+		}
+		
+		int increment_target_position(float factor)
+		{
+			return (current_position() + (direction_sign() *  m_speed * (m_update_interval_ms/SECONDS_TO_MILLISECONDS) * factor));
+		}
+		
+		/***************************************
+	    ** main loop methods
+		** get called by update() periodically
+		***************************************/
+		bool check_update_stepper_mode()
+		{
+			if (m_stepper_mode != m_stepper_mode_last)
+			{
+				m_stepper_mode_last = m_stepper_mode;
+				return true;
+			}else
+			{
+				return false;
+			}
+		}
+		
+		void main_loop()
+		{
+			switch(m_stepper_mode_last)
+            {
+				case STEPPER_MODE_OFF:
+				{
+					stepper_mode_off();
+					break;
+				}
+				
+				case STEPPER_MODE_READY:
+				{
+					stepper_mode_ready();
+					break;
+				}
+				
+				case STEPPER_MODE_HOMING:
+				{
+					stepper_mode_homing();
+					break;
+				}
+				
+				case STEPPER_MODE_RANGEESTIMATION:
+				{
+					stepper_mode_rangeestimation();
+					break;
+				}
+				
+				case STEPPER_MODE_DRIVE:
+				{
+				    stepper_mode_drive();
+					break;
+				}
+				
+				case STEPPER_MODE_TARGET:
+				{
+				    stepper_mode_target();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_WIDTH:
+				{
+				    stepper_mode_step_width();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_30DEG:
+				{
+				    stepper_mode_step_30deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_60DEG:
+				{
+				    stepper_mode_step_60deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_180DEG:
+				{
+				    stepper_mode_step_180deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_360DEG:
+				{
+				    stepper_mode_step_360deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_720DEG:
+				{
+				    stepper_mode_step_720deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_1080DEG:
+				{
+				    stepper_mode_step_1080deg();
+					break;
+				}
+				
+				default:
+				{
+					break;
+				}
+            }
+		}
+		
+		void stepper_mode_off()
+	    {
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_ready()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_homing()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_rangeestimation()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_drive()
+		{        
+			if (check_update_stepper_mode())
+				return;
+			
+			target_position(increment_target_position(1.5));
+			start();
+		}
+		
+		void stepper_mode_target()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_width()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_30deg()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_60deg()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_180deg()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_360deg()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_720deg()
+		{
+			if (check_update_stepper_mode())
+				return;
+		}
+		
+		void stepper_mode_step_1080deg()
+		{
+			if (check_update_stepper_mode())
+				return;
 		}
 		
 	private:

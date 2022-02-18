@@ -27,7 +27,7 @@ substitutions:
   stepper_initial_full_turn_steps: "764586"
   stepper_error_pinion_wheels: "2"
   stepper_error_full_turn_steps: "0.05"
-  
+  stepper_update_interval_ms: "1000"
   # homing settings
   homing_high_speed: "12000"
   homing_mid_speed: "250"
