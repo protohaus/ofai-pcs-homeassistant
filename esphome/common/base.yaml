@@ -12,3 +12,8 @@ logger:
   level: DEBUG
   
 captive_portal:
+
+# Example configuration entry
+time:
+  - platform: sntp
+    id: sntp_time
