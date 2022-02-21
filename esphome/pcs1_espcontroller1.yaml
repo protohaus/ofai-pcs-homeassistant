@@ -10,11 +10,10 @@ substitutions:
   #stepper settings
   stepper_step_pin: GPIO26
   stepper_dir_pin: GPIO27
-  stepper_sleep_pin: GPIO32 # GPIO25
+  stepper_sleep_pin: GPIO12 # GPIO25
   stepper_enable_pin: GPIO25 #GPIO33  #GPIO15
-  stepper_sleep_state_pin: GPIO33 #GPIO14
   stepper_diag_pin_1: GPIO18      #GPIO33
-  stepper_diag_pin_2: GPIO5      #
+  stepper_diag_pin_2: GPIO17      #
   stepper_diag_pin_3: GPIO19      #
   stepper_invert_direction: "false" 
   stepper_max_speed: "12000"
@@ -33,7 +32,10 @@ substitutions:
   homing_high_speed: "12000"
   homing_mid_speed: "250"
   homing_low_speed: "100"
-
+  
+  # rangeestimation
+  rangeestimation_number_of_values: "5"
+  
   # kinematics
   kinematics_plant_gear_teeth: "12"
   kinematics_pinion_wheel_rods_upper: "40"
@@ -48,9 +50,9 @@ substitutions:
   fan_pin: GPIO21 #GPIO18
   
   # sensor settings
-  sensor_proximity_switch_pinion_wheel_pin: GPIO15 
+  sensor_proximity_switch_pinion_wheel_pin: GPIO32
   sensor_proximity_switch_home_pin: GPIO4
-  sensor_proximity_switch_global_home_pin: GPIO2
+  sensor_proximity_switch_global_home_pin: GPIO33
   
   sensor_update_interval_realtime: 0.1s
   sensor_update_interval_fast: 1s
@@ -79,7 +81,7 @@ packages:
   common_restart: !include common/restart.yaml
   stepper_a4988: !include stepper/a4988.yaml
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
-  stepper_homing: !include stepper/homing.yaml
+  #stepper_homing: !include stepper/homing.yaml
   stepper_pioniowheel_counter: !include stepper/pioniowheel_counter.yaml
   stepper_sensor: !include stepper/sensor.yaml
   #stepper_error_handling: !include stepper/error_handling.yaml

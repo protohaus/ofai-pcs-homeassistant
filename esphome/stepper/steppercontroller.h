@@ -3,16 +3,26 @@
 #include <esphome.h>
 #include <stepper_modes.h>
 #include <stepper_error.h>
+#include <algorithm>
+
 #define get_controller(constructor) static_cast<cStepperController *>(const_cast<esphome::custom_component::CustomComponentConstructor *>(&constructor)->get_component(0))
 
 #define SECONDS_TO_MILLISECONDS 1000
+#define NUMBER_OF_RANGEESTIMATIONS 5
+
+static const char *TAG = "custom.StepperController";
 
 class cStepperController : public PollingComponent, public CustomAPIDevice {
 	public:
 	    
 		float get_setup_priority() const override { return esphome::setup_priority::PROCESSOR; }
 		
-	    /********************************************************************************
+		void dump_config()
+		{
+			ESP_LOGCONFIG(TAG, "Stepper Controller");
+		}
+	    
+		/********************************************************************************
 	    ** cCustomController Constructor
 		**  loads all settings and other external objects like stepper, sensors, buttons
 		********************************************************************************/
@@ -30,11 +40,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		  std::string stepper_id_,
 		  std:: string controller_id_,
 		  a4988::A4988 *stepper_,
+		  gpio::GPIOBinarySensor *proximity_switch_home_,
+		  gpio::GPIOBinarySensor *proximity_switch_global_home_,
 		  int update_interval_ms_,
 		  int sensor_update_interval_slow_,
 		  int sensor_update_interval_mid_,
 		  int sensor_update_interval_fast_,
-		  int sensor_update_interval_realtime_
+		  int sensor_update_interval_realtime_,
+		  int homing_high_speed_,
+		  int homing_mid_speed_,
+		  int homing_low_speed_
 		)
 		:
 		  PollingComponent(update_interval_ms_),
@@ -47,11 +62,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		  m_stepper_id(stepper_id_),
 		  m_controller_id(controller_id_),
 		  m_stepper(stepper_),
+		  m_proximity_switch_home(proximity_switch_home_),
+		  m_proximity_switch_global_home(proximity_switch_global_home_),
 		  m_update_interval_ms(update_interval_ms_),
 		  m_sensor_update_interval_slow(sensor_update_interval_slow_),
 		  m_sensor_update_interval_mid(sensor_update_interval_mid_),
 		  m_sensor_update_interval_fast(sensor_update_interval_fast_),
-		  m_sensor_update_interval_realtime(sensor_update_interval_realtime_)
+		  m_sensor_update_interval_realtime(sensor_update_interval_realtime_),
+		  m_homing(tHoming(	homing_high_speed_, 
+							homing_mid_speed_, 
+							homing_low_speed_))
 		{	
 			// initialize stepper parameters with set functions to check wromg input
 			speed(initial_speed_);
@@ -68,39 +88,6 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			m_full_turn_steps->set_name_hash(659212362);
 			App.register_component(m_full_turn_steps);
 			
-			/***************************************
-			// initialize sensors
-			***************************************/
-			
-			// binary_sensor_active
-			binary_sensor_active = new template_::TemplateBinarySensor();
-            binary_sensor_active->set_component_source("template.binary_sensor");
-            App.register_component(binary_sensor_active);
-            App.register_binary_sensor(binary_sensor_active);
-            binary_sensor_active->set_name(m_device_name + "." + m_stepper_id + "." + m_controller_id + "." + "active");
-            binary_sensor_active->set_disabled_by_default(false);
-			
-			binary_sensor_active->set_template([=]() -> optional<bool> 
-			{
-                return is_active();
-            });
-			
-			// sensor_stepper_mode
-			sensor_stepper_mode = new template_::TemplateSensor();
-			sensor_stepper_mode->set_update_interval(m_sensor_update_interval_mid);
-			sensor_stepper_mode->set_component_source("template.sensor");
-			App.register_component(sensor_stepper_mode);
-			App.register_sensor(sensor_stepper_mode);
-			sensor_stepper_mode->set_name(m_device_name + "." + m_stepper_id + "." + m_controller_id + "." + "mode");
-			sensor_stepper_mode->set_disabled_by_default(false);
-			sensor_stepper_mode->set_state_class(sensor::STATE_CLASS_NONE);
-			sensor_stepper_mode->set_accuracy_decimals(1);
-			sensor_stepper_mode->set_force_update(false);
-			
-			sensor_stepper_mode->set_template([=]() -> optional<float> 
-			{
-                return static_cast<float>(stepper_mode());
-            });
 		}
 		
 		/********************************************************************************
@@ -163,7 +150,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		/***************************************
 	    ** direction_forward (get/set - methods)
 		***************************************/
-		void direction_forward(int  direction_forward_)
+		void direction_forward(bool  direction_forward_)
 		{
 			m_direction_forward = direction_forward_;
 		}
@@ -186,7 +173,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				m_full_turn_steps->value() = full_turn_steps_;
             }else
             {
-				ESP_LOGD("custom", "Warning: Full turn steps are too far off... using default value!");
+				ESP_LOGD(TAG, "Warning: Full turn steps are too far off... using default value!");
 				m_full_turn_steps->value() = m_initial_full_turn_steps;
             }
 		}
@@ -195,7 +182,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_full_turn_steps(int full_turn_steps_)
 		{
-			ESP_LOGD("custom", "Set: full_turn_steps!");
+			ESP_LOGD(TAG, "Set: full_turn_steps!");
 			full_turn_steps(full_turn_steps_);
 		}
 		
@@ -229,6 +216,26 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			speed(speed_);
 		}
 		
+		void set_speed_requested()
+		{
+			speed(m_requested_speed);
+		}
+		
+		void set_speed_high()
+		{
+			speed(m_homing.high_speed);
+		}
+		
+		void set_speed_mid()
+		{
+			speed(m_homing.mid_speed);
+		}
+		
+		void set_speed_low()
+		{
+			speed(m_homing.low_speed);
+		}
+		
 		/***************************************
 	    ** requested_speed (get/set - methods)
 		***************************************/
@@ -253,7 +260,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_acceleration(int acceleration_)
 		{
-			ESP_LOGD("custom", "Set: acceleration!");
+			ESP_LOGD(TAG, "Set: acceleration!");
 			acceleration(acceleration_);
 		}
 		
@@ -271,7 +278,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_deceleration(int deceleration_)
 		{
-			ESP_LOGD("custom", "Set: deceleration!");
+			ESP_LOGD(TAG, "Set: deceleration!");
 			deceleration(deceleration_);
 		}
 		
@@ -306,8 +313,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		***************************************/
 		void stepper_mode(int stepper_mode_)
 		{
-			m_stepper_mode = static_cast<eStepperModes>(stepper_mode_);
-			sensor_stepper_mode->update();
+			eStepperModes loc_stepper_mode = static_cast<eStepperModes>(stepper_mode_);
+			init_stepper_mode(loc_stepper_mode);
+			m_stepper_mode = loc_stepper_mode;
+			//sensor_stepper_mode->update();
+			update();
 		}
 		
 		eStepperModes stepper_mode(){return m_stepper_mode;}
@@ -345,7 +355,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_requested_target_position(int requested_target_position_)
 		{
-			ESP_LOGD("custom", "Set: requested_target_position!");
+			ESP_LOGD(TAG, "Set: requested_target_position!");
 			requested_target_position(requested_target_position_);
 		}
 		
@@ -361,13 +371,13 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_zero_position(int zero_position_)
 		{
-			ESP_LOGD("custom", "Set: zero_position!");
+			ESP_LOGD(TAG, "Set: zero_position!");
 			set_zero_position(zero_position_);
 		}
 		
 		void set_current_position_to_zero()
 		{
-			ESP_LOGD("custom", "Set: zero_position = current_position!");
+			ESP_LOGD(TAG, "Set: zero_position = current_position!");
 			pause();
 			set_position(0);
 			target_position(0);
@@ -384,32 +394,52 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		}
 		
 		/***************************************
+	    ** homing_valid?
+		***************************************/
+		bool homing_is_valid()
+		{
+			return m_homing.valid;
+		}
+		
+		
+		/***************************************
 	    ** start/stop/pause/resume?
 		***************************************/
 		void start()
 		{
 			if (m_motor_enabled)
 			{
-				ESP_LOGD("custom", "Start stepper motor");
+				ESP_LOGD(TAG, "Start stepper motor");
 				set_target(m_target_position);
 			}else
 			{
-				ESP_LOGD("custom", "Motor is not enabled");
+				ESP_LOGD(TAG, "Motor is not enabled");
 				stepper_mode(STEPPER_MODE_OFF);
 			}
 		}
 		
 		void stop()
 		{
-			ESP_LOGD("custom", "Stop stepper motor");
+			ESP_LOGD(TAG, "Stop stepper motor");
 			set_target(current_position());
 			stepper_mode(STEPPER_MODE_READY);
 		}
 		
 		void pause()
 		{
-			ESP_LOGD("custom", "Pause stepper motor");
+			ESP_LOGD(TAG, "Pause stepper motor");
 			set_target(current_position());
+		}
+		
+		
+		void start_homing()
+		{
+			stepper_mode(STEPPER_MODE_HOMING);
+		}
+		
+		void start_rangeestimation()
+		{
+			stepper_mode(STEPPER_MODE_RANGEESTIMATION);
 		}
 		
 		// TODO: resume() method
@@ -454,9 +484,103 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				return false;
 		}
 		
-		void set_speed_to_requested_speed()
+		
+		/***************************************
+	    ** Homing methods
+		***************************************/
+		void proximity_switch_home_pressed()
 		{
-			speed(requested_speed());
+			switch(m_stepper_mode_last)
+			{
+				case STEPPER_MODE_HOMING:
+				{
+					if(m_proximity_switch_global_home->state && 
+					   m_homing.sensors_enabled && 
+					   m_homing.started &&
+					   !m_homing.found_low_precision)
+					{
+						pause();
+						m_homing.found_low_precision = true;
+						m_homing.sensors_enabled = false;
+						pause();
+					}
+					break;
+				}
+				
+				case STEPPER_MODE_RANGEESTIMATION:
+				{
+					if (m_rangeestimation.started)
+					{
+						set_speed_mid();
+					}
+					break;
+				} 
+				default:
+				{
+					break;
+				}
+			}   
+		}
+		
+		void proximity_switch_home_released()
+		{
+			switch(m_stepper_mode_last)
+			{
+				case STEPPER_MODE_HOMING:
+				{
+					if(m_proximity_switch_global_home->state && 
+					m_homing.sensors_enabled && 
+					m_homing.started &&
+					m_homing.found_low_precision &&
+					!m_homing.found_high_precision)
+					{
+						pause();
+						m_homing.found_high_precision = true;
+						m_homing.sensors_enabled = false;
+						pause();
+					}
+					break;
+				}
+				
+				case STEPPER_MODE_RANGEESTIMATION:
+				{
+					if (m_rangeestimation.started)
+					{
+						if (m_rangeestimation.found_home_counter == 0)
+						{
+							m_rangeestimation.range_0 = current_position();
+							set_speed_high();
+							m_rangeestimation.found_home_counter += 1;
+							
+						}else if((m_rangeestimation.found_home_counter > 0) && 
+								(m_rangeestimation.found_home_counter <= NUMBER_OF_RANGEESTIMATIONS + 1))
+						{
+							m_rangeestimation.range_1 = current_position();
+							m_rangeestimation.ranges[m_rangeestimation.found_home_counter - 1] =
+									m_rangeestimation.range_1 - m_rangeestimation.range_0;
+							int sum = 0;
+							int sum_size = m_rangeestimation.found_home_counter;
+							for (int i = 0; i < sum_size; i++)
+							{
+								sum += m_rangeestimation.ranges[i];
+							}
+							m_rangeestimation.range_average = (float)sum/sum_size;   
+							
+							int full_turn_steps_loc = (int)round(m_rangeestimation.range_average);
+							full_turn_steps(full_turn_steps_loc);
+							
+							m_rangeestimation.range_0 = m_rangeestimation.range_1;
+							set_speed_high();
+							m_rangeestimation.found_home_counter += 1;
+						}    
+					}
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
 		}
 		
     protected:
@@ -483,16 +607,56 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		std::string m_stepper_id{std::string("")};
 		std::string m_controller_id{std::string("")};
 		a4988::A4988 *m_stepper;
-	    
+	    gpio::GPIOBinarySensor *m_proximity_switch_home;
+		gpio::GPIOBinarySensor *m_proximity_switch_global_home;
+		
+		
 		int m_update_interval_ms{1000};
 		int m_sensor_update_interval_slow{60000};
 		int m_sensor_update_interval_mid{10000};
 		int m_sensor_update_interval_fast{1000};
 		int m_sensor_update_interval_realtime{100};
 		
-		// Sensors
-		template_::TemplateBinarySensor* binary_sensor_active;
-		template_::TemplateSensor* sensor_stepper_mode;
+		
+		// homing parameters
+		struct tHoming
+		{
+			bool valid{false};
+			bool started{false};
+			int high_speed{0};
+			int mid_speed{0};
+			int low_speed{0};
+			bool sensors_enabled{false};
+			bool found_low_precision{false};
+			bool found_high_precision{false};
+			bool global_home_pressed{false};
+			bool home_pressed{false};
+			
+			tHoming(int high_speed_, 
+					int mid_speed_, 
+					int low_speed_):
+					high_speed(high_speed_),
+					mid_speed(mid_speed_),
+					low_speed(low_speed_){}
+		};
+		
+		tHoming m_homing{tHoming(0,0,0)};
+		
+		// Rangeestimation parameters
+		struct tRangeestimation
+		{
+			bool started{false};
+			int found_home_counter{0};
+			int ranges[NUMBER_OF_RANGEESTIMATIONS];
+			int range_0{0};
+			int range_1{0};
+			float range_average{0.0};
+			
+			tRangeestimation() : ranges{}{}
+		};
+		
+		tRangeestimation m_rangeestimation{tRangeestimation()};
+		
 		
 		/***************************************
 	    ** target methods:
@@ -514,8 +678,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		}
 		
 		/***************************************
-	    ** main loop methods
-		** get called by update() periodically
+	    ** check state changes
 		***************************************/
 		bool check_update_stepper_mode()
 		{
@@ -529,6 +692,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			}
 		}
 		
+		
+		/***************************************
+	    ** main loop methods
+		** get called by update() periodically
+		***************************************/
 		void main_loop()
 		{
 			switch(m_stepper_mode_last)
@@ -547,13 +715,13 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				
 				case STEPPER_MODE_HOMING:
 				{
-					stepper_mode_homing();
+					//stepper_mode_homing();
 					break;
 				}
 				
 				case STEPPER_MODE_RANGEESTIMATION:
 				{
-					stepper_mode_rangeestimation();
+					//stepper_mode_rangeestimation();
 					break;
 				}
 				
@@ -618,28 +786,295 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
             }
 		}
 		
+		
+		/***************************************
+	    ** initialize states
+		***************************************/
+		void init_stepper_mode(eStepperModes stepper_mode)
+		{
+			switch(stepper_mode)
+            {
+				case STEPPER_MODE_OFF:
+				{
+					init_stepper_mode_off();
+					break;
+				}
+				
+				case STEPPER_MODE_READY:
+				{
+					init_stepper_mode_ready();
+					break;
+				}
+				
+				case STEPPER_MODE_HOMING:
+				{
+					init_stepper_mode_homing();
+					break;
+				}
+				
+				case STEPPER_MODE_RANGEESTIMATION:
+				{
+					init_stepper_mode_rangeestimation();
+					break;
+				}
+				
+				case STEPPER_MODE_DRIVE:
+				{
+				    init_stepper_mode_drive();
+					break;
+				}
+				
+				case STEPPER_MODE_TARGET:
+				{
+				    init_stepper_mode_target();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_WIDTH:
+				{
+				    init_stepper_mode_step_width();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_30DEG:
+				{
+				    init_stepper_mode_step_30deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_60DEG:
+				{
+				    init_stepper_mode_step_60deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_180DEG:
+				{
+				    init_stepper_mode_step_180deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_360DEG:
+				{
+				    init_stepper_mode_step_360deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_720DEG:
+				{
+				    init_stepper_mode_step_720deg();
+					break;
+				}
+				
+				case STEPPER_MODE_STEP_1080DEG:
+				{
+				    init_stepper_mode_step_1080deg();
+					break;
+				}
+				
+				default:
+				{
+					break;
+				}
+            }
+		}
+		
+		void init_stepper_mode_off()
+		{
+			
+		}
+		
+		void init_stepper_mode_ready()
+		{
+			
+		}
+		
+		void init_stepper_mode_homing()
+		{
+			//m_homing.valid = false; //TODO: hinterfragen: wirklich zuruecksetzen??
+			m_homing.started = false;
+			m_homing.sensors_enabled = false;
+			m_homing.found_low_precision = false;
+			m_homing.found_high_precision = false;
+			set_speed_high();
+		}
+		
+		void init_stepper_mode_rangeestimation()
+		{
+			m_rangeestimation.found_home_counter  = 0;
+			m_rangeestimation.range_0 = 0;
+			m_rangeestimation.range_1 = 0;
+			m_rangeestimation.range_average  = 0.0;
+			m_rangeestimation.started = false;
+			// TODO: check if that is working correct!
+			memset(m_rangeestimation.ranges, 0, sizeof(m_rangeestimation.ranges));
+			set_speed_high();
+		}
+		
+		void init_stepper_mode_drive()
+		{
+			
+		}
+		
+		void init_stepper_mode_target()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_width()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_30deg()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_60deg()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_180deg()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_360deg()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_720deg()
+		{
+			
+		}
+		
+		void init_stepper_mode_step_1080deg()
+		{
+			
+		}
+		
+		/***************************************
+	    ** actual state methods
+		***************************************/
 		void stepper_mode_off()
 	    {
 			if (check_update_stepper_mode())
 				return;
 		}
-		
+				
 		void stepper_mode_ready()
 		{
 			if (check_update_stepper_mode())
 				return;
 		}
 		
+		/******************************************************************************************
+        * 
+		* **STEPPER_MODE_HOMING**
+		*
+		* homing mode: find out, if we already are on the homing position/sensor is already active
+        * if so: drive backward until sensor turns off
+        * then, start homing procedure:
+        * drive forward with homing high speed until sensor detects home position at low accuracy
+        * drive slowly forward until sensor detects "on_release" and set home position to this point
+        ******************************************************************************************/
 		void stepper_mode_homing()
 		{
 			if (check_update_stepper_mode())
 				return;
+			
+			if(!m_homing.started)
+            {
+				// drive backward until we are out of range from the homing position stop
+				if(m_proximity_switch_home->state)
+				{
+					set_speed_high();
+					direction_forward(false);
+					increment_target_position(3.0);
+					start();
+				}else
+				{
+					m_homing.started = true;
+				}
+            }else
+            {
+				if(!m_homing.found_low_precision)
+				{ 
+					set_speed_high();
+					direction_forward(true);
+					m_homing.sensors_enabled = true;               
+					increment_target_position(1.5);
+					start();
+				}else
+				{
+					if(!m_homing.found_high_precision)
+					{
+						set_speed_low();
+						direction_forward(false);
+						m_homing.sensors_enabled = true;                 
+						increment_target_position(1.5);
+						start();
+					}else
+					{
+						set_current_position_to_zero();
+						m_homing.valid = true;
+						m_homing.sensors_enabled = false;
+						set_speed_requested();
+						stepper_mode(STEPPER_MODE_READY);
+					}
+				}
+            }
 		}
 		
+		/******************************************************************************************
+        * 
+		* **STEPPER_MODE_RANGEESTIMATION**
+		*
+        * measure full turn steps: go two rounds and calculate
+        * the difference in steps between both "on_release" triggers
+        * of the distance sensor
+        * and check if the result is reasonable, 
+        * TODO: if not reasonable -> set an error condition
+        ******************************************************************************************/
 		void stepper_mode_rangeestimation()
 		{
 			if (check_update_stepper_mode())
 				return;
+			
+			if(!m_rangeestimation.started)
+            {
+				// drive backward until we are out of range from the homing position stop
+				if(m_proximity_switch_home->state)
+				{
+					set_speed_high();
+					direction_forward(false);
+					increment_target_position(3.0);
+					start();
+				}else
+				{
+					m_rangeestimation.started = true;
+				}
+            }else
+            {
+				if (m_rangeestimation.found_home_counter <= NUMBER_OF_RANGEESTIMATIONS + 1)
+				{
+					direction_forward(true);
+					increment_target_position(1.5);
+					start();
+				}else
+				{
+					stop();
+					m_rangeestimation.found_home_counter = 0;
+					m_rangeestimation.range_0 = 0;
+					m_rangeestimation.range_1 = 0;
+					m_rangeestimation.started = false;
+					set_speed_requested();
+					stepper_mode(STEPPER_MODE_READY);
+				}
+            }
 		}
 		
 		void stepper_mode_drive()

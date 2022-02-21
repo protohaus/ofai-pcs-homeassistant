@@ -40,13 +40,18 @@ custom_component:
                                                "${stepper_id}",
                                                "${controller_id}",
                                                id(${stepper_motor_id}),
+                                               id(${device_name}_proximity_switch_home),
+                                               id(${device_name}_proximity_switch_global_home),
                                                ${stepper_update_interval_ms},
                                                ${sensor_update_interval_slow_ms},
                                                ${sensor_update_interval_mid_ms},
                                                ${sensor_update_interval_fast_ms},
-                                               ${sensor_update_interval_realtime_ms}
+                                               ${sensor_update_interval_realtime_ms},
+                                               ${homing_high_speed},
+                                               ${homing_mid_speed},
+                                               ${homing_low_speed}
                                                );
-      controller->set_component_source("steppercontroller"); 
+      controller->set_component_source("custom.StepperController"); 
       App.register_component(controller); 
       return {controller}; 
         
@@ -59,7 +64,6 @@ ota:
       lambda: |-
         get_controller(id(${controller}))->stop();
         get_controller(id(${controller}))->disable_motor();
-      #- button.press: ${stepper_motor_id}_stop
    
 globals:
     
@@ -123,7 +127,50 @@ globals:
     restore_value: no                   
     initial_value: "0"  
      
-    
+
+binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.active"
+    id: ${stepper_motor_id}_active
+    lambda: |-
+      return get_controller(id(${controller}))->is_active();
+
+  - platform: template
+    name: "${stepper_motor_id_upper}.homing.valid"
+    id: ${stepper_motor_id}_homing_valid
+    lambda: |-
+      return get_controller(id(${controller}))->homing_is_valid();
+  
+  - platform: gpio
+    name: ${device_name_upper}.proximity_switch.global_home
+    id: ${device_name}_proximity_switch_global_home
+    pin: 
+      number: ${sensor_proximity_switch_global_home_pin}
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 50ms
+
+  - platform: gpio
+    name: ${device_name_upper}.proximity_switch.home
+    id: ${device_name}_proximity_switch_home
+    pin: 
+      number: ${sensor_proximity_switch_home_pin}
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 50ms    
+    on_press:
+      then:
+        lambda: |-
+          get_controller(id(${controller}))->proximity_switch_home_pressed();
+    on_release:
+      then:
+        lambda: |-
+          get_controller(id(${controller}))->proximity_switch_home_released();
+          
 switch:    
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
@@ -147,7 +194,20 @@ button:
       lambda: |-
         get_controller(id(${controller}))->start();
 
-      
+  - platform: template
+    name: ${stepper_motor_id_upper}.start_homing
+    id: ${stepper_motor_id}_start_homing
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_homing();
+  
+  - platform: template
+    name: ${stepper_motor_id_upper}.start_rangeestimation
+    id: ${stepper_motor_id}_start_rangeestimation
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_rangeestimation();
+        
   - platform: template
     name: ${stepper_motor_id_upper}.stop
     id: ${stepper_motor_id}_stop
@@ -227,4 +287,4 @@ button:
     internal: true
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->set_speed_to_requested_speed();
+        get_controller(id(${controller}))->set_speed_requested();
