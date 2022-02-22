@@ -1,0 +1,44 @@
+global:
+  - id: stepper_watchdog_timer
+    type: int
+    restore_value: no
+    initial_value: "0"
+  
+  - id: stepper_watchdog_active
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+interval:
+  - interval: 1s
+    then:
+      lambda: |-
+        if(id(${stepper_motor_id}_motor_state).state)
+        { 
+          if(!id(stepper_watchdog_active)
+          {
+            id(stepper_watchdog_active) = true;
+            id(stepper_watchdog_timer) = esp_timer_get_time();
+          }else
+          {
+            if(id(pinion_wheel_detected))
+            {
+              id(pinion_wheel_detected) = false;
+              int time_now = esp_timer_get_time();
+              float diff = (time_now - id(stepper_watchdog_timer))/1000000;
+              float expected_diff = ((id(full_turn_steps)/${kinematics_pinion_wheel_rods_lower}) / id(speed));
+              
+              if(diff / expected_diff < ${stepper_error_pinion_wheels})
+              {
+                id(stepper_error) = STEPPER_ERROR_STUCK;
+                id(${stepper_motor_id}_stop).press();
+              }else
+              {
+                id(stepper_watchdog_timer) = time_now;
+              }
+              
+            }
+        }else
+        {
+          id(stepper_watchdog_active) = false;
+        }
