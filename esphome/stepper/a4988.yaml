@@ -7,7 +7,6 @@ substitutions:
   
 esphome: 
   includes: 
-    - stepper/helper_functions.h
     - stepper/steppercontroller.h
     - stepper/stepper_modes.h
     - stepper/stepper_error.h   
@@ -28,8 +27,7 @@ stepper:
 custom_component:
   - id: ${controller}
     lambda: |-
-      auto controller = new cStepperController(${stepper_initial_full_turn_steps},
-                                               ${stepper_initial_speed},
+      auto controller = new cStepperController(${stepper_initial_speed},
                                                ${stepper_max_speed},
                                                ${stepper_acceleration},
                                                ${stepper_max_acceleration},
@@ -42,6 +40,8 @@ custom_component:
                                                id(${stepper_motor_id}),
                                                id(${device_name}_proximity_switch_home),
                                                id(${device_name}_proximity_switch_global_home),
+                                               id(${device_name}_proximity_switch_pinion_wheel),
+                                               id(${stepper_motor_id}_mode),
                                                ${stepper_update_interval_ms},
                                                ${sensor_update_interval_slow_ms},
                                                ${sensor_update_interval_mid_ms},
@@ -64,80 +64,23 @@ ota:
       lambda: |-
         get_controller(id(${controller}))->stop();
         get_controller(id(${controller}))->disable_motor();
-   
+  
 globals:
-    
-  - id: stepper_mode                    
-    type: int                           
-    restore_value: no                   
-    initial_value: "0"  
-    
-  - id: motor_enabled
+  - id: dummy
     type: bool
     restore_value: no
-    initial_value: "false"  
+    initial_value: "false"
     
-  - id: direction_forward
-    type: bool
-    restore_value: no
-    initial_value: "true"
-    
-  - id: full_turn_steps
-    type: int
-    restore_value: yes
-    initial_value: ${stepper_initial_full_turn_steps}
-  
-  - id: requested_target_position
-    type: int
-    restore_value: no
-    initial_value: "0"  
-  
-  - id: target_position
-    type: int
-    restore_value: no
-    initial_value: "0"
-  
-  - id: speed
-    type: int
-    restore_value: no
-    initial_value: ${stepper_initial_speed}
-  
-  - id: requested_speed
-    type: int
-    restore_value: no
-    initial_value: ${stepper_initial_speed}
-    
-  - id: acceleration
-    type: int
-    restore_value: no
-    initial_value: ${stepper_acceleration}
-  
-  - id: deceleration
-    type: int
-    restore_value: no
-    initial_value: ${stepper_deceleration}
-    
-  - id: step_width
-    type: int
-    restore_value: no
-    initial_value: ${stepper_initial_step_width}   
-    
-  - id: stepper_error                
-    type: int                           
-    restore_value: no                   
-    initial_value: "0"  
-     
-
 binary_sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.active"
     id: ${stepper_motor_id}_active
     lambda: |-
       return get_controller(id(${controller}))->is_active();
-
+    
   - platform: template
-    name: "${stepper_motor_id_upper}.homing.valid"
-    id: ${stepper_motor_id}_homing_valid
+    name: "${stepper_motor_id_upper}.homing_is_valid"
+    id: ${stepper_motor_id}_homing_is_valid
     lambda: |-
       return get_controller(id(${controller}))->homing_is_valid();
   
@@ -170,7 +113,27 @@ binary_sensor:
       then:
         lambda: |-
           get_controller(id(${controller}))->proximity_switch_home_released();
+    
+  - platform: gpio
+    name: ${device_name_upper}.proximity_switch.pinion_wheel
+    id: ${device_name}_proximity_switch_pinion_wheel
+    pin: 
+      number: ${sensor_proximity_switch_pinion_wheel_pin}
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      then:
+        lambda: |-
+          get_controller(id(${controller}))->proximity_switch_pinion_wheel_pressed();
+    on_release:
+      then:
+        lambda: |-
+          get_controller(id(${controller}))->proximity_switch_pinion_wheel_released();
           
+    
 switch:    
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
@@ -193,6 +156,12 @@ button:
     on_press:
       lambda: |-
         get_controller(id(${controller}))->start();
+  - platform: template
+    name: ${stepper_motor_id_upper}.emergency
+    id: ${stepper_motor_id}_emergency
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->emergency_stop("User Interruption", STEPPER_ERROR_USER);
 
   - platform: template
     name: ${stepper_motor_id_upper}.start_homing
@@ -254,7 +223,7 @@ button:
     id: ${stepper_motor_id}_drive_forward
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->drive_forward();
+        get_controller(id(${controller}))->start_drive_forward();
 
 
   - platform: template
@@ -262,7 +231,7 @@ button:
     id: ${stepper_motor_id}_drive_backward
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->drive_backward();
+        get_controller(id(${controller}))->start_drive_backward();
    
    
   - platform: template

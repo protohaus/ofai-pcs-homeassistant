@@ -15,7 +15,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->target_position();
-    update_interval: ${sensor_update_interval_fast}
+    update_interval: ${sensor_update_interval_mid}
     
   - platform: template
     name: "${stepper_motor_id_upper}.requested_target_position"
@@ -24,8 +24,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->requested_target_position();
-    update_interval: ${sensor_update_interval_fast} 
-    
+    update_interval: ${sensor_update_interval_mid} 
     
   - platform: template
     name: "${stepper_motor_id_upper}.speed"
@@ -34,7 +33,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->speed();
-    update_interval: ${sensor_update_interval_fast}
+    update_interval: ${sensor_update_interval_mid}
     
   - platform: template
     name: "${stepper_motor_id_upper}.acceleration"
@@ -43,7 +42,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->acceleration();
-    update_interval: ${sensor_update_interval_fast}
+    update_interval: ${sensor_update_interval_mid}
     
   - platform: template
     name: "${stepper_motor_id_upper}.deceleration"
@@ -52,7 +51,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->deceleration();
-    update_interval: ${sensor_update_interval_fast}
+    update_interval: ${sensor_update_interval_mid}
    
   - platform: template
     name: "${stepper_motor_id_upper}.step_width"
@@ -61,7 +60,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->step_width();
-    update_interval: ${sensor_update_interval_fast}   
+    update_interval: ${sensor_update_interval_mid}   
   
   - platform: template
     name: "${stepper_motor_id_upper}.full_turn_steps"
@@ -79,3 +78,30 @@ sensor:
     lambda: |-
       return get_controller(id(${controller}))->stepper_mode();
     update_interval: ${sensor_update_interval_fast} 
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.error"
+    id: ${stepper_motor_id}_error
+    state_class: ""
+    lambda: |-
+      return get_controller(id(${controller}))->stepper_error();
+    update_interval: ${sensor_update_interval_fast} 
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.pinion_wheel_count"
+    id: ${stepper_motor_id}_pinion_wheel_count
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${controller}))->pinion_wheel_count();
+    unit_of_measurement: "count"
+    update_interval: ${sensor_update_interval_fast}
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.expected_pinion_wheel_count"
+    id: ${stepper_motor_id}_expected_pinion_wheel_count
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${controller}))->expected_pinion_wheel_count();
+    unit_of_measurement: "count"
+    update_interval: ${sensor_update_interval_fast}
+  

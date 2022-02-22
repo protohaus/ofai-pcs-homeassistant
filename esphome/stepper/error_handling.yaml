@@ -1,0 +1,37 @@
+binary_sensor:
+  - platform: template
+    name: "${stepper_motor_id_upper}.pinionwheel_check"
+    id: ${stepper_motor_id}_pinionwheel_check
+    lambda: |-
+      int diff= get_controller(id(${controller}))->expected_pinion_wheel_count() - 
+         get_controller(id(${controller}))->pinion_wheel_count();
+      
+      if (diff > 2)
+      {
+        if (get_controller(id(${controller}))->is_active())
+        {
+            get_controller(id(${controller}))->emergency_stop("Pinionwheel count mismatch", STEPPER_ERROR_PINIONWHEEL_MISMATCH);
+        }
+        return false;
+      }else
+      {
+        return true;
+      }
+
+
+interval:
+  - interval: 20 s
+    then:
+      - if:
+          condition:
+            not:
+              api.connected:
+          then:
+            - script.execute: emergency_stop_script
+
+script:
+  - id: emergency_stop_script
+    mode: restart   
+    then:
+      lambda: |-
+          get_controller(id(${controller}))->emergency_stop("API disconnected", STEPPER_ERROR_CONNECTION);

@@ -49,12 +49,8 @@ binary_sensor:
         pullup: true
       inverted: false
     on_press:
-      - button.press: ${stepper_motor_id}_stop
-      - logger.log:
-          format: "Stepper 1 is losing steps: emergency stop"
-          level: ERROR
-      - lambda: |-
-          id(stepper_error) = STEPPER_ERROR_DIAG;
+      lambda: |-
+        get_controller(id(${controller}))->emergency_stop("DIAG Pin 1 == HIGH", STEPPER_ERROR_DIAG);
       
   - platform: gpio
     name: ${stepper_motor_id_upper}.diag_pin_2
@@ -66,12 +62,8 @@ binary_sensor:
         pullup: true
       inverted: false
     on_press:
-      - button.press: ${stepper_motor_id}_stop
-      - logger.log:
-          format: "Stepper 2 is losing steps: emergency stop"
-          level: ERROR
-      - lambda: |-
-          id(stepper_error) = STEPPER_ERROR_DIAG;
+      lambda: |-
+        get_controller(id(${controller}))->emergency_stop("DIAG Pin 2 == HIGH", STEPPER_ERROR_DIAG);
       
   - platform: gpio
     name: ${stepper_motor_id_upper}.diag_pin_3
@@ -83,12 +75,8 @@ binary_sensor:
         pullup: true
       inverted: false
     on_press:
-      - button.press: ${stepper_motor_id}_stop
-      - logger.log:
-          format: "Stepper 3 is losing steps: emergency stop"
-          level: ERROR
-      - lambda: |-
-          id(stepper_error) = STEPPER_ERROR_DIAG;
+      lambda: |-
+        get_controller(id(${controller}))->emergency_stop("DIAG Pin 3 == HIGH", STEPPER_ERROR_DIAG);
       
 interval:
   - interval: 60s
@@ -96,14 +84,7 @@ interval:
       if:
         condition:
           lambda: |-
-            if (get_controller(id(${controller}))->is_active() && 
-                get_controller(id(${controller}))->motor_enabled())
-            {
-                return true;
-            }else
-            {
-                return false;
-            }
+            return (get_controller(id(${controller}))->is_active() == true ? true : false);
         then:
           - switch.turn_on: ${device_name}_fan
           - delay: 40s

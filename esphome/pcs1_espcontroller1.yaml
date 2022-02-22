@@ -23,28 +23,12 @@ substitutions:
   stepper_acceleration: "1000"     #"inf"
   stepper_deceleration: "1000"    #"inf"
   stepper_initial_step_width: "2000"
-  stepper_initial_full_turn_steps: "764586"
-  stepper_error_pinion_wheels: "2"
-  stepper_error_full_turn_steps: "0.05"
   stepper_update_interval_ms: "1000"
   
   # homing settings
   homing_high_speed: "12000"
   homing_mid_speed: "250"
   homing_low_speed: "100"
-  
-  # rangeestimation
-  rangeestimation_number_of_values: "5"
-  
-  # kinematics
-  kinematics_plant_gear_teeth: "12"
-  kinematics_pinion_wheel_rods_upper: "40"
-  kinematics_pinion_wheel_rods_lower: "64"
-  kinematics_transmission_gear_big_teeth: "15"
-  kinematics_transmission_gear_small_teeth: "140"
-  kinematics_steps_per_rotation: "200"
-  kinematics_microsteps_per_step: "64"
-  kinematics_motor_gear_teeth: "10"
   
   #fans
   fan_pin: GPIO21 #GPIO18
@@ -81,7 +65,5 @@ packages:
   common_restart: !include common/restart.yaml
   stepper_a4988: !include stepper/a4988.yaml
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
-  #stepper_homing: !include stepper/homing.yaml
-  stepper_pioniowheel_counter: !include stepper/pioniowheel_counter.yaml
   stepper_sensor: !include stepper/sensor.yaml
-  #stepper_error_handling: !include stepper/error_handling.yaml
+  error_handling: !include stepper/error_handling.yaml
