@@ -3,14 +3,12 @@ binary_sensor:
     name: "${stepper_motor_id_upper}.pinionwheel_check"
     id: ${stepper_motor_id}_pinionwheel_check
     lambda: |-
-      int diff= get_controller(id(${controller}))->expected_pinion_wheel_count() - 
-         get_controller(id(${controller}))->pinion_wheel_count();
-      
-      if (diff > 2)
+      if (get_controller(id(${controller}))->get_pinion_wheel_diff_error())
       {
         if (get_controller(id(${controller}))->is_active())
         {
             get_controller(id(${controller}))->emergency_stop("Pinionwheel count mismatch", STEPPER_ERROR_PINIONWHEEL_MISMATCH);
+            get_controller(id(${controller}))->set_homing_invalid();
         }
         return false;
       }else

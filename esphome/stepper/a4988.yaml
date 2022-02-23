@@ -246,14 +246,7 @@ button:
     id: ${stepper_motor_id}_goto_next_home
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->goto_next_home(); 
-  
-  - platform: template
-    name: ${stepper_motor_id_upper}.goto_next_global_home
-    id: ${stepper_motor_id}_goto_next_global_home
-    on_press:
-      lambda: |-
-        get_controller(id(${controller}))->goto_next_global_home(); 
+        get_controller(id(${controller}))->start_homing(); 
         
   - platform: template
     name: ${stepper_motor_id_upper}.goto_requested_target_position

@@ -35,7 +35,7 @@ substitutions:
   
   # sensor settings
   sensor_proximity_switch_pinion_wheel_pin: GPIO32
-  sensor_proximity_switch_home_pin: GPIO4
+  sensor_proximity_switch_home_pin: GPIO16
   sensor_proximity_switch_global_home_pin: GPIO33
   
   sensor_update_interval_realtime: 0.1s
