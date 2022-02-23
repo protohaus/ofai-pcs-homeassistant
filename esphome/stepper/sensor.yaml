@@ -104,4 +104,13 @@ sensor:
       return get_controller(id(${controller}))->expected_pinion_wheel_count();
     unit_of_measurement: "count"
     update_interval: ${sensor_update_interval_fast}
+   
+  - platform: template
+    name: "${stepper_motor_id_upper}.homing_difference"
+    id: ${stepper_motor_id}_homing_difference
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${controller}))->homing_difference();
+    unit_of_measurement: "count"
+    update_interval: ${sensor_update_interval_fast}   
   

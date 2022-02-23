@@ -171,6 +171,13 @@ button:
         get_controller(id(${controller}))->start_homing();
   
   - platform: template
+    name: ${stepper_motor_id_upper}.start_homing_check
+    id: ${stepper_motor_id}_start_homing_check
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_homing_check();
+        
+  - platform: template
     name: ${stepper_motor_id_upper}.start_rangeestimation
     id: ${stepper_motor_id}_start_rangeestimation
     on_press:
