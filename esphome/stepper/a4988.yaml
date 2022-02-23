@@ -241,7 +241,20 @@ button:
       lambda: |-
         get_controller(id(${controller}))->goto_global_home();  
        
-       
+  - platform: template
+    name: ${stepper_motor_id_upper}.goto_next_home
+    id: ${stepper_motor_id}_goto_next_home
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->goto_next_home(); 
+  
+  - platform: template
+    name: ${stepper_motor_id_upper}.goto_next_global_home
+    id: ${stepper_motor_id}_goto_next_global_home
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->goto_next_global_home(); 
+        
   - platform: template
     name: ${stepper_motor_id_upper}.goto_requested_target_position
     id: ${stepper_motor_id}_goto_requested_target_position

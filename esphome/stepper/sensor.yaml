@@ -15,7 +15,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->target_position();
-    update_interval: ${sensor_update_interval_mid}
+    update_interval: ${sensor_update_interval_realtime}
     
   - platform: template
     name: "${stepper_motor_id_upper}.requested_target_position"
