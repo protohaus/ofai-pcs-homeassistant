@@ -1,0 +1,20 @@
+sensor:
+  - platform: adc
+    pin: ${sensor_current_pin}
+    name: "${device_name_upper}.current"
+    id: ${device_name}_current
+    unit_of_measurement: A
+    update_interval: 1s
+    attenuation: auto  # auto, 0db, 2.5db, 6db, 11db
+    #raw: true
+    #filters:
+      #- multiply: 0.00026862 # 1.1/4095, for attenuation 0db
+      #- multiply: 0.00036630 # 1.5/4095, for attenuation 2.5db
+      #- multiply: 0.00053724 # 2.2/4095, for attenuation 6db
+      #- multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+    #filters:
+    #  - lambda: |-
+    #      //return (x / 10000.0) * 2000000.0;
+    #      //float I = (float)acc / 10.0 / ADC_SCALE * VREF / sensitivity;
+    #      float I =(x*1000-(5*1000*2.5))/185;
+    #      return x;

@@ -104,4 +104,3 @@ sensor:
       return get_controller(id(${controller}))->homing_difference();
     unit_of_measurement: "count"
     update_interval: ${sensor_update_interval_fast}   
-  

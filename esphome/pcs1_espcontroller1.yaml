@@ -50,6 +50,7 @@ substitutions:
   sensor_update_interval_mid_ms: "10000"
   sensor_update_interval_slow_ms: "60000"
   
+  sensor_current_pin: GPIO35
   
 esphome:
   name: ${host_name}
@@ -69,3 +70,4 @@ packages:
   stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
   stepper_sensor: !include stepper/sensor.yaml
   error_handling: !include stepper/error_handling.yaml
+  sensor_current: !include sensors/current.yaml
