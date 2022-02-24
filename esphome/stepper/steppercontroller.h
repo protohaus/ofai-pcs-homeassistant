@@ -170,6 +170,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			register_service(&cStepperController::on_set_speed, 
 						m_stepper_id + "_" + m_controller_id + "_" + "set_speed",
 						{"speed"});
+						
+			register_service(&cStepperController::on_set_speed_turns_per_hour, 
+						m_stepper_id + "_" + m_controller_id + "_" + "set_speed_turns_per_hour",
+						{"turns_per_hour"});			
 			
 			register_service(&cStepperController::on_set_step_width, 
 						m_stepper_id + "_" + m_controller_id + "_" + "set_step_width",
@@ -246,6 +250,14 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_speed(int speed_)
 		{
+			requested_speed(speed_);
+			speed(speed_);
+		}
+		
+		void on_set_speed_turns_per_hour(float turns_per_hour_)
+		{
+			float angular_velocity = turns_per_hour_ / (60 * 60 / 360.0);
+			float speed_ = angular_velocity / (360.0 / KINEMATICS_FULL_TURN_STEPS);
 			requested_speed(speed_);
 			speed(speed_);
 		}
@@ -540,12 +552,37 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		
 		/***************************************
-	    ** current_position (Degree)
+	    ** current_angle (Degree)
 		***************************************/
-		float global_position()
+		float current_angle()
 		{
-			return 360.0 * current_position() / KINEMATICS_FULL_TURN_STEPS;
+			return (current_position() / (float)KINEMATICS_FULL_TURN_STEPS) * 360.0;
 		}
+		
+		/***************************************
+	    ** current_angle (Degree)
+		***************************************/
+		float current_angular_velocity()
+		{
+			return speed() * (360.0 / KINEMATICS_FULL_TURN_STEPS) ;
+		}
+	    
+		/***************************************
+	    ** current_turns_per_hour (Degree)
+		***************************************/
+		float current_turns_per_hour()
+		{
+			return current_angular_velocity() * 60 * 60 / (360.0);
+		}
+		
+		/***************************************
+	    ** current_cycles_per_hour (Degree)
+		***************************************/
+		float current_cycles_per_hour()
+		{
+			return current_turns_per_hour()*3.0;
+		}
+		
 		
 		
 		
@@ -655,11 +692,20 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			//xSemaphoreGive(mutex_main_loop);
 		}
 		
-		void start_homing_check()
+		void find_next_home()
 		{
 			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
 			m_calibration_mode_active = false;
 			m_global_homing = false;
+			direction_forward(true);
+			stepper_mode(STEPPER_MODE_HOMING);
+			//xSemaphoreGive(mutex_main_loop);
+		}
+		
+		void find_next_global_home()
+		{
+			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
+			m_global_homing = true;
 			direction_forward(true);
 			stepper_mode(STEPPER_MODE_HOMING);
 			//xSemaphoreGive(mutex_main_loop);

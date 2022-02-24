@@ -78,6 +78,14 @@ input_number:
     max: 12000
     step: 1
     mode: slider
+  stepper_set_speed_turns_per_hour:
+    name: stepper.set_speed
+    initial: 1
+    min: 0
+    max: 9
+    step: 0.5
+    mode: slider  
+    
   stepper_set_acceleration:
     name: stepper.set_acceleration
     initial: 500
@@ -259,6 +267,18 @@ automation stepper_send_speed:
       - service: esphome.pcs1_espcontroller1_stepper_controller_set_speed
         data_template:
           speed: '{{ trigger.to_state.state | int }}'
+          
+automation stepper_send_speed_turns_per_hour:
+  - alias: Send speed value to controller
+    id: stepper_send_speed_turns_per_hour
+    trigger:
+      platform: state
+      entity_id: input_number.stepper_set_speed_turns_per_hour
+    action:
+      # Replace livingroom with the name you gave the ESP
+      - service: esphome.pcs1_espcontroller1_stepper_controller_set_speed_turns_per_hour
+        data_template:
+          turns_per_hour: '{{ trigger.to_state.state | int }}'          
 
 # Do something when the slider changes
 automation stepper_send_acceleration:

@@ -1,12 +1,39 @@
 sensor:
   - platform: template
-    name: "${stepper_motor_id_upper}.position_now"
-    id: ${stepper_motor_id}_position_now
+    name: "${stepper_motor_id_upper}.position"
+    id: ${stepper_motor_id}_position
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->current_position();
     update_interval: ${sensor_update_interval_realtime}
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.angle"
+    id: ${stepper_motor_id}_angle
+    unit_of_measurement: "deg"
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${stepper_motor_id}_controller))->current_angle();
+    update_interval: ${sensor_update_interval_fast}
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.angular_velocity"
+    id: ${stepper_motor_id}_angular_velocity
+    unit_of_measurement: "deg/s"
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${stepper_motor_id}_controller))->current_angular_velocity();
+    update_interval: ${sensor_update_interval_fast}
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.turns_per_hour"
+    id: ${stepper_motor_id}_turns_per_hour
+    unit_of_measurement: "cycles/h"
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${stepper_motor_id}_controller))->current_turns_per_hour();
+    update_interval: ${sensor_update_interval_fast}
     
   - platform: template
     name: "${stepper_motor_id_upper}.target_position"
@@ -15,7 +42,7 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->target_position();
-    update_interval: ${sensor_update_interval_realtime}
+    update_interval: ${sensor_update_interval_fast}
     
   - platform: template
     name: "${stepper_motor_id_upper}.speed"

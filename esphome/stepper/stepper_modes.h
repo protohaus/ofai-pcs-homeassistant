@@ -12,13 +12,6 @@ enum eStepperModes
 	STEPPER_MODE_MANUAL = 11
 };
 
-enum eCalibrationModes
-{
-	CALIBRATION_MODE_OFF = 0,
-	CALIBRATION_MODE_HOMING = 1,
-	CALIBRATION_MODE_RANGEESTIMATION = 2
-};
-
 enum eAutomationModes
 {
 	AUTOMATION_MODE_OFF = 0,
