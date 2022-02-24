@@ -1,7 +1,7 @@
 binary_sensor:
   - platform: template
-    name: "${stepper_motor_id_upper}.pinionwheel_check"
-    id: ${stepper_motor_id}_pinionwheel_check
+    name: "${stepper_motor_id_upper}.error.pinionwheel_check"
+    id: ${stepper_motor_id}_error_pinionwheel_check
     lambda: |-
       if (get_controller(id(${controller}))->get_pinion_wheel_diff_error())
       {
@@ -10,10 +10,28 @@ binary_sensor:
             get_controller(id(${controller}))->emergency_stop("Pinionwheel count mismatch", STEPPER_ERROR_PINIONWHEEL_MISMATCH);
             get_controller(id(${controller}))->set_homing_invalid();
         }
-        return false;
+        return true;
       }else
       {
+        return false;
+      }
+
+  - platform: template
+    name: "${stepper_motor_id_upper}.error.homing_difference_check"
+    id: ${stepper_motor_id}_error_homing_difference_check
+    lambda: |-
+      if (get_controller(id(${controller}))->get_homing_diff_error())
+      {
+        if (get_controller(id(${controller}))->is_active())
+        {
+            get_controller(id(${controller}))->emergency_stop("Homing invalid, lost position", STEPPER_ERROR_HOMING);
+        }
+        get_controller(id(${controller}))->set_homing_invalid();
+        
         return true;
+      }else
+      {
+        return false;
       }
 
 
@@ -25,11 +43,5 @@ interval:
             not:
               api.connected:
           then:
-            - script.execute: emergency_stop_script
-
-script:
-  - id: emergency_stop_script
-    mode: restart   
-    then:
-      lambda: |-
-          get_controller(id(${controller}))->emergency_stop("API disconnected", STEPPER_ERROR_CONNECTION);
+            lambda: |-
+              get_controller(id(${controller}))->emergency_stop("API disconnected", STEPPER_ERROR_CONNECTION);

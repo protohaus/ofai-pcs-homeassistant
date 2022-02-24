@@ -18,15 +18,6 @@ sensor:
     update_interval: ${sensor_update_interval_realtime}
     
   - platform: template
-    name: "${stepper_motor_id_upper}.requested_target_position"
-    id: ${stepper_motor_id}_requested_target_position
-    unit_of_measurement: "steps"
-    state_class: "measurement"
-    lambda: |-
-      return get_controller(id(${controller}))->requested_target_position();
-    update_interval: ${sensor_update_interval_mid} 
-    
-  - platform: template
     name: "${stepper_motor_id_upper}.speed"
     id: ${stepper_motor_id}_speed
     unit_of_measurement: "steps/s"
@@ -63,12 +54,12 @@ sensor:
     update_interval: ${sensor_update_interval_mid}   
   
   - platform: template
-    name: "${stepper_motor_id_upper}.full_turn_steps"
-    id: ${stepper_motor_id}_full_turn_steps
+    name: "${stepper_motor_id_upper}.measured_full_turn_steps"
+    id: ${stepper_motor_id}_measured_full_turn_steps
     unit_of_measurement: "steps"
     state_class: "measurement"
     lambda: |-
-      return get_controller(id(${controller}))->full_turn_steps();
+      return get_controller(id(${controller}))->measured_full_turn_steps();
     update_interval: ${sensor_update_interval_mid}   
     
   - platform: template
@@ -80,16 +71,16 @@ sensor:
     update_interval: ${sensor_update_interval_fast} 
     
   - platform: template
-    name: "${stepper_motor_id_upper}.error"
-    id: ${stepper_motor_id}_error
+    name: "${stepper_motor_id_upper}.error.code"
+    id: ${stepper_motor_id}_error_code
     state_class: ""
     lambda: |-
       return get_controller(id(${controller}))->stepper_error();
     update_interval: ${sensor_update_interval_fast} 
     
   - platform: template
-    name: "${stepper_motor_id_upper}.pinion_wheel_count"
-    id: ${stepper_motor_id}_pinion_wheel_count
+    name: "${device_name_upper}.proximity_switch.pinion_wheel_count"
+    id: ${device_name}_proximity_switch_pinion_wheel_count
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->pinion_wheel_count();
@@ -97,8 +88,8 @@ sensor:
     update_interval: ${sensor_update_interval_fast}
   
   - platform: template
-    name: "${stepper_motor_id_upper}.expected_pinion_wheel_count"
-    id: ${stepper_motor_id}_expected_pinion_wheel_count
+    name: "${device_name_upper}.proximity_switch.expected_pinion_wheel_count"
+    id: ${device_name}_proximity_switch_expected_pinion_wheel_count
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->expected_pinion_wheel_count();
@@ -106,7 +97,7 @@ sensor:
     update_interval: ${sensor_update_interval_fast}
    
   - platform: template
-    name: "${stepper_motor_id_upper}.homing_difference"
+    name: "${stepper_motor_id_upper}.homing.difference"
     id: ${stepper_motor_id}_homing_difference
     state_class: "measurement"
     lambda: |-
