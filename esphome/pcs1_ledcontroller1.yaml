@@ -6,7 +6,12 @@ substitutions:
   status_led_pin: GPIO33
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
-  
+
+dallas:
+  - pin: GPIO4
+
+
+
 esphome:
   name: ${host_name}
   platform: ESP32
@@ -22,160 +27,195 @@ packages:
   common_status: !include common/status.yaml
   #common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
-  
+
+sensor:
+  - platform: dallas
+    address: 0xaf02059245225828
+    name: "Living Room Temperature"
+    
+  - platform: adc
+    pin: GPIO32
+    name: "LED.Current32"
+    id: led_current32
+    unit_of_measurement: A
+    update_interval: 1s
+    attenuation: auto  # auto, 0db, 2.5db, 6db, 11db
+    #raw: true
+    #filters:
+      #- multiply: 0.00026862 # 1.1/4095, for attenuation 0db
+      #- multiply: 0.00036630 # 1.5/4095, for attenuation 2.5db
+      #- multiply: 0.00053724 # 2.2/4095, for attenuation 6db
+      #- multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+    #filters:
+    #  - lambda: |-
+    #      //return (x / 10000.0) * 2000000.0;
+    #      //float I = (float)acc / 10.0 / ADC_SCALE * VREF / sensitivity;
+    #      float I =(x*1000-(5*1000*2.5))/185;
+    #      return x;
+  - platform: adc
+    pin: GPIO33
+    name: "LED.Current33"
+    id: led_current33
+    unit_of_measurement: A
+    update_interval: 1s
+    attenuation: auto  # auto, 0db, 2.5db, 6db, 11db
+
+  - platform: adc
+    pin: GPIO34
+    name: "LED.Current34"
+    id: led_current34
+    unit_of_measurement: A
+    update_interval: 1s
+    attenuation: auto  # auto, 0db, 2.5db, 6db, 11db
+
+  - platform: adc
+    pin: GPIO35
+    name: "LED.Current35"
+    id: led_current35
+    unit_of_measurement: A
+    update_interval: 1s
+    attenuation: auto  # auto, 0db, 2.5db, 6db, 11db    
+    
+    
 output:
   - platform: ledc
-    pin: "GPIO16"
+    pin: "GPIO12"
     id: led_panel_1
-    frequency: 1000Hz
-  
+    frequency: 1Hz
+
+  - platform: ledc
+    pin: "GPIO13"
+    id: led_panel_2
+    frequency: 1Hz
+
+  - platform: ledc
+    pin: "GPIO14"
+    id: led_panel_3
+    frequency: 2Hz
+    
+  - platform: ledc
+    pin: "GPIO15"
+    id: led_panel_4
+    frequency: 2Hz
+
+  - platform: ledc
+    pin: "GPIO16"
+    id: led_panel_5
+    frequency: 5Hz
+
+  - platform: ledc
+    pin: "GPIO17"
+    id: led_panel_6
+    frequency: 5Hz
+    
   - platform: ledc
     pin: "GPIO18"
-    id: led_panel_2
-    frequency: 1000Hz
+    id: led_panel_7
+    frequency: 10Hz
 
-globals:
-  - id: led_1_is_on
-    type: bool
-    restore_value: no
-    initial_value: "false"  
-  - id: led_2_is_on
-    type: bool
-    restore_value: no
-    initial_value: "false"  
+  - platform: ledc
+    pin: "GPIO19"
+    id: led_panel_8
+    frequency: 10Hz
     
-button:
-  - platform: template
-    name: led_1_0_percent
-    id: led_1_0_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_1
-           level: "0%" 
-  
-  - platform: template
-    name: led_1_10_percent
-    id: led_1_10_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_1
-           level: "10%" 
-           
-  - platform: template
-    name: led_1_50_percent
-    id: led_1_50_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_1
-           level: "50%" 
-           
-  - platform: template
-    name: led_1_90_percent
-    id: led_1_90_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_1
-           level: "90%" 
-           
-  - platform: template
-    name: led_1_100_percent
-    id: led_1_100_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_1
-           level: "100%" 
-  - platform: template
-    name: led_2_0_percent
-    id: led_2_0_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_2
-           level: "0%" 
-  
-  - platform: template
-    name: led_2_10_percent
-    id: led_2_10_percent_2
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_2
-           level: "10%" 
-           
-  - platform: template
-    name: led_2_50_percent
-    id: led_2_50_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_2
-           level: "50%" 
-           
-  - platform: template
-    name: led_2_90_percent
-    id: led_2_90_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_2
-           level: "90%" 
-           
-  - platform: template
-    name: led_2_100_percent
-    id: led_2_100_percent
-    on_press:
-      then:
-        - output.set_level:
-           id: led_panel_2
-           level: "100%" 
+  - platform: ledc
+    pin: "GPIO21"
+    id: led_panel_9
+    frequency: 20Hz
+
+  - platform: ledc
+    pin: "GPIO22"
+    id: led_panel_10
+    frequency: 20Hz
+
+  - platform: ledc
+    pin: "GPIO23"
+    id: led_panel_11
+    frequency: 50Hz
+    
+  - platform: ledc
+    pin: "GPIO25"
+    id: led_panel_12
+    frequency: 50Hz
+
+  - platform: ledc
+    pin: "GPIO26"
+    id: led_panel_13
+    frequency: 80Hz
+
+  - platform: ledc
+    pin: "GPIO27"
+    id: led_panel_14
+    frequency: 80Hz
+    
+  - platform: ledc
+    pin: "GPIO32"
+    id: led_panel_15
+    frequency: 100Hz
+
+  #- platform: ledc
+  #  pin: "GPIO33"
+  #  id: led_panel_16
+  #  frequency: 100Hz
+    
+globals:
+  - id: led_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+
 switch:
   - platform: template
     name: turn_on_led_1
     id: turn_on_led_1
     lambda: |-
-       if (id(led_1_is_on) == true)
+       if (id(led_is_on) == true)
          return true;
        else
          return false;
     turn_on_action:
       then:
         - output.turn_on: led_panel_1
-        - globals.set:
-            id: led_1_is_on
-            value: "true"
-    turn_off_action:
-      then:
-        - output.turn_off: led_panel_1  
-        - globals.set:
-           id: led_1_is_on
-           value: "false"     
-
-  - platform: template
-    name: turn_on_led_2
-    id: turn_on_led_2
-    lambda: |-
-       if (id(led_2_is_on) == true)
-         return true;
-       else
-         return false;
-    turn_on_action:
-      then:
         - output.turn_on: led_panel_2
+        - output.turn_on: led_panel_3
+        - output.turn_on: led_panel_4
+        - output.turn_on: led_panel_5
+        - output.turn_on: led_panel_6
+        - output.turn_on: led_panel_7
+        - output.turn_on: led_panel_8
+        - output.turn_on: led_panel_9
+        - output.turn_on: led_panel_10
+        - output.turn_on: led_panel_11
+        - output.turn_on: led_panel_12
+        - output.turn_on: led_panel_13
+        - output.turn_on: led_panel_14
+        - output.turn_on: led_panel_15
+        #- output.turn_on: led_panel_16
         - globals.set:
-            id: led_2_is_on
+            id: led_is_on
             value: "true"
     turn_off_action:
       then:
-        - output.turn_off: led_panel_2 
+        - output.turn_off: led_panel_1
+        - output.turn_off: led_panel_2
+        - output.turn_off: led_panel_3
+        - output.turn_off: led_panel_4
+        - output.turn_off: led_panel_5
+        - output.turn_off: led_panel_6
+        - output.turn_off: led_panel_7
+        - output.turn_off: led_panel_8
+        - output.turn_off: led_panel_9
+        - output.turn_off: led_panel_10
+        - output.turn_off: led_panel_11
+        - output.turn_off: led_panel_12
+        - output.turn_off: led_panel_13
+        - output.turn_off: led_panel_14
+        - output.turn_off: led_panel_15
+        #- output.turn_off: led_panel_16
         - globals.set:
-           id: led_2_is_on
-           value: "false"               
-        
+           id: led_is_on
+           value: "false"             
+           
 api:
   services:      
     - service: led_1_set_level
@@ -195,3 +235,129 @@ api:
         - output.set_level:
            id: led_panel_2
            level: !lambda 'return led_level;'
+    
+    - service: led_3_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_3_level"
+        - output.set_level:
+           id: led_panel_3
+           level: !lambda 'return led_level;'
+           
+    - service: led_4_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_4_level"
+        - output.set_level:
+           id: led_panel_4
+           level: !lambda 'return led_level;'
+    
+    - service: led_5_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_5_level"
+        - output.set_level:
+           id: led_panel_5
+           level: !lambda 'return led_level;'
+    
+    - service: led_6_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_6_level"
+        - output.set_level:
+           id: led_panel_6
+           level: !lambda 'return led_level;'
+    
+    - service: led_7_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_7_level"
+        - output.set_level:
+           id: led_panel_7
+           level: !lambda 'return led_level;'
+    
+    - service: led_8_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_8_level"
+        - output.set_level:
+           id: led_panel_8
+           level: !lambda 'return led_level;'
+           
+    - service: led_9_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_9_level"
+        - output.set_level:
+           id: led_panel_9
+           level: !lambda 'return led_level;'
+    
+    - service: led_10_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_10_level"
+        - output.set_level:
+           id: led_panel_10
+           level: !lambda 'return led_level;'
+    
+    - service: led_11_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_11_level"
+        - output.set_level:
+           id: led_panel_11
+           level: !lambda 'return led_level;'
+           
+    - service: led_12_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_12_level"
+        - output.set_level:
+           id: led_panel_12
+           level: !lambda 'return led_level;'
+           
+    - service: led_13_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_13_level"
+        - output.set_level:
+           id: led_panel_13
+           level: !lambda 'return led_level;'
+    
+    - service: led_14_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_14_level"
+        - output.set_level:
+           id: led_panel_14
+           level: !lambda 'return led_level;'
+    
+    - service: led_15_set_level
+      variables:
+        led_level: float
+      then:
+        - logger.log: "Set led led_15_level"
+        - output.set_level:
+           id: led_panel_15
+           level: !lambda 'return led_level;'
+    
+    #- service: led_16_set_level
+    #  variables:
+    #    led_level: float
+    #  then:
+    #    - logger.log: "Set led led_16_level"
+    #    - output.set_level:
+    #       id: led_panel_16
+    #       level: !lambda 'return led_level;'
