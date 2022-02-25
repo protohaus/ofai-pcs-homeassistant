@@ -168,5 +168,5 @@ sensor:
     unit_of_measurement: "deg"
     lambda: |-
       return get_controller(id(${controller}))->plant_gear_rotation_angle();
-    update_interval: ${sensor_update_interval_mid}  
+    update_interval: ${sensor_update_interval_fast}  
   

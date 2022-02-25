@@ -613,7 +613,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		***************************************/
 		float current_angular_velocity()
 		{
-			return speed() * (360.0 / KINEMATICS_FULL_TURN_STEPS) ;
+			return speed() * (360.0 / (float)KINEMATICS_FULL_TURN_STEPS) ;
 		}
 	    
 		/***************************************
@@ -638,10 +638,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		***************************************/
 		float plant_gear_rotation_angle()
 		{
-			float total_angle = (KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT/KINEMATICS_PLANT_GEAR_SLOTS) *
+			//float total_angle = ((float)KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT/(float)KINEMATICS_PLANT_GEAR_SLOTS) *
 									current_angle();
+			float total_angle = (200.0/60.0) * current_angle();
 			float relative_angle = total_angle / 360.0;
-			return 360.0 * (relative_angle - std::floor(relative_angle));
+			return 360.0 * (relative_angle - (int)relative_angle);
 		}
 		
 		
@@ -662,7 +663,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			
 			if (position != 0)
 			{
-				expected_pinion_wheel_count = 0.5 + (position / KINEMATICS_FULL_TURN_STEPS ) * KINEMATICS_PINION_WHEEL_RODS_LOWER;
+				expected_pinion_wheel_count = 0.5 + (position / (float)KINEMATICS_FULL_TURN_STEPS ) * (float)KINEMATICS_PINION_WHEEL_RODS_LOWER;
 			}
 			
 			return expected_pinion_wheel_count;
