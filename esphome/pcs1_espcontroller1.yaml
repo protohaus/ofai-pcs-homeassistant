@@ -50,7 +50,12 @@ substitutions:
   sensor_update_interval_mid_ms: "10000"
   sensor_update_interval_slow_ms: "60000"
   
-  sensor_current_pin: GPIO35
+  sensor_current_pin: GPIO34
+  
+  sensor_dallas_hub_1_pin: GPIO14
+  sensor_dallas_hub_1_name: dallas_hub_1
+  sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_2_name: dallas2
   
 esphome:
   name: ${host_name}
@@ -71,3 +76,5 @@ packages:
   stepper_sensor: !include stepper/sensor.yaml
   error_handling: !include stepper/error_handling.yaml
   sensor_current: !include sensors/current.yaml
+  sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
+  sensor_dallas_1: !include sensors/dallas_2.yaml

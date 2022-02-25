@@ -1,0 +1,3 @@
+dallas:
+  - pin: ${sensor_dallas_hub_3_pin}
+    id: ${sensor_dallas_hub_3_name}
