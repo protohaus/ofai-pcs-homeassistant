@@ -1200,7 +1200,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					m_homing.sensors_enabled = false;
 					m_homing.found_low_precision = false;
 					m_homing.found_high_precision = false;
-					set_speed_high();
+					if(m_calibration_mode_active)
+						set_speed_high();
+					else
+						set_speed_requested();
 					set_acceleration_max();
 					set_deceleration_max();
 					break;
@@ -1309,7 +1312,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				// drive backward until we are out of range from the homing position stop
 				if(m_proximity_switch_home->state)
 				{
-					set_speed_high();
+					if(m_calibration_mode_active)
+						set_speed_high();
+					else
+						set_speed_requested();
+					
 					direction_forward(false);
 					drive(3.0);
 				}else
@@ -1320,7 +1327,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
             {
 				if(!m_homing.found_low_precision)
 				{ 
-					set_speed_high();
+					if(m_calibration_mode_active)
+						set_speed_high();
+					else
+						set_speed_requested();
 					direction_forward(true);
 					m_homing.sensors_enabled = true;               
 					drive(1.5);
