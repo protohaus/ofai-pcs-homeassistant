@@ -101,8 +101,17 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->step_width();
-    update_interval: ${sensor_update_interval_mid}   
+    update_interval: ${sensor_update_interval_fast}   
   
+  - platform: template
+    name: "${stepper_motor_id_upper}.step_angle"
+    id: ${stepper_motor_id}_step_angle
+    unit_of_measurement: "deg"
+    state_class: "measurement"
+    lambda: |-
+      return get_controller(id(${controller}))->step_angle();
+    update_interval: ${sensor_update_interval_fast}   
+    
   - platform: template
     name: "${stepper_motor_id_upper}.measured_full_turn_steps"
     id: ${stepper_motor_id}_measured_full_turn_steps

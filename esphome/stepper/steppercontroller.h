@@ -400,6 +400,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			step_width((int)step_width_);
 		}
 		
+		float step_angle()
+		{
+			return (step_width() / (float)KINEMATICS_FULL_TURN_STEPS ) * 360.0;
+		}
+		
 		float angle_to_steps(int angle_)
 		{
 			return (float)KINEMATICS_FULL_TURN_STEPS * (angle_ / 360.0);
