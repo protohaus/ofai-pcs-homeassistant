@@ -1,9 +1,10 @@
 substitutions:
   stepper_id: stepper
   controller_id: controller
-  stepper_motor_id_upper: ${device_name_upper}.stepper
+  stepper_motor_id_upper: ${device_name_upper}.${stepper_id}
   stepper_motor_id: ${device_name}_${stepper_id}
   controller: ${stepper_motor_id}_${controller_id}
+  
   
 esphome: 
   includes: 

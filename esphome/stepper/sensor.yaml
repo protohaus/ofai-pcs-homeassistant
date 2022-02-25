@@ -160,3 +160,13 @@ sensor:
     lambda: |-
       return get_controller(id(${controller}))->homing_difference();
     update_interval: ${sensor_update_interval_fast}   
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.plant_gear_rotation_angle"
+    id: ${stepper_motor_id}_plant_gear_rotation_angle
+    state_class: "measurement"
+    unit_of_measurement: "deg"
+    lambda: |-
+      return get_controller(id(${controller}))->plant_gear_rotation_angle();
+    update_interval: ${sensor_update_interval_mid}  
+  

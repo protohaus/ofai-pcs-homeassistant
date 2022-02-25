@@ -1,3 +1,11 @@
+button:
+  - platform: template
+    name: ${stepper_motor_id_upper}.error.reset_errors
+    id: ${stepper_motor_id}_error_reset_errors
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->reset_errors();
+
 binary_sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.error.pinionwheel_check"

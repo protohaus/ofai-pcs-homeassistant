@@ -22,7 +22,11 @@
 #define KINEMATICS_MOTOR_GEAR_TEETH 10
 #define KINEMATICS_FULL_TURN_STEPS 764586
 
-#define PINION_WHEEL_ERROR 2
+#define KINEMATICS_PLANT_GEAR_SLOTS 6
+#define KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT 200
+
+
+#define PINION_WHEEL_ERROR 3
 #define HOMING_DIFF_ERROR 500
 #define STEPPER_ERROR_FULL_TURN_STEPS 0.001
 
@@ -421,7 +425,6 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			m_motor_enabled = motor_enabled_;
 			if(m_motor_enabled)
 			{
-				stepper_error(STEPPER_ERROR_NONE);
 				stepper_mode(STEPPER_MODE_READY);
 			}else
 			{
@@ -443,6 +446,13 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			stepper_error(errorLevel);
 		}
 		
+		
+		void reset_errors()
+		{
+			stepper_error(STEPPER_ERROR_NONE);
+			m_homing_difference = 0;
+			m_pinion_wheel_count = expected_pinion_wheel_count();
+		}
 		
 		/***************************************
 	    ** requested_target_position (get/set/service - methods)
@@ -508,7 +518,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		float number_of_cycles()
 		{
 			float result = m_number_of_cycles->value();
-			if (homing_is_valid())
+			if (homing_is_valid() && m_automation_mode != AUTOMATION_MODE_OFF)
 			{
 				result += current_angle() / (3.0 * 360.0);
 			}
@@ -623,6 +633,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		}
 		
 		
+		/***************************************
+	    ** Plant gear angle
+		***************************************/
+		float plant_gear_rotation_angle()
+		{
+			float total_angle = (KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT/KINEMATICS_PLANT_GEAR_SLOTS) *
+									current_angle();
+			float relative_angle = total_angle / 360.0;
+			return 360.0 * (relative_angle - std::floor(relative_angle));
+		}
 		
 		
 		/***************************************
