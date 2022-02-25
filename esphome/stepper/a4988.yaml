@@ -244,6 +244,13 @@ button:
         get_controller(id(${controller}))->find_next_home(); 
   
   - platform: template
+    name: ${stepper_motor_id_upper}.start_recalibration
+    id: ${stepper_motor_id}_start_recalibration
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_recalibration(); 
+        
+  - platform: template
     name: ${stepper_motor_id_upper}.find_next_global_home
     id: ${stepper_motor_id}_find_next_global_home
     on_press:

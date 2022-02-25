@@ -4,7 +4,9 @@ button:
     id: ${stepper_motor_id}_error_reset_errors
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->reset_errors();
+        get_controller(id(${controller}))->reset_error_code();
+        get_controller(id(${controller}))->reset_error_homing_difference();
+        get_controller(id(${controller}))->reset_error_pinion_wheel_count();
 
 binary_sensor:
   - platform: template
@@ -21,6 +23,7 @@ binary_sensor:
         if (get_controller(id(${controller}))->homing_is_valid())
         {
             get_controller(id(${controller}))->set_homing_invalid();
+            //TODO: auto reset: get_controller(id(${controller}))->reset_error_pinion_wheel_count();
         }
         return true;
       }else
@@ -39,6 +42,7 @@ binary_sensor:
             get_controller(id(${controller}))->emergency_stop("Homing invalid, lost position", STEPPER_ERROR_HOMING);
         }
         get_controller(id(${controller}))->set_homing_invalid();
+        //TODO: auto reset: get_controller(id(${controller}))->reset_error_homing_difference();
         
         return true;
       }else
@@ -57,3 +61,6 @@ interval:
           then:
             lambda: |-
               get_controller(id(${controller}))->emergency_stop("API disconnected", STEPPER_ERROR_CONNECTION);
+          else:
+            lambda: |-
+              get_controller(id(${controller}))->reset_error_code();
