@@ -120,7 +120,7 @@ sensor:
       return get_controller(id(${controller}))->stepper_mode();
     update_interval: ${sensor_update_interval_fast} 
     
-   platform: template
+  - platform: template
     name: "${stepper_motor_id_upper}.automation_mode"
     id: ${stepper_motor_id}_automation_mode
     state_class: ""
