@@ -35,11 +35,12 @@ substitutions:
   #fans
   fan_pin: GPIO21 #GPIO18
   
-  # sensor settings
+  # Proximity Switch settings
   sensor_proximity_switch_pinion_wheel_pin: GPIO32
   sensor_proximity_switch_home_pin: GPIO16
   sensor_proximity_switch_global_home_pin: GPIO33
   
+  # Stepper Sensor value settings
   sensor_update_interval_realtime: 0.1s
   sensor_update_interval_fast: 1s
   sensor_update_interval_mid: 10s
@@ -50,10 +51,13 @@ substitutions:
   sensor_update_interval_mid_ms: "10000"
   sensor_update_interval_slow_ms: "60000"
   
+  # Current Sensor (analog In)
   sensor_current_pin: GPIO34
   
+  # Dallas Temperature Sensors
   sensor_dallas_hub_1_pin: GPIO14
   sensor_dallas_hub_1_name: dallas_hub_1
+  sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_2_name: dallas2
   

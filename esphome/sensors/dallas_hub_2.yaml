@@ -1,3 +1,4 @@
 dallas:
   - pin: ${sensor_dallas_hub_2_pin}
     id: ${sensor_dallas_hub_2_name}
+    update_interval: ${sensor_dallas_hub_2_update_interval}
