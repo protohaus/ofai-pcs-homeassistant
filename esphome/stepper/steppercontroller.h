@@ -118,6 +118,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			m_measured_full_turn_steps->set_name_hash(659212362);
 			App.register_component(m_measured_full_turn_steps);
 			
+			m_number_of_cycles = new globals::RestoringGlobalsComponent<int>(0);
+			m_number_of_cycles->set_component_source("globals");
+			m_number_of_cycles->set_name_hash(79172764);
+			App.register_component(m_number_of_cycles);
+			
 			
 			m_sensor_check_position = new template_::TemplateBinarySensor();
 			m_sensor_check_position->set_component_source("template.binary_sensor");
@@ -223,7 +228,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 	    ** full_turn_steps (get/set/service - methods)
 		***************************************/
 		int measured_full_turn_steps(){return m_measured_full_turn_steps->value();}
-		
+
 		/***************************************
 	    ** target_position (get/set - methods)
 		***************************************/
@@ -406,6 +411,8 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		eStepperModes stepper_mode(){return m_stepper_mode;}
 		
+		eAutomationModes automation_mode(){return m_automation_mode;}
+		
 		/***************************************
 	    ** motor_enabled (get/set - methods)
 		***************************************/
@@ -497,6 +504,18 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			return m_stepper->current_position;
 		}
 		
+		
+		float number_of_cycles()
+		{
+			float result = m_number_of_cycles->value();
+			if (homing_is_valid())
+			{
+				result += current_angle() / (3.0 * 360.0);
+			}
+			return result;
+		}
+		
+		
 		bool check_and_reset_position()
 		{
 			
@@ -504,6 +523,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			
 			if (position_loc >= 3 * KINEMATICS_FULL_TURN_STEPS)
 			{
+				if (homing_is_valid() && m_automation_mode != AUTOMATION_MODE_OFF)
+				{
+					m_number_of_cycles->value() += 1;
+				}
+				
 				xSemaphoreTake(mutex_main_loop, 100);
 				xSemaphoreTake(mutex_pinion_wheels, 100 );
 				{
@@ -511,6 +535,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					int position = current_position();
 					int new_position = position - (3 * KINEMATICS_FULL_TURN_STEPS);
 					int new_target = m_target_position - (3 * KINEMATICS_FULL_TURN_STEPS);
+					
 					set_position(new_position);
 					target_position(new_target);
 					//int new_pinion_wheel_count = pinion_wheel_count() - (3 * KINEMATICS_PINION_WHEEL_RODS_LOWER);
@@ -524,6 +549,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				
 			}else if(position_loc < 0)
 			{
+				if (homing_is_valid() && m_automation_mode != AUTOMATION_MODE_OFF)
+				{
+					m_number_of_cycles->value() -= 1;
+				}
+				
 				xSemaphoreTake(mutex_main_loop, 100);
 				xSemaphoreTake(mutex_pinion_wheels, 100 );
 				{
@@ -531,6 +561,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					int position = current_position();
 					int new_position = (3 * KINEMATICS_FULL_TURN_STEPS -1)  + position;
 					int new_target = (3 * KINEMATICS_FULL_TURN_STEPS -1)  + m_target_position;
+
 					set_position(new_position);
 					//pause();
 					target_position(new_target);
@@ -547,7 +578,6 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			{
 				return true;
 			}
-			
 		}
 		
 		
@@ -560,7 +590,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		}
 		
 		/***************************************
-	    ** current_angle (Degree)
+	    ** current_global_angle (Degree)
+		***************************************/
+		float current_global_angle()
+		{
+			return number_of_cycles() * 3 * 360.0;
+		}
+		
+		
+		/***************************************
+	    ** current_angular_velocity (Degree)
 		***************************************/
 		float current_angular_velocity()
 		{
@@ -649,6 +688,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void set_homing_invalid()
 		{
 			m_homing.valid = false;
+		}
+		
+		void set_homing_valid()
+		{
+			m_homing.valid = true;
 			m_homing_difference = 0;
 		}
 		
@@ -705,6 +749,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void find_next_global_home()
 		{
 			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
+			m_calibration_mode_active = false;
 			m_global_homing = true;
 			direction_forward(true);
 			stepper_mode(STEPPER_MODE_HOMING);
@@ -845,6 +890,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void proximity_switch_home_released()
 		{
+			
 			switch(m_stepper_mode_last)
 			{
 				case STEPPER_MODE_HOMING:
@@ -958,6 +1004,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 	     
 		bool m_direction_forward{false};
 		globals::RestoringGlobalsComponent<int> * m_measured_full_turn_steps; 
+		globals::RestoringGlobalsComponent<int> * m_number_of_cycles; 
 		int m_target_position{0};
 		int m_speed{0};
 		int m_max_speed{0};
@@ -971,6 +1018,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		int m_step_width{0};
 		eStepperError m_stepper_error{STEPPER_ERROR_NONE};
 		eStepperModes m_stepper_mode{STEPPER_MODE_OFF};
+		eAutomationModes m_automation_mode{AUTOMATION_MODE_OFF};
 		eStepperModes m_stepper_mode_last{STEPPER_MODE_OFF};
 		bool m_motor_enabled{false};
 		int m_requested_target_position{0}; 
@@ -992,7 +1040,6 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		int m_sensor_update_interval_mid{10000};
 		int m_sensor_update_interval_fast{1000};
 		int m_sensor_update_interval_realtime{100};
-		
 		
 		// homing parameters
 		struct tHoming
@@ -1236,7 +1283,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 						drive(1.5);
 					}else
 					{
-						m_homing.valid = true;
+						set_homing_valid();
 						m_homing.sensors_enabled = false;
 						set_speed_requested();
 						if (m_calibration_mode_active)
@@ -1245,8 +1292,39 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 							m_calibration_mode_active = false;
 						}else
 						{
+							
 							if (homing_is_valid())
-								m_homing_difference = current_position();
+							{
+								int loc_position = current_position();
+								if (m_global_homing)
+								{
+									m_homing_difference = loc_position;
+								}else
+								{
+									if ( loc_position >= 0 * KINEMATICS_FULL_TURN_STEPS &&
+										 loc_position < 0.5 * KINEMATICS_FULL_TURN_STEPS)
+									{
+										m_homing_difference = loc_position;
+										
+									}
+									else if ( loc_position >= 2.5 * KINEMATICS_FULL_TURN_STEPS ||
+									    loc_position < 0 * KINEMATICS_FULL_TURN_STEPS)
+									{
+										m_homing_difference = 3 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+										
+									}
+									else if(loc_position >=  0.5 * KINEMATICS_FULL_TURN_STEPS &&
+											 loc_position < 1.5 * KINEMATICS_FULL_TURN_STEPS)
+									{
+										m_homing_difference = KINEMATICS_FULL_TURN_STEPS - loc_position;
+									}
+									else if(loc_position >= 1.5 * KINEMATICS_FULL_TURN_STEPS &&
+									        loc_position < 2.5 * KINEMATICS_FULL_TURN_STEPS)
+									{
+										m_homing_difference = 2 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+									}
+								}
+							}
 						}
 						
 						stepper_mode(STEPPER_MODE_READY);

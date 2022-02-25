@@ -8,6 +8,10 @@ binary_sensor:
         if (get_controller(id(${controller}))->is_active())
         {
             get_controller(id(${controller}))->emergency_stop("Pinionwheel count mismatch", STEPPER_ERROR_PINIONWHEEL_MISMATCH);
+            
+        }
+        if (get_controller(id(${controller}))->homing_is_valid())
+        {
             get_controller(id(${controller}))->set_homing_invalid();
         }
         return true;
@@ -36,7 +40,7 @@ binary_sensor:
 
 
 interval:
-  - interval: 20 s
+  - interval: 60 s
     then:
       - if:
           condition:

@@ -7,21 +7,43 @@ sensor:
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->current_position();
     update_interval: ${sensor_update_interval_realtime}
+    
+  - platform: template
+    name: "${stepper_motor_id_upper}.number_of_cycles"
+    id: ${stepper_motor_id}_number_of_cycles
+    unit_of_measurement: ""
+    state_class: "measurement"
+    accuracy_decimals: "3"
+    lambda: |-
+      return get_controller(id(${stepper_motor_id}_controller))->number_of_cycles();
+    update_interval: ${sensor_update_interval_slow}  
   
   - platform: template
     name: "${stepper_motor_id_upper}.angle"
     id: ${stepper_motor_id}_angle
     unit_of_measurement: "deg"
     state_class: "measurement"
+    accuracy_decimals: "3"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->current_angle();
     update_interval: ${sensor_update_interval_fast}
+  
+  - platform: template
+    name: "${stepper_motor_id_upper}.global_angle"
+    id: ${stepper_motor_id}_global_angle
+    unit_of_measurement: "deg"
+    state_class: "measurement"
+    accuracy_decimals: "3"
+    lambda: |-
+      return get_controller(id(${stepper_motor_id}_controller))->current_global_angle();
+    update_interval: ${sensor_update_interval_mid}
   
   - platform: template
     name: "${stepper_motor_id_upper}.angular_velocity"
     id: ${stepper_motor_id}_angular_velocity
     unit_of_measurement: "deg/s"
     state_class: "measurement"
+    accuracy_decimals: "3"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->current_angular_velocity();
     update_interval: ${sensor_update_interval_fast}
@@ -31,6 +53,7 @@ sensor:
     id: ${stepper_motor_id}_turns_per_hour
     unit_of_measurement: "cycles/h"
     state_class: "measurement"
+    accuracy_decimals: "3"
     lambda: |-
       return get_controller(id(${stepper_motor_id}_controller))->current_turns_per_hour();
     update_interval: ${sensor_update_interval_fast}
@@ -97,6 +120,14 @@ sensor:
       return get_controller(id(${controller}))->stepper_mode();
     update_interval: ${sensor_update_interval_fast} 
     
+   platform: template
+    name: "${stepper_motor_id_upper}.automation_mode"
+    id: ${stepper_motor_id}_automation_mode
+    state_class: ""
+    lambda: |-
+      return get_controller(id(${controller}))->automation_mode();
+    update_interval: ${sensor_update_interval_fast}   
+    
   - platform: template
     name: "${stepper_motor_id_upper}.error.code"
     id: ${stepper_motor_id}_error_code
@@ -111,7 +142,6 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->pinion_wheel_count();
-    unit_of_measurement: "count"
     update_interval: ${sensor_update_interval_fast}
   
   - platform: template
@@ -120,14 +150,13 @@ sensor:
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->expected_pinion_wheel_count();
-    unit_of_measurement: "count"
     update_interval: ${sensor_update_interval_fast}
    
   - platform: template
     name: "${stepper_motor_id_upper}.homing.difference"
     id: ${stepper_motor_id}_homing_difference
     state_class: "measurement"
+    unit_of_measurement: "steps"
     lambda: |-
       return get_controller(id(${controller}))->homing_difference();
-    unit_of_measurement: "count"
     update_interval: ${sensor_update_interval_fast}   

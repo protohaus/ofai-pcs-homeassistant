@@ -236,11 +236,25 @@ button:
         get_controller(id(${controller}))->goto_global_home();  
        
   - platform: template
-    name: ${stepper_motor_id_upper}.goto_next_home
-    id: ${stepper_motor_id}_goto_next_home
+    name: ${stepper_motor_id_upper}.find_next_home
+    id: ${stepper_motor_id}_find_next_home
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->start_homing(); 
+        get_controller(id(${controller}))->find_next_home(); 
+  
+  - platform: template
+    name: ${stepper_motor_id_upper}.find_next_global_home
+    id: ${stepper_motor_id}_find_next_global_home
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->find_next_global_home();
+        
+  - platform: template
+    name: ${stepper_motor_id_upper}.set_homing_valid
+    id: ${stepper_motor_id}_set_homing_valid
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->set_homing_valid();       
         
   - platform: template
     name: ${stepper_motor_id_upper}.goto_requested_target_position
