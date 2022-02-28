@@ -167,6 +167,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			register_service(&cStepperController::on_set_requested_target_position, 
 						m_stepper_id + "_" + m_controller_id + "_" + "set_requested_target_position",
 						{"requested_target_position"});		
+			
+			register_service(&cStepperController::on_set_requested_target_angle, 
+						m_stepper_id + "_" + m_controller_id + "_" + "set_requested_target_angle",
+						{"requested_target_angle"});		
 						
 			register_service(&cStepperController::on_set_deceleration, 
 						m_stepper_id + "_" + m_controller_id + "_" + "set_deceleration",
@@ -196,6 +200,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 						m_stepper_id + "_" + m_controller_id + "_" + "set_zero_position",
 						{"zero_position"});
 		    
+			register_service(&cStepperController::on_set_zero_angle, 
+						m_stepper_id + "_" + m_controller_id + "_" + "set_zero_angle",
+						{"zero_angle"});
+						
 			mutex_main_loop = xSemaphoreCreateMutex();			
 			mutex_pinion_wheels = xSemaphoreCreateMutex();			
 			//mutex_homing = xSemaphoreCreateMutex();		
@@ -427,7 +435,8 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void stepper_mode(int stepper_mode_)
 		{
 			eStepperModes loc_stepper_mode = static_cast<eStepperModes>(stepper_mode_);
-			init_stepper_mode(loc_stepper_mode);
+			if(m_stepper_mode != loc_stepper_mode)
+				init_stepper_mode(loc_stepper_mode);
 			m_stepper_mode = loc_stepper_mode;
 			m_sensor_stepper_mode->update();
 			update();
@@ -448,7 +457,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				stepper_mode(STEPPER_MODE_READY);
 			}else
 			{
-				stop();
+				pause();
 				stepper_mode(STEPPER_MODE_OFF);
 			}
 		}
@@ -473,7 +482,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void reset_error_pinion_wheel_count()
 		{
-			m_pinion_wheel_count = expected_pinion_wheel_count();
+			m_pinion_wheel_count = (int)expected_pinion_wheel_count();
 		}
 		
 		void reset_error_code()
@@ -493,9 +502,20 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_requested_target_position(int requested_target_position_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			ESP_LOGD(TAG, "Set: requested_target_position!");
 			requested_target_position(requested_target_position_);
+			xSemaphoreGive(mutex_main_loop);
 		}
+		
+		void on_set_requested_target_angle(float requested_target_angle_)
+		{
+			xSemaphoreTake(mutex_main_loop, 100);
+			ESP_LOGD(TAG, "Set: requested_target_angle!");
+			requested_target_position((int)angle_to_steps(requested_target_angle_));
+			xSemaphoreGive(mutex_main_loop);
+		}
+		
 		
 		/***************************************
 	    ** set_zero_position
@@ -503,20 +523,40 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void set_zero_position(int zero_position)
 		{
 			xSemaphoreTake(mutex_pinion_wheels, 100 );
-			int position = current_position() - zero_position;
+			int position = current_position() + zero_position;
+			
+			//if(position < 0 )
+			//{
+			//	 position = 3 * KINEMATICS_FULL_TURN_STEPS + position;
+			//}else if(position >= 3*KINEMATICS_FULL_TURN_STEPS)
+			//{
+			//	position = position - 3*KINEMATICS_FULL_TURN_STEPS;
+			//}
+			
 			stop();
 			set_position(position);
-			target_position(position);
-			pinion_wheel_count(expected_pinion_wheel_count());
-			m_first_pinionwheel_measured = false;
+			set_target(position);
+			pinion_wheel_count((int)expected_pinion_wheel_count());
+			set_homing_invalid();
+			//m_first_pinionwheel_measured = false;
 			stop();
 			xSemaphoreGive(mutex_pinion_wheels);
 		}
 		
 		void on_set_zero_position(int zero_position_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			ESP_LOGD(TAG, "Set: zero_position!");
-			set_zero_position(zero_position_);
+			set_zero_position(-zero_position_);
+			xSemaphoreGive(mutex_main_loop);
+		}
+		
+		void on_set_zero_angle(float zero_angle_)
+		{
+			xSemaphoreTake(mutex_main_loop, 100);
+			ESP_LOGD(TAG, "Set: zero_angle!");
+			set_zero_position(-(int)angle_to_steps(zero_angle_));
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void set_current_position_to_zero()
@@ -525,9 +565,10 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			ESP_LOGD(TAG, "Set: zero_position = current_position!");
 			stop();
 			set_position(0);
-			target_position(0);
-			pinion_wheel_count(expected_pinion_wheel_count());
-			m_first_pinionwheel_measured = false;
+			set_target(0);
+			set_homing_invalid();
+			pinion_wheel_count(0);
+			//m_first_pinionwheel_measured = false;
 			stop();
 			xSemaphoreGive(mutex_pinion_wheels);
 		}
@@ -698,7 +739,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		bool get_pinion_wheel_diff_error()
 		{
-			int diff = abs(pinion_wheel_count() - expected_pinion_wheel_count());
+			float diff = abs(pinion_wheel_count() - expected_pinion_wheel_count());
 			
 			if (diff > PINION_WHEEL_ERROR && diff < KINEMATICS_PINION_WHEEL_RODS_LOWER*3 - PINION_WHEEL_ERROR)
 			{
@@ -774,7 +815,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		}
 		
 
-		void start_homing()
+		void start_global_homing()
 		{
 			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
 			m_calibration_mode_active = true;
@@ -783,12 +824,22 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			stepper_mode(STEPPER_MODE_HOMING);
 			//xSemaphoreGive(mutex_main_loop);
 		}
-	
+		
+		void start_local_homing()
+		{
+			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
+			// use recalibration only when position is generelly known
+			m_calibration_mode_active = true;
+			m_global_homing = false;
+			direction_forward(true);
+			stepper_mode(STEPPER_MODE_HOMING);
+			//xSemaphoreGive(mutex_main_loop);
+		}
 		
 		void find_next_home()
 		{
 			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
-			// use recalibration only when position is generelly known
+			
 			m_calibration_mode_active = false;
 			m_global_homing = false;
 			direction_forward(true);
@@ -822,10 +873,22 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void goto_target(int target)
 		{
 			//xSemaphoreTake(mutex_main_loop, portMAX_DELAY);
+			int position_ = current_position();
+			int diff = abs(position_ - target);
+			int loc_target = target;
 			
 			if(motor_enabled())
 			{
-				if (target > current_position())
+				
+				if (diff >= 0.5* 3 * KINEMATICS_FULL_TURN_STEPS)
+				{
+					if (target > position_)
+						loc_target = position_ - (3 * KINEMATICS_FULL_TURN_STEPS - diff);
+					else
+						loc_target = position_ + (3 * KINEMATICS_FULL_TURN_STEPS - diff);
+				}
+				
+				if (loc_target > current_position())
 				{
 					direction_forward(true);
 				}else
@@ -833,7 +896,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					direction_forward(false);
 				}
 				
-				target_position(target);
+				target_position(loc_target);
 				stepper_mode(STEPPER_MODE_MANUAL);
 				start();
 			}
@@ -1142,12 +1205,39 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		***************************************/
 		void set_target(int target)
 		{
-			m_stepper->set_target((m_motor_enabled == true) ? target : current_position());
+			int position_ = current_position();
+			int diff = abs(position_ - target);
+			int loc_target = target;
+
+			if (diff >= 0.5* 3 * KINEMATICS_FULL_TURN_STEPS)
+			{
+				if (target > position_)
+					loc_target = position_ - (3 * KINEMATICS_FULL_TURN_STEPS - diff);
+				else
+					loc_target = position_ + (3 * KINEMATICS_FULL_TURN_STEPS - diff);
+			}
+			
+			if(m_motor_enabled == true)
+				m_stepper->set_target(loc_target);
+			else
+				m_stepper->set_target(position_);
 		}
 		
 		void set_position(int position)
 		{
-			m_stepper->report_position(position);
+			int loc_position = position;
+			if(loc_position < 0 )
+			{
+				 loc_position = 3 * KINEMATICS_FULL_TURN_STEPS + loc_position;
+			}else if(loc_position >= 3*KINEMATICS_FULL_TURN_STEPS)
+			{
+				loc_position = loc_position - 3*KINEMATICS_FULL_TURN_STEPS;
+			}
+			
+			if(m_motor_enabled == true)
+				m_stepper->report_position(loc_position);
+			else
+				m_stepper->report_position(current_position());
 		}
 		
 		int increment_target_position(float factor)
@@ -1182,6 +1272,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					set_speed_zero();
 					set_acceleration_requested();
 					set_deceleration_requested();
+					stop();
 					break;
 				}
 				
@@ -1190,6 +1281,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					set_speed_requested();
 					set_acceleration_requested();
 					set_deceleration_requested();
+					pause();
 					break;
 				}
 				
@@ -1200,7 +1292,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					m_homing.sensors_enabled = false;
 					m_homing.found_low_precision = false;
 					m_homing.found_high_precision = false;
-					if(m_calibration_mode_active)
+					if(m_calibration_mode_active && m_global_homing)
 						set_speed_high();
 					else
 						set_speed_requested();
@@ -1258,6 +1350,18 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			
 			switch(m_stepper_mode_last)
             {
+				//case STEPPER_MODE_OFF:
+				//{
+				//	//pause();
+				//	break;
+				//}
+				//
+				//case STEPPER_MODE_READY:
+				//{
+				//	//pause();
+				//	break;
+				//}
+				
 				case STEPPER_MODE_HOMING:
 				{
 					stepper_mode_homing();
@@ -1312,7 +1416,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				// drive backward until we are out of range from the homing position stop
 				if(m_proximity_switch_home->state)
 				{
-					if(m_calibration_mode_active)
+					if(m_calibration_mode_active && m_global_homing)
 						set_speed_high();
 					else
 						set_speed_requested();
@@ -1327,7 +1431,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
             {
 				if(!m_homing.found_low_precision)
 				{ 
-					if(m_calibration_mode_active)
+					if(m_calibration_mode_active && m_global_homing)
 						set_speed_high();
 					else
 						set_speed_requested();
@@ -1344,15 +1448,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 						drive(1.5);
 					}else
 					{
-						set_homing_valid();
+						pause();
 						m_homing.sensors_enabled = false;
 						set_speed_requested();
 						if (m_calibration_mode_active && m_global_homing)
 						{
 							set_current_position_to_zero();
-							m_calibration_mode_active = false;
-						}else/* if((!m_calibration_mode_active && !m_global_homing )||
-								 (m_calibration_mode_active && !m_global_homing) || 
+							set_homing_valid();
+							
+						}else /*if((!m_calibration_mode_active && !m_global_homing )||
+								m_calibration_mode_active = false; (m_calibration_mode_active && !m_global_homing) || 
 								 (!m_calibration_mode_active && m_global_homing))*/
 						{
 							
@@ -1368,51 +1473,71 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 									if ( loc_position >= 0 * KINEMATICS_FULL_TURN_STEPS &&
 										 loc_position < 0.5 * KINEMATICS_FULL_TURN_STEPS)
 									{
-										/*if(m_calibration_mode_active)
+										if(m_calibration_mode_active)
 										{
-											set_zero_position(0);
+											set_current_position_to_zero();
+											set_homing_valid();
 											loc_position = current_position();
-										}*/
-										
-										m_homing_difference = loc_position;
+											m_homing_difference = 0;
+										}else
+										{
+											m_homing_difference =  0 - loc_position;
+										}
+										//m_homing_difference = loc_position;
 										
 									}
 									else if ( loc_position >= 2.5 * KINEMATICS_FULL_TURN_STEPS ||
-									    loc_position < 0 * KINEMATICS_FULL_TURN_STEPS)
+									    loc_position < 0 )
 									{
-										/*if(m_calibration_mode_active)
+										if(m_calibration_mode_active)
 										{
-											set_zero_position(3 * KINEMATICS_FULL_TURN_STEPS);
+											set_current_position_to_zero();
+											set_homing_valid();
 											loc_position = current_position();
-										}*/
-										m_homing_difference = 3 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+											m_homing_difference = 0;
+										}else
+										{
+											m_homing_difference = 3 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+										}
 										
 									}
 									else if(loc_position >=  0.5 * KINEMATICS_FULL_TURN_STEPS &&
 											 loc_position < 1.5 * KINEMATICS_FULL_TURN_STEPS)
 									{
-										/*if(m_calibration_mode_active)
+										if(m_calibration_mode_active)
 										{
+											set_current_position_to_zero();
 											set_zero_position(KINEMATICS_FULL_TURN_STEPS);
+											set_homing_valid();
 											loc_position = current_position();
-										}*/
-										m_homing_difference = KINEMATICS_FULL_TURN_STEPS - loc_position;
+											m_homing_difference = 0;
+										}else
+										{
+											m_homing_difference = KINEMATICS_FULL_TURN_STEPS - loc_position;
+										}
 									}
 									else if(loc_position >= 1.5 * KINEMATICS_FULL_TURN_STEPS &&
 									        loc_position < 2.5 * KINEMATICS_FULL_TURN_STEPS)
 									{
-										/*if(m_calibration_mode_active)
+										if(m_calibration_mode_active)
 										{
-											set_zero_position(2*KINEMATICS_FULL_TURN_STEPS);
+											set_current_position_to_zero();
+											set_zero_position(2 * KINEMATICS_FULL_TURN_STEPS);
+											set_homing_valid();
 											loc_position = current_position();
-										}*/
-										m_homing_difference = 2 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+											m_homing_difference = 0;
+										}else
+										{
+											m_homing_difference = 2 * KINEMATICS_FULL_TURN_STEPS - loc_position;
+										}
 									}
 								}
 							}
 						}
-						
+						m_calibration_mode_active = false;
+						pause();
 						stepper_mode(STEPPER_MODE_READY);
+						
 					}
 				}
             }

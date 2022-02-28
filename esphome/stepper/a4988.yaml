@@ -159,12 +159,19 @@ button:
         get_controller(id(${controller}))->start();
 
   - platform: template
-    name: ${stepper_motor_id_upper}.start_homing
-    id: ${stepper_motor_id}_start_homing
+    name: ${stepper_motor_id_upper}.start_global_homing
+    id: ${stepper_motor_id}_start_global_homing
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->start_homing();
+        get_controller(id(${controller}))->start_global_homing();
   
+  - platform: template
+    name: ${stepper_motor_id_upper}.start_local_homing
+    id: ${stepper_motor_id}_start_local_homing
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_local_homing();
+        
   - platform: template
     name: ${stepper_motor_id_upper}.start_rangeestimation
     id: ${stepper_motor_id}_start_rangeestimation
