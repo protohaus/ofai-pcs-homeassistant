@@ -151,14 +151,6 @@ switch:
       
 button:
   - platform: template
-    name: ${stepper_motor_id_upper}.start
-    id: ${stepper_motor_id}_start
-    internal: true
-    on_press:
-      lambda: |-
-        get_controller(id(${controller}))->start();
-
-  - platform: template
     name: ${stepper_motor_id_upper}.start_global_homing
     id: ${stepper_motor_id}_start_global_homing
     on_press:
@@ -178,6 +170,14 @@ button:
     on_press:
       lambda: |-
         get_controller(id(${controller}))->start_rangeestimation();
+        
+  - platform: template
+    name: ${stepper_motor_id_upper}.start_automation
+    id: ${stepper_motor_id}_start_automation
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->start_automation_next_plant_gear_position();      
+        
         
   - platform: template
     name: ${stepper_motor_id_upper}.stop

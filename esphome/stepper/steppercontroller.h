@@ -8,6 +8,7 @@
 #define get_controller(constructor) static_cast<cStepperController *>(const_cast<esphome::custom_component::CustomComponentConstructor *>(&constructor)->get_component(0))
 
 #define SECONDS_TO_MILLISECONDS 1000
+#define MILLISECONDS_TO_MICROSECONDS 1000
 #define SECONDS_TO_MICROSECONDS 1000000
 #define NUMBER_OF_RANGEESTIMATIONS 5
 
@@ -21,6 +22,7 @@
 #define KINEMATICS_MICROSTEPS_PER_STEP 64
 #define KINEMATICS_MOTOR_GEAR_TEETH 10
 #define KINEMATICS_FULL_TURN_STEPS 764586
+#define KINEMATICS_SEGMENT_ANGLE 60.0
 
 #define KINEMATICS_PLANT_GEAR_SLOTS 6
 #define KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT 200
@@ -30,8 +32,11 @@
 #define HOMING_DIFF_ERROR 500
 #define STEPPER_ERROR_FULL_TURN_STEPS 0.001
 
+#define MAX_INTEGER 2147483647
+
 // mutex definitions
 static SemaphoreHandle_t mutex_main_loop = NULL;
+static SemaphoreHandle_t mutex_automation_loop = NULL;
 static SemaphoreHandle_t mutex_pinion_wheels = NULL;
 //static SemaphoreHandle_t mutex_homing;
 //static SemaphoreHandle_t mutex_rangeestimation;
@@ -205,6 +210,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 						{"zero_angle"});
 						
 			mutex_main_loop = xSemaphoreCreateMutex();			
+			mutex_automation_loop = xSemaphoreCreateMutex();			
 			mutex_pinion_wheels = xSemaphoreCreateMutex();			
 			//mutex_homing = xSemaphoreCreateMutex();		
 			//mutex_rangeestimation = xSemaphoreCreateMutex();		
@@ -221,6 +227,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void update() override 
 		{
           // This will be called every "update_interval" milliseconds.
+		  automation_loop();
 		  main_loop();
         }
 		
@@ -865,7 +872,82 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				stepper_mode(STEPPER_MODE_RANGEESTIMATION);
 		}
 		
-		// TODO: resume() method
+		void start_automation_next_plant_gear_position()
+		{
+			if(homing_is_valid() && motor_enabled())
+			{
+				float current_angle_ = current_angle();
+				
+				if (current_angle_ >= 0 && 
+				    current_angle_ < KINEMATICS_SEGMENT_ANGLE)
+				{
+					m_automation.target_angle = KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= KINEMATICS_SEGMENT_ANGLE && 
+					     current_angle_ < 2 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 2 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 2 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 3 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 3 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 3 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 4 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 4 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 4 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 5 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 5 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 5 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 6 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 6 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 6 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 7 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 7 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 7 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 8 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 8 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 8 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 9 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 9 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				else if (current_angle_ >= 8 * KINEMATICS_SEGMENT_ANGLE && 
+						  current_angle_ < 9 * KINEMATICS_SEGMENT_ANGLE)
+			    {
+					m_automation.target_angle = 9 * KINEMATICS_SEGMENT_ANGLE;
+				}
+				
+				//m_automation.target_angle = (((int)((current_angle_) / KINEMATICS_SEGMENT_ANGLE) ) + 1) * KINEMATICS_SEGMENT_ANGLE;
+				
+				
+				m_automation.segment_resolution = 30;
+				m_automation.step_angle = KINEMATICS_SEGMENT_ANGLE / (float)m_automation.segment_resolution;
+				m_automation.standstill_factor = 0.7;
+				m_automation.time_for_transition = 8 * 60 * SECONDS_TO_MILLISECONDS;
+				m_automation.time_delta = m_automation.time_for_transition / m_automation.segment_resolution;
+				m_automation.speed_factor = 3.0; //TODO: lookup table for true velocity since the set value differs from measurements
+				m_automation.speed = (1.0/(1.0 - m_automation.standstill_factor)) * m_automation.speed_factor * (angle_to_steps(KINEMATICS_SEGMENT_ANGLE) / (float)(m_automation.time_for_transition / SECONDS_TO_MILLISECONDS) );
+				m_automation.timestamp_0 = esp_timer_get_time();
+				m_automation.segment_counter = (int)((current_angle_ - (m_automation.target_angle - KINEMATICS_SEGMENT_ANGLE)) / m_automation.step_angle);
+				requested_speed(m_automation.speed);
+				speed(m_automation.speed);
+				m_automation_mode = AUTOMATION_MODE_NEXT_PLANT_POSITION;
+			}
+		}
+		
+		
 		
 		/***************************************
 	    ** Control methods
@@ -1132,8 +1214,30 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		int m_step_width{0};
 		eStepperError m_stepper_error{STEPPER_ERROR_NONE};
 		eStepperModes m_stepper_mode{STEPPER_MODE_OFF};
-		eAutomationModes m_automation_mode{AUTOMATION_MODE_OFF};
 		eStepperModes m_stepper_mode_last{STEPPER_MODE_OFF};
+		eAutomationModes m_automation_mode{AUTOMATION_MODE_OFF};
+		eAutomationModes m_automation_mode_last{AUTOMATION_MODE_OFF};
+		
+		struct tAutomation
+		{
+			long int timestamp_0{0};
+			long int timestamp_1{0};
+			bool started{false};
+			bool homing_enabled{false};
+			float target_angle{0.0};
+		    int segment_resolution{30};
+			int segment_counter{0};
+			float step_angle{0.0};
+			int time_for_transition{8 * 60 * SECONDS_TO_MILLISECONDS}; // milliseconds
+			float standstill_factor{0.5}; 
+			int time_delta{0};
+			float speed_factor{3.0};
+			int speed{0};
+			bool homing_triggered{false};
+		};
+		
+		tAutomation m_automation{tAutomation()};
+		
 		bool m_motor_enabled{false};
 		int m_requested_target_position{0}; 
 		
@@ -1287,7 +1391,6 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				
 				case STEPPER_MODE_HOMING:
 				{
-					//m_homing.valid = false; //TODO: hinterfragen: wirklich zuruecksetzen??
 					m_homing.started = false;
 					m_homing.sensors_enabled = false;
 					m_homing.found_low_precision = false;
@@ -1337,6 +1440,56 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				}
             }
 		}
+		
+		
+		/***************************************
+	    ** automation loop
+		** get called by update() periodically
+		***************************************/
+		void automation_loop()
+		{
+			if (m_automation_mode == AUTOMATION_MODE_NEXT_PLANT_POSITION)
+			{
+				m_automation.timestamp_1 = esp_timer_get_time();
+				
+				if ( m_automation.timestamp_1 < m_automation.timestamp_0)
+				{
+					m_automation.timestamp_0 = - (MAX_INTEGER - m_automation.timestamp_0);
+				}
+				
+				if (!is_active())
+				{
+					if (m_automation.started == true)
+					{
+						m_automation.started = false;
+						m_automation.segment_counter += 1;
+						return;
+					}
+					
+					if (m_automation.segment_counter >= m_automation.segment_resolution)
+					{
+						m_automation_mode = AUTOMATION_MODE_OFF;
+						m_automation.segment_counter = 0;
+						return;
+					}
+					
+					if ( m_automation.timestamp_1 - m_automation.timestamp_0 > m_automation.time_delta * MILLISECONDS_TO_MICROSECONDS)
+					{
+						float loc_target_angle = (m_automation.segment_counter + 1) * m_automation.step_angle;
+						
+						m_automation.started = true;
+						m_automation.timestamp_0 = m_automation.timestamp_1;
+						requested_speed(m_automation.speed);
+						speed(m_automation.speed);
+						goto_target(angle_to_steps(loc_target_angle));
+					}
+				}
+			}else
+			{
+				return;
+			}			
+		}
+		
 		
 		/***************************************
 	    ** main loop methods
@@ -1593,7 +1746,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void stepper_mode_manual()
 		{
-			start();
+			if (!is_active())
+				stepper_mode(STEPPER_MODE_READY);
+			else
+				start();
+			
 		}
 
 		// oprational methods

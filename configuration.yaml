@@ -76,7 +76,7 @@ input_number:
     initial: 0
     min: 0
     max: 360
-    step: 30
+    step: 15
     mode: slider
   stepper_set_speed:
     name: stepper.set_speed
