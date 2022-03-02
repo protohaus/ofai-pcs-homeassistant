@@ -82,3 +82,9 @@ packages:
   sensor_current: !include sensors/current.yaml
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
   sensor_dallas_1: !include sensors/dallas_2.yaml
+  
+  
+#interval:
+#  - interval: 10min
+#    then:
+#      - switch.turn_on: ${stepper_motor_id}_start_automation

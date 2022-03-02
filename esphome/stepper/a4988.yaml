@@ -165,8 +165,6 @@ switch:
     turn_off_action:
       - lambda: |- 
           get_controller(id(${controller}))->stop_automation();
-          
- 
         
       
 button:
