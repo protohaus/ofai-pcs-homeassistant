@@ -82,7 +82,7 @@ input_number:
     name: stepper.set_speed
     initial: 500
     min: 0
-    max: 12000
+    max: 650
     step: 1
     mode: slider
   stepper_set_speed_turns_per_hour:

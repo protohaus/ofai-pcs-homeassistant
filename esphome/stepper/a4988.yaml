@@ -19,7 +19,7 @@ stepper:
     dir_pin:
       number: ${stepper_dir_pin}
       inverted: ${stepper_invert_direction}  
-    max_speed: "${stepper_max_speed} steps/s"
+    max_speed: "${stepper_max_speed_uncalibrated} steps/s"
 
     sleep_pin: ${stepper_sleep_pin} 
     acceleration: ${stepper_acceleration}

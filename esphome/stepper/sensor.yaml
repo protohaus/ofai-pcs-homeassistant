@@ -51,7 +51,7 @@ sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.turns_per_hour"
     id: ${stepper_motor_id}_turns_per_hour
-    unit_of_measurement: "cycles/h"
+    unit_of_measurement: "turns/h"
     state_class: "measurement"
     accuracy_decimals: "3"
     lambda: |-

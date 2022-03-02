@@ -26,9 +26,9 @@
 
 #define AUTOMATION_SEGMENT_ANGLE 60.0 // TODO: back to 60.0
 #define AUTOMATION_STANDSTILL_FACTOR 0.5
-#define AUTOMATION_SEGMENT_RESOLUTION 30
+#define AUTOMATION_SEGMENT_RESOLUTION 60
 #define AUTOMATION_MINUTES_FOR_TRANSITION 9
-#define AUTOMATION_SPEED_FACTOR 2.0
+#define AUTOMATION_SPEED_FACTOR 1.0
 
 #define KINEMATICS_PLANT_GEAR_SLOTS 6
 #define KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT 200
@@ -48,7 +48,6 @@ static SemaphoreHandle_t mutex_pinion_wheels = NULL;
 //static SemaphoreHandle_t mutex_rangeestimation;
 //static SemaphoreHandle_t mutex_drive;
 //static SemaphoreHandle_t mutex_manual;
-
 
 
 static const char *TAG = "custom.StepperController";
@@ -275,9 +274,55 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void speed(int  speed_)
 		{
 			int loc_speed = (speed_ > m_max_speed) ?  m_max_speed : speed_;
+			loc_speed = (loc_speed < 0 ) ? 0 : loc_speed;
+			
 			m_speed = loc_speed;
-			m_stepper->set_max_speed(loc_speed);
+			float calibrated_speed = get_speed_lookup(loc_speed);
+			m_stepper->set_max_speed(calibrated_speed);
 			m_stepper->on_update_speed();
+		}
+		
+		/************************************************************************
+		* get_speed_lookup function
+		*
+		* lookup table from: 
+		* 
+		* https://stackoverflow.com/questions/7091294/how-to-build-a-lookup-table-in-c-sdcc-compiler-with-linear-interpolation
+		*
+		************************************************************************/
+		float get_speed_lookup(int x)
+		{
+			/* NOTE: xs MUST be sorted */
+			static const double xs[] = {    0.00,   18.16,   40.59,   75.14,  124.84,  231.77,  290.35,  400.70,  479.06,  616.44,  653.09,  687.38,  869.60,  886.04, 1007.09 };
+			static const double ys[] = {    0.00,   20.00,   50.00,  100.00,  200.00,  400.00,  523.00,  750.00, 1000.00, 1250.00, 1500.00, 1600.00, 1650.00, 2000.00, 3000.00  };
+
+			/* number of elements in the array */
+			static const int count = sizeof(xs)/sizeof(xs[0]);
+
+			int i;
+			double dx, dy;
+
+			if (x < xs[0]) {
+				/* x is less than the minimum element
+				 * handle error here if you want */
+				return ys[0]; /* return minimum element */
+			}
+
+			if (x > xs[count-1]) {
+				return ys[count-1]; /* return maximum */
+			}
+
+			/* find i, such that xs[i] <= x < xs[i+1] */
+			for (i = 0; i < count-1; i++) {
+				if (xs[i+1] > x) {
+					break;
+				}
+			}
+
+			/* interpolate */
+			dx = xs[i+1] - xs[i];
+			dy = ys[i+1] - ys[i];
+			return ys[i] + (x - xs[i]) * dy / dx;
 		}
 		
 		int speed(){return m_speed;}
