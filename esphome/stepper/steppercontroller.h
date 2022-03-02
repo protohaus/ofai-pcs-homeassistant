@@ -11,6 +11,7 @@
 #define MILLISECONDS_TO_MICROSECONDS 1000
 #define SECONDS_TO_MICROSECONDS 1000000
 #define NUMBER_OF_RANGEESTIMATIONS 5
+#define MINUTES_TO_SECONDS 60
 
 // kinematics
 #define KINEMATICS_PLANT_GEAR_TEETH 12
@@ -22,7 +23,12 @@
 #define KINEMATICS_MICROSTEPS_PER_STEP 64
 #define KINEMATICS_MOTOR_GEAR_TEETH 10
 #define KINEMATICS_FULL_TURN_STEPS 764586
-#define KINEMATICS_SEGMENT_ANGLE 60.0
+
+#define AUTOMATION_SEGMENT_ANGLE 60.0 // TODO: back to 60.0
+#define AUTOMATION_STANDSTILL_FACTOR 0.7
+#define AUTOMATION_SEGMENT_RESOLUTION 60
+#define AUTOMATION_MINUTES_FOR_TRANSITION 8
+#define AUTOMATION_SPEED_FACTOR 3.0
 
 #define KINEMATICS_PLANT_GEAR_SLOTS 6
 #define KINEMATICS_PLANT_GEAR_DEGREES_PER_SLOT 200
@@ -465,6 +471,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			}else
 			{
 				pause();
+				m_automation_mode = AUTOMATION_MODE_OFF;
 				stepper_mode(STEPPER_MODE_OFF);
 			}
 		}
@@ -812,7 +819,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		{
 			ESP_LOGD(TAG, "Stop stepper motor");
 			set_target(current_position());
-			stepper_mode(STEPPER_MODE_READY);
+			if (motor_enabled())
+				stepper_mode(STEPPER_MODE_READY);
+			else
+				stepper_mode(STEPPER_MODE_OFF);
+		}
+		
+		void on_button_stop()
+		{
+			m_automation_mode = AUTOMATION_MODE_OFF;
+			stop();
 		}
 		
 		void pause()
@@ -872,77 +888,51 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				stepper_mode(STEPPER_MODE_RANGEESTIMATION);
 		}
 		
-		void start_automation_next_plant_gear_position()
+		void stop_automation()
+		{
+			stop();
+			m_automation_mode = AUTOMATION_MODE_OFF;
+		}
+		
+		void start_automation()
 		{
 			if(homing_is_valid() && motor_enabled())
 			{
 				float current_angle_ = current_angle();
+				m_automation.target_angle = 0.0;
 				
-				if (current_angle_ >= 0 && 
-				    current_angle_ < KINEMATICS_SEGMENT_ANGLE)
+				while (true)
 				{
-					m_automation.target_angle = KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= KINEMATICS_SEGMENT_ANGLE && 
-					     current_angle_ < 2 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 2 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 2 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 3 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 3 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 3 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 4 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 4 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 4 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 5 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 5 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 5 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 6 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 6 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 6 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 7 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 7 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 7 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 8 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 8 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 8 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 9 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 9 * KINEMATICS_SEGMENT_ANGLE;
-				}
-				else if (current_angle_ >= 8 * KINEMATICS_SEGMENT_ANGLE && 
-						  current_angle_ < 9 * KINEMATICS_SEGMENT_ANGLE)
-			    {
-					m_automation.target_angle = 9 * KINEMATICS_SEGMENT_ANGLE;
+					if (m_automation.target_angle > std::ceil(current_angle_))
+						break;
+					m_automation.target_angle += AUTOMATION_SEGMENT_ANGLE;
+					
 				}
 				
-				//m_automation.target_angle = (((int)((current_angle_) / KINEMATICS_SEGMENT_ANGLE) ) + 1) * KINEMATICS_SEGMENT_ANGLE;
+				m_automation.start_angle = m_automation.target_angle - AUTOMATION_SEGMENT_ANGLE;
 				
-				
-				m_automation.segment_resolution = 30;
-				m_automation.step_angle = KINEMATICS_SEGMENT_ANGLE / (float)m_automation.segment_resolution;
-				m_automation.standstill_factor = 0.7;
-				m_automation.time_for_transition = 8 * 60 * SECONDS_TO_MILLISECONDS;
+				m_automation.segment_resolution = AUTOMATION_SEGMENT_RESOLUTION; //TODO: back to 10
+				m_automation.step_angle = AUTOMATION_SEGMENT_ANGLE / (float)m_automation.segment_resolution;
+				m_automation.standstill_factor = AUTOMATION_STANDSTILL_FACTOR;
+				int minutes_for_transition = AUTOMATION_MINUTES_FOR_TRANSITION; //TODO: back to 8
+				m_automation.time_for_transition = minutes_for_transition * MINUTES_TO_SECONDS * SECONDS_TO_MILLISECONDS;
 				m_automation.time_delta = m_automation.time_for_transition / m_automation.segment_resolution;
-				m_automation.speed_factor = 3.0; //TODO: lookup table for true velocity since the set value differs from measurements
-				m_automation.speed = (1.0/(1.0 - m_automation.standstill_factor)) * m_automation.speed_factor * (angle_to_steps(KINEMATICS_SEGMENT_ANGLE) / (float)(m_automation.time_for_transition / SECONDS_TO_MILLISECONDS) );
-				m_automation.timestamp_0 = esp_timer_get_time();
-				m_automation.segment_counter = (int)((current_angle_ - (m_automation.target_angle - KINEMATICS_SEGMENT_ANGLE)) / m_automation.step_angle);
-				requested_speed(m_automation.speed);
-				speed(m_automation.speed);
+				m_automation.speed_factor = AUTOMATION_SPEED_FACTOR; //TODO: lookup table for true velocity since the set value differs from measurements
+				m_automation.speed = (1.0/(1.0 - m_automation.standstill_factor)) * m_automation.speed_factor * (angle_to_steps(AUTOMATION_SEGMENT_ANGLE) / (float)(m_automation.time_for_transition / SECONDS_TO_MILLISECONDS) );
+				
+				m_automation.segment_counter = 0;
+				while (true)
+				{
+					if (m_automation.start_angle + (m_automation.segment_counter + 1) * m_automation.step_angle > current_angle_)
+						break;
+					m_automation.segment_counter += 1;
+				}
+				
+				//m_automation.segment_counter = (int)(std::abs(current_angle_ - m_automation.start_angle) / m_automation.step_angle);
+				
+				m_automation.timestamp_0 = esp_timer_get_time() - m_automation.time_delta * MILLISECONDS_TO_MICROSECONDS;
+				m_automation.started = false;
+						
 				m_automation_mode = AUTOMATION_MODE_NEXT_PLANT_POSITION;
 			}
 		}
@@ -1225,6 +1215,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			bool started{false};
 			bool homing_enabled{false};
 			float target_angle{0.0};
+			float start_angle{0.0};
 		    int segment_resolution{30};
 			int segment_counter{0};
 			float step_angle{0.0};
@@ -1420,7 +1411,8 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				
 				case STEPPER_MODE_DRIVE:
 				{
-				    set_speed_requested();
+				    if (m_automation_mode == AUTOMATION_MODE_OFF)
+						set_speed_requested();
 					set_acceleration_requested();
 					set_deceleration_requested();
 					break;
@@ -1428,7 +1420,8 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 				
 				case STEPPER_MODE_MANUAL:
 				{
-				    set_speed_requested();
+					if (m_automation_mode == AUTOMATION_MODE_OFF)
+						set_speed_requested();
 					set_acceleration_requested();
 					set_deceleration_requested();
 					break;
@@ -1448,6 +1441,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		***************************************/
 		void automation_loop()
 		{
+			int current_angle_ = current_angle();
 			if (m_automation_mode == AUTOMATION_MODE_NEXT_PLANT_POSITION)
 			{
 				m_automation.timestamp_1 = esp_timer_get_time();
@@ -1475,13 +1469,9 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					
 					if ( m_automation.timestamp_1 - m_automation.timestamp_0 > m_automation.time_delta * MILLISECONDS_TO_MICROSECONDS)
 					{
-						float loc_target_angle = (m_automation.segment_counter + 1) * m_automation.step_angle;
-						
 						m_automation.started = true;
 						m_automation.timestamp_0 = m_automation.timestamp_1;
-						requested_speed(m_automation.speed);
-						speed(m_automation.speed);
-						goto_target(angle_to_steps(loc_target_angle));
+						automation_step_forward();
 					}
 				}
 			}else
@@ -1490,6 +1480,16 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			}			
 		}
 		
+		void automation_step_forward()
+		{	
+			float loc_target_angle = m_automation.start_angle + (m_automation.segment_counter + 1) * m_automation.step_angle;
+
+			//requested_speed(m_automation.speed);
+			speed(m_automation.speed);
+			//step_width(angle_to_steps(m_automation.step_angle));
+			//step_forward();
+			goto_target(angle_to_steps(loc_target_angle));
+		}
 		
 		/***************************************
 	    ** main loop methods

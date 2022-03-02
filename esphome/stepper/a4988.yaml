@@ -148,6 +148,26 @@ switch:
       - lambda: |- 
           get_controller(id(${controller}))->disable_motor();
 
+  - platform: template
+    name: ${stepper_motor_id_upper}.start_automation
+    id: ${stepper_motor_id}_start_automation
+    lambda: |-
+      if(get_controller(id(${controller}))->automation_mode() != AUTOMATION_MODE_OFF)
+      {
+         return true;   
+      }else
+      {
+        return false;
+      }
+    turn_on_action:
+      - lambda: |- 
+          get_controller(id(${controller}))->start_automation();
+    turn_off_action:
+      - lambda: |- 
+          get_controller(id(${controller}))->stop_automation();
+          
+ 
+        
       
 button:
   - platform: template
@@ -169,22 +189,14 @@ button:
     id: ${stepper_motor_id}_start_rangeestimation
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->start_rangeestimation();
-        
-  - platform: template
-    name: ${stepper_motor_id_upper}.start_automation
-    id: ${stepper_motor_id}_start_automation
-    on_press:
-      lambda: |-
-        get_controller(id(${controller}))->start_automation_next_plant_gear_position();      
-        
+        get_controller(id(${controller}))->start_rangeestimation(); 
         
   - platform: template
     name: ${stepper_motor_id_upper}.stop
     id: ${stepper_motor_id}_stop
     on_press:
       lambda: |-
-        get_controller(id(${controller}))->stop();
+        get_controller(id(${controller}))->on_button_stop();
 
   
   - platform: template
