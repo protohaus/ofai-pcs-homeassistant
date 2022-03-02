@@ -66,6 +66,10 @@ esphome:
   platform: ESP32
   board: esp32dev
 
+# Enable logging
+logger:
+  level: DEBUG
+  
 preferences:
   flash_write_interval: 1min
 

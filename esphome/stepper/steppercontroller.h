@@ -465,14 +465,14 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		void motor_enabled(bool motor_enabled_)
 		{
 			m_motor_enabled = motor_enabled_;
-			if(m_motor_enabled)
+			if(motor_enabled_)
 			{
 				stepper_mode(STEPPER_MODE_READY);
 			}else
 			{
-				pause();
+				stop();
 				m_automation_mode = AUTOMATION_MODE_OFF;
-				stepper_mode(STEPPER_MODE_OFF);
+				m_stepper_mode = STEPPER_MODE_OFF;
 			}
 		}
 		
@@ -811,7 +811,8 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			}else
 			{
 				ESP_LOGD(TAG, "Motor is not enabled");
-				stepper_mode(STEPPER_MODE_OFF);
+				stop();
+				m_stepper_mode = STEPPER_MODE_OFF;
 			}
 		}
 		
@@ -819,10 +820,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		{
 			ESP_LOGD(TAG, "Stop stepper motor");
 			set_target(current_position());
-			if (motor_enabled())
-				stepper_mode(STEPPER_MODE_READY);
-			else
-				stepper_mode(STEPPER_MODE_OFF);
+			stepper_mode(STEPPER_MODE_READY);
 		}
 		
 		void on_button_stop()
@@ -1367,7 +1365,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 					set_speed_zero();
 					set_acceleration_requested();
 					set_deceleration_requested();
-					stop();
+					pause();
 					break;
 				}
 				

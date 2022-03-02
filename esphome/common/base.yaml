@@ -6,10 +6,6 @@ api:
 # enable ota updates
 ota:
   password: !secret esphome_ota_pw
-
-# Enable logging
-logger:
-  level: DEBUG
   
 captive_portal:
 
