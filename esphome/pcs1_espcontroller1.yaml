@@ -21,7 +21,7 @@ substitutions:
   stepper_max_acceleration: "2000"
   stepper_max_deceleration: "2000"
   stepper_initial_speed: "400"
-  stepper_acceleration: "1000"     #"inf"
+  stepper_acceleration: "500"     #"inf"
   stepper_deceleration: "1000"    #"inf"
   stepper_initial_step_width: "2000"
   stepper_update_interval_ms: "1000"
