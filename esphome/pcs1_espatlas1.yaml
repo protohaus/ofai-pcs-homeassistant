@@ -1,0 +1,145 @@
+substitutions:
+  #general settings
+  host_name: pcs1-espatlas1
+  device_name: pcs1_espatlas1
+  device_name_upper: pcs1.espatlas1
+  status_led_pin: GPIO33
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  
+  #I2C Bus
+  i2c_bus_a_name: i2c_bus_a
+  i2c_bus_a_sda: GPIO23
+  i2c_bus_a_scl: GPIO22
+  
+  #Temp Enable Pin
+  enable_temp_pin: GPIO33
+  enable_aux_pin: GPIO27
+  enable_cond_pin: GPIO12
+  enable_ph_pin: GPIO13
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+  #board: nodemcu-32s
+  on_boot:
+    priority: 500 # Highest priority, ensures enable pin to be turned off first
+    then:
+      - switch.turn_on: ${device_name}_enable_sensors
+
+
+# Enable logging
+logger:
+  level: DEBUG
+  
+preferences:
+  flash_write_interval: 1min
+  
+packages:
+  common_wifi: !include common/wifi.yaml
+  common_base: !include common/base.yaml
+  common_status: !include common/status.yaml
+  common_restart: !include common/restart.yaml
+  common_i2c_bus_a: !include common/i2c_bus_a.yaml
+
+web_server:
+  port: 80
+  auth:
+    username: admin
+    password: !secret web_server_password
+  ota: "true"
+  
+output:
+  - platform: gpio
+    pin: ${enable_temp_pin}
+    id: ${device_name}_enable_temp
+  - platform: gpio
+    pin: ${enable_aux_pin}
+    id: ${device_name}_enable_aux
+  - platform: gpio
+    pin: ${enable_cond_pin}
+    id: ${device_name}_enable_cond
+  - platform: gpio
+    pin: ${enable_ph_pin}
+    id: ${device_name}_enable_ph
+
+globals:
+  - id: sensors_enabled
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+
+switch:
+  - platform: template
+    name: ${device_name_upper}.enable_sensors
+    id: ${device_name}_enable_sensors
+    lambda: |-
+      return id(sensors_enabled);
+    turn_on_action:
+      - globals.set:
+          id: sensors_enabled
+          value: "true"
+      - output.turn_on: ${device_name}_enable_temp
+      - output.turn_off: ${device_name}_enable_aux
+      - output.turn_off: ${device_name}_enable_cond
+      - output.turn_off: ${device_name}_enable_ph
+      
+    turn_off_action:
+      - globals.set:
+           id: sensors_enabled
+           value: "false"
+      - output.turn_off: ${device_name}_enable_temp
+      - output.turn_on: ${device_name}_enable_aux
+      - output.turn_on: ${device_name}_enable_cond
+      - output.turn_on: ${device_name}_enable_ph
+
+sensor:
+
+  - platform: ezo
+    id: ${device_name}_ezo_temp
+    name: ${device_name_upper}.ezo.temp
+    address: 102
+    accuracy_decimals: 2
+    unit_of_measurement: "°C"
+    update_interval: 10s
+    filters:
+      - calibrate_linear:
+          # Map 0.0 (from sensor) to 0.0 (true value)
+          - 0.0 -> 0.0
+          - 20.0 -> 30.0
+          - 30.0 -> 45.0
+          - 40.0 -> 55.0
+          
+  - platform: ezo
+    id: ${device_name}_ezo_ph
+    name: ${device_name_upper}.ezo.ph
+    address: 99
+    accuracy_decimals: 2
+    unit_of_measurement: "pH"
+    update_interval: 10s
+    on_value:
+      then:
+        lambda: |-
+          id(${device_name}_ezo_ph).set_tempcomp_value(id(${device_name}_ezo_temp).state);
+    filters:
+      - calibrate_polynomial:
+         degree: 2
+         datapoints:
+         # Map 0.0 (from sensor) to 0.0 (true value)
+         - 0.0 -> 0.0
+         - 10.0 -> 12.1
+         - 13.0 -> 14.0
+          
+  - platform: ezo
+    id: ${device_name}_ezo_cond
+    name: ${device_name_upper}.ezo.cond
+    address: 100
+    accuracy_decimals: 2
+    unit_of_measurement: "μS/cm"
+    update_interval: 10s
+    on_value:
+      then:
+        lambda: |-
+          id(${device_name}_ezo_ph).set_tempcomp_value(id(${device_name}_ezo_temp).state);
