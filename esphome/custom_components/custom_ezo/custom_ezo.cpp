@@ -35,7 +35,7 @@ void CustomEZOSensor::dump_config() {
 void CustomEZOSensor::update() {
   uint32_t sample_interval = 0;
   uint32_t time_now = millis();
-  
+
   if (!calibration_active_)
     sample_interval = this->sample_interval_;
   else
@@ -46,28 +46,30 @@ void CustomEZOSensor::update() {
   	this->timestamp_0_ = time_now;
   
   // check if we should send a sample
-  if (time_now - this->timestamp_0_ < sample_interval)
+  if ((int)(time_now - this->timestamp_0_) < sample_interval)
     return;
   else
     this->timestamp_0_ = time_now;
-    
+
   if (this->state_ & EZO_STATE_WAIT) 
   {
+	if(this->sensor_enabled_  && this->sending_values_)
        ESP_LOGE(TAG, "update overrun, still waiting for previous response");
-       return;
+    return;
   }else
   {
     uint8_t c = 'R';
-    this->write(&c, 1);
-    this->state_ |= EZO_STATE_WAIT;
-    this->start_time_ = time_now;
-    this->wait_time_ = 900;
+	this->write(&c, 1);
+	this->state_ |= EZO_STATE_WAIT;
+	this->start_time_ = time_now;
+	this->wait_time_ = 900;
   }
 }
 
 void CustomEZOSensor::loop() {
   uint8_t buf[21];
   uint32_t time_now = millis();
+  
   if (!(this->state_ & EZO_STATE_WAIT)) 
   {
     if (this->state_ & EZO_STATE_SEND_TEMP) 
@@ -84,34 +86,39 @@ void CustomEZOSensor::loop() {
   if (time_now < this->start_time_ )
 	this->start_time_ = time_now;  
 
-  if (time_now - this->start_time_ < this->wait_time_)
+  if ((int)(time_now - this->start_time_) < this->wait_time_)
     return;
   
   buf[0] = 0;
   if (!this->read_bytes_raw(buf, 20)) 
   {
-    ESP_LOGE(TAG, "read error");
     this->state_ = 0;
-    return;
+	if (this->sensor_enabled_  && this->sending_values_)
+	  ESP_LOGE(TAG, "read error");
+	return;
   }
-  
+
   switch (buf[0]) {
-    case 1:
-      break;
-    case 2:
-      ESP_LOGE(TAG, "device returned a syntax error");
-      break;
-    case 254:
-      return;  // keep waiting
-    case 255:
-      ESP_LOGE(TAG, "device returned no data");
-      break;
-    default:
-      ESP_LOGE(TAG, "device returned an unknown response: %d", buf[0]);
-      break;
+	case 1:
+	  break;
+	case 2:
+	  if (this->sensor_enabled_ && this->sending_values_)
+		ESP_LOGE(TAG, "device returned a syntax error");
+	  break;
+	case 254:
+	  return;  // keep waiting
+	case 255:
+	  if (this->sensor_enabled_ && this->sending_values_)
+		ESP_LOGE(TAG, "device returned no data");
+	  break;
+	default:
+	  if (this->sensor_enabled_  && this->sending_values_)
+		ESP_LOGE(TAG, "device returned an unknown response: %d", buf[0]);
+	  break;
   }
   
-  if (this->state_ & EZO_STATE_WAIT_TEMP) {
+  if (this->state_ & EZO_STATE_WAIT_TEMP) 
+  {
     this->state_ = 0;
     return;
   }
@@ -127,7 +134,8 @@ void CustomEZOSensor::loop() {
       buf[i] = '\0';
 
   float val = parse_number<float>((char *) &buf[1]).value_or(0);
-  this->publish_state(val);
+  if (this->sensor_enabled_ && this->sending_values_)
+	this->publish_state(val);
 }
 
 void CustomEZOSensor::set_tempcomp_value(float temp) {
