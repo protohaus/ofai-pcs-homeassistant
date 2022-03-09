@@ -3,7 +3,6 @@ substitutions:
   host_name: pcs1-espatlas1
   device_name: pcs1_espatlas1
   device_name_upper: pcs1.espatlas1
-  status_led_pin: GPIO33
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
   
@@ -37,6 +36,8 @@ substitutions:
   min_sample_interval_ph_tempcomp: "10000" 
   max_sample_interval_ph_tempcomp: "3600000"
   
+  max_retry_attempts: "4"
+  default_temp_comp_value: "25"
   
 esphome:
   name: ${host_name}
@@ -45,7 +46,7 @@ esphome:
   #board: nodemcu-32s
   #name_add_mac_suffix: "true"  
   on_boot:
-    priority: -100 # Highest priority, ensures enable pin to be turned off first
+    priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - lambda: |-
           id(${device_name}_cond).set_sensor_type(esphome::ezo::SENSOR_TYPE_COND);
@@ -118,7 +119,7 @@ packages:
   common_restart: !include common/restart.yaml
   common_i2c_bus_a: !include common/i2c_bus_a.yaml
   common_web_server: !include common/web_server.yaml
-  common_stream_server: !include common/stream_server.yaml
+  #common_stream_server: !include common/stream_server.yaml
   #common_api_encryption: !include common/api_encryption.yaml
 
 globals:
@@ -178,7 +179,7 @@ globals:
    - id: tempcomp_default_value
      type: float
      restore_value: no
-     initial_value: '25.0'
+     initial_value: ${default_temp_comp_value}
      
    - id: cond_tempcomp_timestamp_0
      type: int
@@ -250,8 +251,8 @@ switch:
   ##
   ############################################################
   - platform: template
-    name: ${device_name_upper}.temp.calibration_mode
-    id: ${device_name}_temp_calibration_mode
+    name: ${device_name_upper}.temp.cal.activate
+    id: ${device_name}_temp_cal_activate
     lambda: |-
       return id(${device_name}_temp).calibration_mode_active();
     turn_on_action:
@@ -262,8 +263,8 @@ switch:
           id(${device_name}_temp).deactivate_calibration();
   
   - platform: template
-    name: ${device_name_upper}.ph.calibration_mode
-    id: ${device_name}_ph_calibration_mode
+    name: ${device_name_upper}.ph.cal.activate
+    id: ${device_name}_ph_cal_activate
     lambda: |-
       return id(${device_name}_ph).calibration_mode_active();
     turn_on_action:
@@ -275,8 +276,8 @@ switch:
           id(${device_name}_ph).deactivate_calibration();
           
   - platform: template
-    name: ${device_name_upper}.cond.calibration_mode
-    id: ${device_name}_cond_calibration_mode
+    name: ${device_name_upper}.cond.cal.activate
+    id: ${device_name}_cond_cal_activate
     restore_state: "true"
     lambda: |-
       return id(${device_name}_cond).calibration_mode_active();
@@ -405,7 +406,8 @@ switch:
       - lambda: |-
           id(${device_name}_cond).disable_sending_values();
           id(cond_sending_enabled) = false;
-          
+
+   
 button:
   
   ############################################################
@@ -428,7 +430,49 @@ button:
       - switch.turn_off: ${device_name}_temp_enable
       - switch.turn_off: ${device_name}_cond_enable
       - switch.turn_off: ${device_name}_ph_enable
-
+  
+  ############################################################
+  ##
+  ##  CALIBRATION METHODS
+  ##
+  ############################################################ 
+  - platform: template
+    name: ${device_name_upper}.ph.cal.check
+    id: ${device_name}_ph_cal_check
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_calibration_check(); 
+        
+  - platform: template
+    name: ${device_name_upper}.ph.cal.clear
+    id: ${device_name}_ph_cal_clear
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_calibration_clear();  
+        
+  - platform: template
+    name: ${device_name_upper}.ph.cal.mid
+    id: ${device_name}_ph_cal_mid
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_calibration_ph_mid();
+        
+  - platform: template
+    name: ${device_name_upper}.ph.cal.high
+    id: ${device_name}_ph_cal_high
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_calibration_ph_high();
+        
+  - platform: template
+    name: ${device_name_upper}.ph.cal.low
+    id: ${device_name}_ph_cal_low
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_calibration_ph_low();
+        
+        
+        
 number:
   
   ############################################################
@@ -517,6 +561,59 @@ number:
     update_interval: "10s"
     unit_of_measurement: "ms"
   
+  ############################################################
+  ##
+  ##  CALIBRATION POINTS
+  ##
+  ############################################################
+  - platform: template
+    min_value: "0"
+    max_value: "14"
+    step: "0.1"
+    id: ${device_name}_ph_cal_mid_real_value
+    name: ${device_name}.ph.cal.mid_real_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "7.0"
+    update_interval: "10s"
+    unit_of_measurement: "mol/l"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ph_cal_mid_value(x);
+  
+  - platform: template
+    min_value: "0"
+    max_value: "14"
+    step: "0.1"
+    id: ${device_name}_ph_cal_high_real_value
+    name: ${device_name}.ph.cal.high_real_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "10.0"
+    update_interval: "10s"
+    unit_of_measurement: "mol/l"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ph_cal_high_value(x);  
+   
+  - platform: template
+    min_value: "0"
+    max_value: "14"
+    step: "0.1"
+    id: ${device_name}_ph_cal_low_real_value
+    name: ${device_name}.ph.cal.low_real_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "4.0"
+    update_interval: "10s"
+    unit_of_measurement: "mol/l"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ph_cal_low_value(x);  
+         
 sensor:
   
   ############################################################
@@ -548,7 +645,74 @@ sensor:
     accuracy_decimals: 2
     unit_of_measurement: "μS/cm"
     update_interval: 0.1s
-    
+
+binary_sensor:
+  - platform: template
+    name: "${device_name_upper}.temp.error"
+    id: ${device_name}_temp_error
+    lambda: |-
+      if (id(${device_name}_temp).retry_counter() >= ${max_retry_attempts})
+      {
+         return true;
+      }else
+      {
+        return false;
+      }
+    on_press:
+      then:
+        if:
+          condition:
+            lambda: |-
+              return id(temp_enabled);
+          then:
+            - switch.turn_off: ${device_name}_temp_enable
+            - delay: 2s
+            - switch.turn_on: ${device_name}_temp_enable
+              
+  - platform: template
+    name: "${device_name_upper}.ph.error"
+    id: ${device_name}_ph_error
+    lambda: |-
+      if (id(${device_name}_ph).retry_counter() >= ${max_retry_attempts})
+      {
+         return true;
+      }else
+      {
+        return false;
+      }
+    on_press:
+      then:
+        if:
+          condition:
+            lambda: |-
+              return id(temp_enabled);
+          then:
+            - switch.turn_off: ${device_name}_ph_enable
+            - delay: 2s
+            - switch.turn_on: ${device_name}_ph_enable
+  
+  - platform: template
+    name: "${device_name_upper}.cond.error"
+    id: ${device_name}_cond_error
+    lambda: |-
+      if (id(${device_name}_cond).retry_counter() >= ${max_retry_attempts})
+      {
+         return true;
+      }else
+      {
+        return false;
+      }
+    on_press:
+      then:
+        if:
+          condition:
+            lambda: |-
+              return id(temp_enabled);
+          then:
+            - switch.turn_off: ${device_name}_cond_enable
+            - delay: 2s
+            - switch.turn_on: ${device_name}_cond_enable
+              
 interval:
   - interval: 1s
     then:

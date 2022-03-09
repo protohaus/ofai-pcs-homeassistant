@@ -1,6 +1,7 @@
 #include "custom_ezo.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
+#include <string.h>
 
 namespace esphome {
 namespace ezo {
@@ -13,15 +14,15 @@ static const uint16_t EZO_STATE_WAIT_TEMP = 4; 	   					// 0000000000000100
 static const uint16_t EZO_STATE_SEND_PH_CAL_MID = 8; 	   			// 0000000000001000
 static const uint16_t EZO_STATE_SEND_PH_CAL_LOW = 16;    			// 0000000000010000
 static const uint16_t EZO_STATE_SEND_PH_CAL_HIGH = 32;    			// 0000000000100000
-static const uint16_t EZO_STATE_SEND_PH_CAL_CLEAR = 64;    			// 0000000001000000
+static const uint16_t EZO_STATE_SEND_CAL_CLEAR = 64;    			// 0000000001000000
 static const uint16_t EZO_STATE_SEND_EC_CAL_DRY = 128;   			// 0000000010000000
 static const uint16_t EZO_STATE_SEND_EC_CAL = 256;   				// 0000000100000000
 static const uint16_t EZO_STATE_SEND_EC_CAL_LOW = 512;   			// 0000001000000000
 static const uint16_t EZO_STATE_SEND_EC_CAL_HIGH = 1024;  			// 0000010000000000
-static const uint16_t EZO_STATE_SEND_EC_CAL_CLEAR = 2048;  			// 0000100000000000
+static const uint16_t EZO_STATE_SEND_CAL_CHECK = 2048;  			// 0000100000000000
 static const uint16_t EZO_STATE_SEND_EC_K = 4096;  					// 0001000000000000
 static const uint16_t EZO_STATE_SEND_RTD_CAL = 8192;  				// 0010000000000000
-static const uint16_t EZO_STATE_SEND_RTD_CAL_CLEAR = 8192;  		// 0100000000000000
+//static const uint16_t EZO_STATE_SEND_RTD_CAL_CLEAR = 8192;  		// 0100000000000000
 static const uint16_t EZO_STATE_WAIT_CAL = 16384; 					// 1000000000000000
 
 void CustomEZOSensor::dump_config() {
@@ -54,7 +55,11 @@ void CustomEZOSensor::update() {
   if (this->state_ & EZO_STATE_WAIT) 
   {
 	if(this->sensor_enabled_  && this->sending_values_)
+	{
        ESP_LOGE(TAG, "update overrun, still waiting for previous response");
+	   if (sensor_enabled())
+		retry_counter_ += 1;
+    }
     return;
   }else
   {
@@ -63,6 +68,7 @@ void CustomEZOSensor::update() {
 	this->state_ |= EZO_STATE_WAIT;
 	this->start_time_ = time_now;
 	this->wait_time_ = 900;
+	retry_counter_ = 0;
   }
 }
 
@@ -74,12 +80,70 @@ void CustomEZOSensor::loop() {
   {
     if (this->state_ & EZO_STATE_SEND_TEMP) 
 	{
+	  if(this->sensor_enabled_  && this->sending_values_)
+		ESP_LOGD(TAG, "Set temp compensation value: %0.3f", this->tempcomp_);
       int len = sprintf((char *) buf, "T,%0.3f", this->tempcomp_);
       this->write(buf, len);
       this->state_ = EZO_STATE_WAIT | EZO_STATE_WAIT_TEMP;
       this->start_time_ = millis();
       this->wait_time_ = 300;
-    }
+    }else
+	{
+	   if (this->state_ & EZO_STATE_SEND_CAL_CHECK)
+	   {
+		 ESP_LOGD(TAG, "Check calibration");
+		 int len = sprintf((char *) buf, "CAL,?");
+	     this->write(buf, len);
+	     this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+	     this->start_time_ = millis();
+	     this->wait_time_ = 300; 
+	   }
+	   
+	   if (this->state_ & EZO_STATE_SEND_CAL_CLEAR)
+	   {
+		 ESP_LOGD(TAG, "Clear calibration");
+		 int len = sprintf((char *) buf, "CAL,CLEAR");
+	     this->write(buf, len);
+		 this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+	     this->start_time_ = millis();
+	     this->wait_time_ = 300; 
+	   }
+	   
+	   if (this->state_ & EZO_STATE_SEND_PH_CAL_MID)
+	   {
+		 ESP_LOGD(TAG, "CAL,MID,%0.3f", this->ph_cal_mid_value_);  
+	     int len = sprintf((char *) buf, "CAL,MID,%0.3f", this->ph_cal_mid_value_);
+         this->write(buf, len);
+         this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+         this->start_time_ = millis();
+         this->wait_time_ = 1300; 
+	   }
+	   
+	   if (this->state_ & EZO_STATE_SEND_PH_CAL_HIGH)
+	   {
+		 ESP_LOGD(TAG, "CAL,HIGH,%0.3f", this->ph_cal_high_value_);  
+	     int len = sprintf((char *) buf, "CAL,HIGH,%0.3f", this->ph_cal_high_value_);
+         this->write(buf, len);
+         this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+         this->start_time_ = millis();
+         this->wait_time_ = 1300; 
+	   }
+	   
+	   if (this->state_ & EZO_STATE_SEND_PH_CAL_LOW)
+	   {
+		 ESP_LOGD(TAG, "CAL,LOW,%0.3f", this->ph_cal_low_value_);  
+	     int len = sprintf((char *) buf, "CAL,LOW,%0.3f", this->ph_cal_low_value_);
+         this->write(buf, len);
+         this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+         this->start_time_ = millis();
+         this->wait_time_ = 1300; 
+	   }
+	}
     return;
   }
   // integer overflow protection -> restart waiting timer
@@ -97,28 +161,68 @@ void CustomEZOSensor::loop() {
 	  ESP_LOGE(TAG, "read error");
 	return;
   }
-
+  
   switch (buf[0]) {
 	case 1:
+	  retry_counter_ = 0;
 	  break;
 	case 2:
 	  if (this->sensor_enabled_ && this->sending_values_)
+	  {
 		ESP_LOGE(TAG, "device returned a syntax error");
+		retry_counter_ += 1;
+	  }
 	  break;
 	case 254:
 	  return;  // keep waiting
 	case 255:
 	  if (this->sensor_enabled_ && this->sending_values_)
+	  {
 		ESP_LOGE(TAG, "device returned no data");
+		retry_counter_ += 1;
+	  }
 	  break;
 	default:
 	  if (this->sensor_enabled_  && this->sending_values_)
+	  {
 		ESP_LOGE(TAG, "device returned an unknown response: %d", buf[0]);
+		retry_counter_ += 1;
+	  }
 	  break;
   }
   
   if (this->state_ & EZO_STATE_WAIT_TEMP) 
   {
+	if (buf[0] != 1)
+		ESP_LOGE(TAG, "Temperature compensation failed (unknown error)");
+    this->state_ = 0;
+	this->calibration_triggered_ = false;
+    return;
+  }
+  
+  if (this->state_ & EZO_STATE_WAIT_CAL) 
+  {
+	if (this->state_ & EZO_STATE_SEND_CAL_CHECK)
+	{
+		std::string s( buf, buf+20 );
+		ESP_LOGD(TAG, "Calibration-state: %s", s.c_str());
+	}
+	else if (this->state_ & EZO_STATE_SEND_CAL_CLEAR)
+	{
+	  if (buf[0] == 1)
+	  	ESP_LOGD(TAG, "Clear Calibration: successful");
+	  else
+		ESP_LOGE(TAG, "Clear Calibration: failed");
+	}
+	else
+	{
+	  if (buf[0] == 1)
+	  	ESP_LOGD(TAG, "Calibration: successful");
+	  else
+		ESP_LOGE(TAG, "Calibration: failed");
+	}
+  
+	this->calibration_triggered_ = false;
     this->state_ = 0;
     return;
   }
@@ -139,9 +243,161 @@ void CustomEZOSensor::loop() {
 }
 
 void CustomEZOSensor::set_tempcomp_value(float temp) {
+  if(this->calibration_active_)
+   {
+  	 return;
+   }
+   
+  if(this->calibration_triggered_)
+  {
+ 	ESP_LOGE(TAG, "ERROR: calibration pending, skipping tempcomp action");
+ 	return;
+  }
   this->tempcomp_ = temp;
   this->state_ |= EZO_STATE_SEND_TEMP;
 }
 
+
+void CustomEZOSensor::start_calibration_ph_high()
+{
+	if (this->sensor_type_ != SENSOR_TYPE_PH)
+	{
+		ESP_LOGE(TAG, "ERROR: wrong sensor type!");
+		return;  
+	}
+	
+	if(!this->calibration_active_)
+	{
+		ESP_LOGE(TAG, "ERROR: activate calibration mode first");
+		return;
+	}
+	
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
+		return;
+	}
+	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_PH_CAL_HIGH;
+};
+  
+  
+void CustomEZOSensor::start_calibration_ph_low()
+{
+	if (this->sensor_type_ != SENSOR_TYPE_PH)
+	{
+		ESP_LOGE(TAG, "ERROR: wrong sensor type!");
+		return;  
+	}
+	
+	if(!this->calibration_active_)
+	{
+		ESP_LOGE(TAG, "ERROR: activate calibration mode first");
+		return;
+	}
+	
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
+		return;
+	}
+	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_PH_CAL_LOW;
+};
+
+
+void CustomEZOSensor::start_calibration_ph_mid()
+{
+	if (this->sensor_type_ != SENSOR_TYPE_PH)
+	{
+		ESP_LOGE(TAG, "ERROR: wrong sensor type!");
+		return;  
+	}
+	
+	if(!this->calibration_active_)
+	{
+		ESP_LOGE(TAG, "ERROR: activate calibration mode first");
+		return;
+	}
+	
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
+		return;
+	}
+	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_PH_CAL_MID;
+};
+
+void CustomEZOSensor::start_calibration_clear()
+{
+	if(!this->calibration_active_)
+	{
+		ESP_LOGE(TAG, "ERROR: activate calibration mode first");
+		return;
+	}
+	
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
+		return;
+	}
+	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_CAL_CLEAR;
+};
+
+void CustomEZOSensor::start_calibration_check()
+{
+	if(!this->calibration_active_)
+	{
+		ESP_LOGE(TAG, "ERROR: activate calibration mode first");
+		return;
+	}
+	
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
+		return;
+	}
+	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	ESP_LOGD(TAG, "Trigger Calibration check");
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_CAL_CHECK;
+		
+	}
 }  // namespace ezo
 }  // namespace esphome
