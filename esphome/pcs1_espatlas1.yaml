@@ -49,9 +49,9 @@ esphome:
     priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - lambda: |-
-          id(${device_name}_cond).set_sensor_type(esphome::ezo::SENSOR_TYPE_COND);
+          id(${device_name}_cond).set_sensor_type(esphome::ezo::SENSOR_TYPE_EC);
           id(${device_name}_ph).set_sensor_type(esphome::ezo::SENSOR_TYPE_PH);
-          id(${device_name}_temp).set_sensor_type(esphome::ezo::SENSOR_TYPE_TEMP);
+          id(${device_name}_temp).set_sensor_type(esphome::ezo::SENSOR_TYPE_RTD);
           
           /***************************************************************
           * enable/disable sensors depending on last boot sensor states
@@ -433,7 +433,7 @@ button:
   
   ############################################################
   ##
-  ##  CALIBRATION METHODS
+  ##  PH CALIBRATION METHODS
   ##
   ############################################################ 
   - platform: template
@@ -471,7 +471,66 @@ button:
       lambda: |-
         id(${device_name}_ph).start_calibration_ph_low();
         
+  ############################################################
+  ##
+  ##  COND CALIBRATION METHODS
+  ##
+  ############################################################       
+  - platform: template
+    name: ${device_name_upper}.cond.cal.check
+    id: ${device_name}_cond_cal_check
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_check(); 
         
+  - platform: template
+    name: ${device_name_upper}.cond.cal.clear
+    id: ${device_name}_cond_cal_clear
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_clear();  
+  
+  - platform: template
+    name: ${device_name_upper}.cond.cal.dry
+    id: ${device_name}_cond_cal_dry
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_ec_dry(); 
+  
+  - platform: template
+    name: ${device_name_upper}.cond.cal.single_point
+    id: ${device_name}_cond_cal_single_point
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_ec();   
+  
+  - platform: template
+    name: ${device_name_upper}.cond.cal.high
+    id: ${device_name}_cond_cal_high
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_ec_high();
+  
+  - platform: template
+    name: ${device_name_upper}.cond.cal.low
+    id: ${device_name}_cond_cal_low
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_calibration_ec_low();  
+        
+  - platform: template
+    name: ${device_name_upper}.cond.k_value.check
+    id: ${device_name}_cond_k_value_check
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_send_ec_k_value(); 
+  
+  - platform: template
+    name: ${device_name_upper}.cond.k_value.send
+    id: ${device_name}_cond_k_value_send
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_check_ec_k_value();   
         
 number:
   
@@ -563,15 +622,15 @@ number:
   
   ############################################################
   ##
-  ##  CALIBRATION POINTS
+  ##  PH CALIBRATION POINTS
   ##
   ############################################################
   - platform: template
     min_value: "0"
     max_value: "14"
     step: "0.1"
-    id: ${device_name}_ph_cal_mid_real_value
-    name: ${device_name}.ph.cal.mid_real_value
+    id: ${device_name}_ph_cal_mid_value
+    name: ${device_name}.ph.cal.mid_value
     optimistic: true
     mode: box
     restore_value : true
@@ -586,8 +645,8 @@ number:
     min_value: "0"
     max_value: "14"
     step: "0.1"
-    id: ${device_name}_ph_cal_high_real_value
-    name: ${device_name}.ph.cal.high_real_value
+    id: ${device_name}_ph_cal_high_value
+    name: ${device_name}.ph.cal.high_value
     optimistic: true
     mode: box
     restore_value : true
@@ -602,8 +661,8 @@ number:
     min_value: "0"
     max_value: "14"
     step: "0.1"
-    id: ${device_name}_ph_cal_low_real_value
-    name: ${device_name}.ph.cal.low_real_value
+    id: ${device_name}_ph_cal_low_value
+    name: ${device_name}.ph.cal.low_value
     optimistic: true
     mode: box
     restore_value : true
@@ -613,6 +672,75 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_ph).set_ph_cal_low_value(x);  
+         
+  ############################################################
+  ##
+  ##  COND CALIBRATION POINTS
+  ##
+  ############################################################  
+  - platform: template
+    min_value: "0"
+    max_value: "100000.0"
+    step: "0.1"
+    id: ${device_name}_cond_cal_single_value
+    name: ${device_name}.cond.cal.single_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "80000.0"
+    update_interval: "10s"
+    unit_of_measurement: "S/m"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ec_cal_value(x);  
+   
+  - platform: template
+    min_value: "0"
+    max_value: "100000.0"
+    step: "0.1"
+    id: ${device_name}_cond_cal_high_value
+    name: ${device_name}.cond.cal.high_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "80000.0"
+    update_interval: "10s"
+    unit_of_measurement: "S/m"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ec_cal_high_value(x);   
+  
+  - platform: template
+    min_value: "0"
+    max_value: "100000.0"
+    step: "0.1"
+    id: ${device_name}_cond_cal_low_value
+    name: ${device_name}.cond.cal.low_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "12880.0"
+    update_interval: "10s"
+    unit_of_measurement: "S/m"
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ec_cal_low_value(x);   
+         
+  - platform: template
+    min_value: "0.1"
+    max_value: "10.0"
+    step: "0.1"
+    id: ${device_name}_cond_k_value
+    name: ${device_name}.cond.k_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "1.0"
+    update_interval: "10s"
+    unit_of_measurement: ""
+    on_value:
+      - lambda: |-
+         id(${device_name}_ph).set_ec_k_value(x); 
          
 sensor:
   

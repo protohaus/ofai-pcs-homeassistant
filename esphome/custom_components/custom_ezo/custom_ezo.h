@@ -9,9 +9,9 @@ namespace esphome {
 namespace ezo {
 enum eSensorType{
 	  SENSOR_TYPE_AUX = 0,
-	  SENSOR_TYPE_COND = 1,
+	  SENSOR_TYPE_EC = 1,
 	  SENSOR_TYPE_PH = 2,
-	  SENSOR_TYPE_TEMP = 3
+	  SENSOR_TYPE_RTD = 3
   };
 /// This class implements support for the EZO circuits in i2c mode
 class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i2c::I2CDevice {
@@ -48,6 +48,8 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   void disable_sending_values(){this->sending_values_ = false;}
   bool sending_values(){return this->sending_values_;};
   
+  bool check_calibration_condition(void);
+  
   bool calibration_triggered(){return this->calibration_triggered_;};
   void start_calibration_clear(void);
   void start_calibration_check(void);
@@ -55,10 +57,22 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   void start_calibration_ph_mid(void);
   void start_calibration_ph_low(void);
   void start_calibration_ph_high(void);
-    
+  
+  void start_calibration_ec_dry(void);
+  void start_calibration_ec(void);
+  void start_calibration_ec_high(void);
+  void start_calibration_ec_low(void);
+  void start_send_ec_k_value(void);
+  void start_check_ec_k_value(void);
+  
   void set_ph_cal_mid_value(float ph_cal_mid_value){this->ph_cal_mid_value_ = ph_cal_mid_value;};
   void set_ph_cal_high_value(float ph_cal_high_value){this->ph_cal_high_value_ = ph_cal_high_value;};
   void set_ph_cal_low_value(float ph_cal_low_value){this->ph_cal_low_value_ = ph_cal_low_value;};
+  
+  void set_ec_cal_value(float ec_cal_value){this->ec_cal_value_ = ec_cal_value;};
+  void set_ec_cal_high_value(float ec_cal_high_value){this->ec_cal_high_value_ = ec_cal_high_value;};
+  void set_ec_cal_low_value(float ec_cal_low_value){this->ec_cal_low_value_ = ec_cal_low_value;};
+  void set_ec_k_value(float ec_k_value){this->ec_k_value_ = ec_k_value;};
   
   int retry_counter(void){return this->retry_counter_;};
   
@@ -73,6 +87,11 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   float ph_cal_high_value_ = 10.0;
   float ph_cal_low_value_ = 4.0;
   
+  float ec_cal_value_ = 80000.0;
+  float ec_cal_high_value_ = 80000.0;
+  float ec_cal_low_value_ = 12880.0;
+  float ec_k_value_ = 1.0;
+  
   uint16_t retry_counter_ = 0;
   
   uint32_t sample_interval_calibration_ = 2000; // sample_interval while calibration in [ms]
@@ -85,7 +104,7 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   bool sensor_enabled_ = false;
   bool sending_values_ = true;
 
-  eSensorType sensor_type_ = SENSOR_TYPE_TEMP;
+  eSensorType sensor_type_ = SENSOR_TYPE_RTD;
   
 };
 
