@@ -65,6 +65,10 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   void start_send_ec_k_value(void);
   void start_check_ec_k_value(void);
   
+  void start_calibration_temp(void);
+  
+  void start_factory_reset(void);
+  
   void set_ph_cal_mid_value(float ph_cal_mid_value){this->ph_cal_mid_value_ = ph_cal_mid_value;};
   void set_ph_cal_high_value(float ph_cal_high_value){this->ph_cal_high_value_ = ph_cal_high_value;};
   void set_ph_cal_low_value(float ph_cal_low_value){this->ph_cal_low_value_ = ph_cal_low_value;};
@@ -73,6 +77,8 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   void set_ec_cal_high_value(float ec_cal_high_value){this->ec_cal_high_value_ = ec_cal_high_value;};
   void set_ec_cal_low_value(float ec_cal_low_value){this->ec_cal_low_value_ = ec_cal_low_value;};
   void set_ec_k_value(float ec_k_value){this->ec_k_value_ = ec_k_value;};
+  
+  void set_rtd_cal_value(float rtd_cal_value){this->rtd_cal_value_ = rtd_cal_value;};
   
   int retry_counter(void){return this->retry_counter_;};
   
@@ -91,6 +97,7 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   float ec_cal_high_value_ = 80000.0;
   float ec_cal_low_value_ = 12880.0;
   float ec_k_value_ = 1.0;
+  float rtd_cal_value_ = 100.0;
   
   uint16_t retry_counter_ = 0;
   
@@ -103,7 +110,9 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   
   bool sensor_enabled_ = false;
   bool sending_values_ = true;
-
+  
+  bool factory_reset_ = false;
+  
   eSensorType sensor_type_ = SENSOR_TYPE_RTD;
   
 };

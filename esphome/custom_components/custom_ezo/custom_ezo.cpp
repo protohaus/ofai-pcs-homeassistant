@@ -89,6 +89,28 @@ void CustomEZOSensor::loop() {
       this->wait_time_ = 300;
     }else
 	{
+	   if (this->factory_reset_)
+	   {
+		 int len = 0;
+		 if (this->sensor_type_ == SENSOR_TYPE_EC || 
+		     this->sensor_type_ == SENSOR_TYPE_RTD)
+		 {
+		   ESP_LOGD(TAG, "Reset to factory settings");
+		   len = sprintf((char *) buf, "FACTORY");
+		 }else if (this->sensor_type_ == SENSOR_TYPE_PH)
+		 {
+		   ESP_LOGD(TAG, "Reset to factory settings");
+		   len = sprintf((char *) buf, "X");
+		 }
+		 
+	     this->write(buf, len);
+	     this->state_ |= EZO_STATE_WAIT;
+	     this->start_time_ = millis();
+	     this->wait_time_ = 5000; 
+		 this->factory_reset_ = false;
+		 return;
+	   }   
+		   
 	   if (this->state_ & EZO_STATE_SEND_CAL_CHECK)
 	   {
 		 ESP_LOGD(TAG, "Check calibration");
@@ -210,6 +232,16 @@ void CustomEZOSensor::loop() {
          this->wait_time_ = 600; 
 	   }
 	   
+	   if (this->state_ & EZO_STATE_SEND_RTD_CAL)
+	   {
+		 ESP_LOGD(TAG, "CAL,%0.3f", this->rtd_cal_value_);  
+	     int len = sprintf((char *) buf, "CAL,%0.3f", this->rtd_cal_value_);
+         this->write(buf, len);
+         this->state_ |= EZO_STATE_WAIT;
+	     this->state_ |= EZO_STATE_WAIT_CAL;
+         this->start_time_ = millis();
+         this->wait_time_ = 600; 
+	   }
 	}
     return;
   }
@@ -525,7 +557,34 @@ void CustomEZOSensor::start_check_ec_k_value()
 	this->state_ |= EZO_STATE_SEND_EC_K_VALUE_CHECK;
 }	
 	
+/******************************************************************************
+** RTD calibration methods
+*******************************************************************************/	
+void CustomEZOSensor::start_calibration_temp()
+{
+	if (this->sensor_type_ != SENSOR_TYPE_RTD)
+	{
+		ESP_LOGE(TAG, "ERROR: wrong sensor type!");
+		return;  
+	}
 	
+	if(!check_calibration_condition())
+		return;
+
+	this->calibration_triggered_ = true;
+	this->state_ |= EZO_STATE_SEND_RTD_CAL;
+}	
+
+/******************************************************************************
+** RTD calibration methods
+*******************************************************************************/	
+void CustomEZOSensor::start_factory_reset(void)
+{
+	if(!check_calibration_condition())
+		return;
+	
+	this->factory_reset_ = true;
+}
 	
 }  // namespace ezo
 }  // namespace esphome

@@ -530,7 +530,59 @@ button:
     id: ${device_name}_cond_k_value_send
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_check_ec_k_value();   
+        id(${device_name}_cond).start_check_ec_k_value();
+  
+  ############################################################
+  ##
+  ##  TEMP CALIBRATION METHODS
+  ##
+  ############################################################  
+  - platform: template
+    name: ${device_name_upper}.temp.cal.check
+    id: ${device_name}_temp_cal_check
+    on_press:
+      lambda: |-
+        id(${device_name}_temp).start_calibration_check(); 
+        
+  - platform: template
+    name: ${device_name_upper}.temp.cal.clear
+    id: ${device_name}_temp_cal_clear
+    on_press:
+      lambda: |-
+        id(${device_name}_temp).start_calibration_clear();  
+        
+  - platform: template
+    name: ${device_name_upper}.temp.cal
+    id: ${device_name}_temp_cal
+    on_press:
+      lambda: |-
+        id(${device_name}_temp).start_calibration_temp(); 
+   
+  ############################################################
+  ##
+  ##  FACTORY RESET
+  ##
+  ############################################################
+  - platform: template
+    name: ${device_name_upper}.temp.factory_reset
+    id: ${device_name}_temp_factory_reset
+    on_press:
+      lambda: |-
+        id(${device_name}_temp).start_factory_reset();
+  
+  - platform: template
+    name: ${device_name_upper}.cond.factory_reset
+    id: ${device_name}_cond_factory_reset
+    on_press:
+      lambda: |-
+        id(${device_name}_cond).start_factory_reset();
+  
+  - platform: template
+    name: ${device_name_upper}.ph.factory_reset
+    id: ${device_name}_ph_factory_reset
+    on_press:
+      lambda: |-
+        id(${device_name}_ph).start_factory_reset(); 
         
 number:
   
@@ -628,7 +680,7 @@ number:
   - platform: template
     min_value: "0"
     max_value: "14"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_ph_cal_mid_value
     name: ${device_name}.ph.cal.mid_value
     optimistic: true
@@ -644,7 +696,7 @@ number:
   - platform: template
     min_value: "0"
     max_value: "14"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_ph_cal_high_value
     name: ${device_name}.ph.cal.high_value
     optimistic: true
@@ -660,7 +712,7 @@ number:
   - platform: template
     min_value: "0"
     max_value: "14"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_ph_cal_low_value
     name: ${device_name}.ph.cal.low_value
     optimistic: true
@@ -681,7 +733,7 @@ number:
   - platform: template
     min_value: "0"
     max_value: "100000.0"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_cond_cal_single_value
     name: ${device_name}.cond.cal.single_value
     optimistic: true
@@ -692,12 +744,12 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_ph).set_ec_cal_value(x);  
+         id(${device_name}_cond).set_ec_cal_value(x);  
    
   - platform: template
     min_value: "0"
     max_value: "100000.0"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_cond_cal_high_value
     name: ${device_name}.cond.cal.high_value
     optimistic: true
@@ -708,12 +760,12 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_ph).set_ec_cal_high_value(x);   
+         id(${device_name}_cond).set_ec_cal_high_value(x);   
   
   - platform: template
     min_value: "0"
     max_value: "100000.0"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_cond_cal_low_value
     name: ${device_name}.cond.cal.low_value
     optimistic: true
@@ -724,12 +776,12 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_ph).set_ec_cal_low_value(x);   
+         id(${device_name}_cond).set_ec_cal_low_value(x);   
          
   - platform: template
     min_value: "0.1"
     max_value: "10.0"
-    step: "0.1"
+    step: "0.01"
     id: ${device_name}_cond_k_value
     name: ${device_name}.cond.k_value
     optimistic: true
@@ -740,7 +792,28 @@ number:
     unit_of_measurement: ""
     on_value:
       - lambda: |-
-         id(${device_name}_ph).set_ec_k_value(x); 
+         id(${device_name}_cond).set_ec_k_value(x); 
+   
+  ############################################################
+  ##
+  ##  TEMP CALIBRATION POINT
+  ##
+  ############################################################  
+  - platform: template
+    min_value: "0"
+    max_value: "100.0"
+    step: "0.01"
+    id: ${device_name}_temp_cal_value
+    name: ${device_name}.temp.cal.cal_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "100.0"
+    update_interval: "10s"
+    unit_of_measurement: "°C"
+    on_value:
+      - lambda: |-
+         id(${device_name}_temp).set_rtd_cal_value(x);   
          
 sensor:
   
