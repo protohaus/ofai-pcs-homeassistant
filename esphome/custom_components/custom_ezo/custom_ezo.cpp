@@ -88,8 +88,8 @@ void CustomEZOSensor::loop() {
       this->start_time_ = millis();
       this->wait_time_ = 300;
     }else
-	{
-	   if (this->factory_reset_)
+	{  
+       if (this->factory_reset_)
 	   {
 		 int len = 0;
 		 if (this->sensor_type_ == SENSOR_TYPE_EC || 
@@ -110,7 +110,7 @@ void CustomEZOSensor::loop() {
 		 this->factory_reset_ = false;
 		 return;
 	   }   
-		   
+	   
 	   if (this->state_ & EZO_STATE_SEND_CAL_CHECK)
 	   {
 		 ESP_LOGD(TAG, "Check calibration");
@@ -580,9 +580,19 @@ void CustomEZOSensor::start_calibration_temp()
 *******************************************************************************/	
 void CustomEZOSensor::start_factory_reset(void)
 {
-	if(!check_calibration_condition())
+	if(this->calibration_triggered_)
+	{
+		ESP_LOGE(TAG, "ERROR: calibration already pending, try again after 1.3s");
 		return;
+	}
 	
+	if (this->state_ & EZO_STATE_SEND_TEMP)
+	{
+		ESP_LOGE(TAG, "ERROR: temperature compensation pending, try again");
+		return;
+	}
+	
+	ESP_LOGD(TAG, "Issuing Factory reset");
 	this->factory_reset_ = true;
 }
 	
