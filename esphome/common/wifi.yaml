@@ -9,6 +9,8 @@ wifi:
   
   fast_connect: true
 
+captive_portal:
+
 sensor:
   - platform: wifi_signal
     name: "${device_name_upper}.wifi_signal"

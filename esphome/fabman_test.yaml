@@ -8,6 +8,8 @@ substitutions:
   status_led_interval_booting: 3s
   fabman_url: !secret fabman_access_url
   fabman_token: !secret fabman_access_token
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
   
 esphome:
   name: ${host_name}
@@ -18,7 +20,7 @@ preferences:
   flash_write_interval: 1min
 
 packages:
-  common_wifi: !include common/wifi.yaml
+  common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   #common_status_led: !include common/status_led.yaml

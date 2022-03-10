@@ -1,15 +1,6 @@
-# Enable Home Assistant API
-api:
-  reboot_timeout: 2min
-  password: !secret esphome_api_pw
-
-# enable ota updates
-ota:
-  password: !secret esphome_ota_pw
-  
-captive_portal:
-
-# Example configuration entry
-time:
-  - platform: sntp
-    id: sntp_time
+packages:
+  common_ota: !include ota.yaml
+  common_time_sntp: !include time_sntp.yaml
+  common_logger: !include logger.yaml
+  common_preferences: !include preferences.yaml
+  common_wifi: !include wifi.yaml

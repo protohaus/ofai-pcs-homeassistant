@@ -1,0 +1,4 @@
+# Example configuration entry
+time:
+  - platform: sntp
+    id: sntp_time

@@ -5,22 +5,27 @@ substitutions:
   device_name_upper: pcs1.as
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
   
   #I2C Bus
   i2c_bus_a_name: i2c_bus_a
   i2c_bus_a_sda: GPIO23
   i2c_bus_a_scl: GPIO22
-  
-  #Temp Enable Pin
-  enable_rtd_pin: GPIO33
-  enable_aux_pin: GPIO27
-  enable_ec_pin: GPIO12
-  enable_ph_pin: GPIO13
-  
+
   # webserver
   web_server_ota_active: "true"
   
-  # EZO Settings
+  # EZO settings
+  max_retry_attempts: "4"
+  default_temp_comp_value: "25"
+  
+  # EZO Enable Pins
+  enable_rtd_pin: GPIO33
+  enable_ec_pin: GPIO12
+  enable_ph_pin: GPIO13
+  
+  # EZO sample intervals
   min_sample_interval_ec: "2000" # 1s
   max_sample_interval_ec: "10000" # 60min
   
@@ -35,25 +40,15 @@ substitutions:
   
   min_sample_interval_ph_tempcomp: "10000" 
   max_sample_interval_ph_tempcomp: "60000"
-  
-  max_retry_attempts: "4"
-  default_temp_comp_value: "25"
-  
+
 esphome:
   name: ${host_name}
   platform: ESP32
   board: esp32dev
   #board: nodemcu-32s    
-
-# Enable logging
-logger:
-  level: DEBUG
-  
-preferences:
-  flash_write_interval: 1min
   
 packages:
-  common_wifi: !include common/wifi.yaml
+  common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   common_restart: !include common/restart.yaml
