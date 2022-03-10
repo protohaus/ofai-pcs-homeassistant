@@ -1,0 +1,208 @@
+substitutions:
+  include_dependencies_as_ezo_rtd: "defined"
+
+############################################################
+##
+##  INITIALIZE SENSOR STATES FROM LAST BOOT
+##
+############################################################
+esphome:
+  on_boot:
+    priority: -200 # Highest priority, ensures enable pin to be turned off first
+    then:
+      - lambda: |-
+          id(${device_name}_rtd).set_sensor_type(esphome::ezo::SENSOR_TYPE_RTD);
+          
+          /***************************************************************
+          * enable/disable sensors depending on last boot sensor states
+          ***************************************************************/
+          if(id(rtd_enabled))
+            id(${device_name}_rtd_enable).turn_on();
+          else
+            id(${device_name}_rtd_enable).turn_off();
+            
+          /***************************************************************
+          * enable/disable value sending
+          ***************************************************************/  
+          if(id(rtd_sending_enabled))
+            id(${device_name}_rtd_enable_sending_values).turn_on();
+          else
+            id(${device_name}_rtd_enable_sending_values).turn_off();
+
+sensor:
+
+  # SENSOR DEFINITION
+  - platform: custom_ezo
+    id: ${device_name}_rtd
+    name: ${device_name_upper}.rtd
+    address: 102
+    accuracy_decimals: 2
+    unit_of_measurement: "°C"
+    update_interval: 0.1s
+    
+globals:
+   
+   # PERMANENT GLOBALS FOR STATE STORAGE
+   - id: rtd_enabled
+     type: bool
+     restore_value: yes
+     initial_value: 'true'
+
+   - id: rtd_sending_enabled
+     type: bool
+     restore_value: yes
+     initial_value: 'true'
+
+output:
+  
+  # ENABLE PIN
+  - platform: gpio
+    pin: ${enable_rtd_pin}
+    id: ${device_name}_rtd_enable_pin
+
+switch:
+          
+  # CALIBRATION MODE
+  - platform: template
+    name: ${device_name_upper}.rtd.cal.activate
+    id: ${device_name}_rtd_cal_activate
+    lambda: |-
+      return id(${device_name}_rtd).calibration_mode_active();
+    turn_on_action:
+      - lambda: |-
+          id(${device_name}_rtd).activate_calibration();
+    turn_off_action:
+      - lambda: |-
+          id(${device_name}_rtd).deactivate_calibration();
+
+  # ENABLE/DISABLE SENSOR
+  - platform: template
+    id: ${device_name}_rtd_enable
+    name: ${device_name_upper}.rtd.enable
+    lambda: |-
+      return id(${device_name}_rtd).sensor_enabled();
+    turn_on_action:
+      - lambda: |-
+          id(${device_name}_rtd).enable_sensor();
+      - globals.set:
+          id: rtd_enabled
+          value: "true"
+      - output.turn_on: ${device_name}_rtd_enable_pin
+    turn_off_action:
+      - lambda: |-
+          id(${device_name}_rtd).disable_sensor();
+      - globals.set:
+          id: rtd_enabled
+          value: "false"
+      - output.turn_off: ${device_name}_rtd_enable_pin 
+      - switch.turn_off: ${device_name}_ec_enable
+      - switch.turn_off: ${device_name}_ph_enable
+   
+
+  # ENABLE / DISABLE VALUE SENDING
+  - platform: template
+    id: ${device_name}_rtd_enable_sending_values
+    name: ${device_name_upper}.rtd.enable_sending_values
+    lambda: |-
+      return id(${device_name}_rtd).sending_values();
+    turn_on_action:
+      - lambda: |-
+          id(${device_name}_rtd).enable_sending_values();
+          id(rtd_sending_enabled) = true;
+    turn_off_action:
+      - lambda: |-
+          id(${device_name}_rtd).disable_sending_values();
+          id(rtd_sending_enabled) = false;
+          
+button:
+
+  # CALIBRATION METHODS  
+  - platform: template
+    name: ${device_name_upper}.rtd.cal.check
+    id: ${device_name}_rtd_cal_check
+    on_press:
+      lambda: |-
+        id(${device_name}_rtd).start_calibration_check(); 
+        
+  - platform: template
+    name: ${device_name_upper}.rtd.cal.clear
+    id: ${device_name}_rtd_cal_clear
+    on_press:
+      lambda: |-
+        id(${device_name}_rtd).start_calibration_clear();  
+        
+  - platform: template
+    name: ${device_name_upper}.rtd.cal
+    id: ${device_name}_rtd_cal
+    on_press:
+      lambda: |-
+        id(${device_name}_rtd).start_calibration_rtd(); 
+   
+  # FACTORY RESET
+  - platform: template
+    name: ${device_name_upper}.rtd.factory_reset
+    id: ${device_name}_rtd_factory_reset
+    on_press:
+      lambda: |-
+        id(${device_name}_rtd).start_factory_reset();
+
+number:
+  
+  # SAMPLE INTERVAL TIME IN [MS]
+  - platform: template
+    min_value: ${min_sample_interval_rtd}
+    max_value: ${max_sample_interval_rtd}
+    step: "1"
+    id: ${device_name}_rtd_sample_interval
+    name: ${device_name}.rtd.sample_interval
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: ${min_sample_interval_rtd}
+    update_interval: "10s"
+    unit_of_measurement: "ms"
+    on_value:
+      - lambda: |-
+         id(${device_name}_rtd).set_sample_interval(x);
+  
+  # CALIBRATION POINTS
+  - platform: template
+    min_value: "0"
+    max_value: "100.0"
+    step: "0.01"
+    id: ${device_name}_rtd_cal_value
+    name: ${device_name}.rtd.cal.cal_value
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: "100.0"
+    update_interval: "10s"
+    unit_of_measurement: "°C"
+    on_value:
+      - lambda: |-
+         id(${device_name}_rtd).set_rtd_cal_value(x);   
+
+binary_sensor:
+
+  # ERROR CHECKING SENSOR    
+  - platform: template
+    name: "${device_name_upper}.rtd.error"
+    id: ${device_name}_rtd_error
+    lambda: |-
+      if (id(${device_name}_rtd).retry_counter() >= ${max_retry_attempts})
+      {
+         return true;
+      }else
+      {
+        return false;
+      }
+    on_press:
+      then:
+        if:
+          condition:
+            lambda: |-
+              return id(rtd_enabled);
+          then:
+            - switch.turn_off: ${device_name}_rtd_enable
+            - delay: 2s
+            - switch.turn_on: ${device_name}_rtd_enable

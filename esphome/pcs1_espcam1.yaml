@@ -20,20 +20,6 @@ substitutions:
   esp32cam_max_framerate: "10 fps"
   esp32cam_resolution: "1600x1200"
   
-  #bmp280_1 settings
-  bmp280_1_name: bmp280_1
-  bmp280_1_i2c_bus: ${i2c_bus_b_name}
-  bmp280_1_oversampling: "16x"
-  bmp280_1_adress: "0x76"
-  bmp280_1_update_interval: "10s"
-  
-  #bmp280_2 settings
-  bmp280_2_name: bmp280_2
-  bmp280_2_i2c_bus: ${i2c_bus_b_name}
-  bmp280_2_oversampling: "16x"
-  bmp280_2_adress: "0x77"
-  bmp280_2_update_interval: "10s"
-  
   #bme280_1 settings
   bme280_1_name: bme280_1
   bme280_1_i2c_bus: ${i2c_bus_b_name}
@@ -56,16 +42,6 @@ substitutions:
   bh1750_1_measurement_duration: "69" 
   bh1750_1_update_interval: "10s"
   
-  #DHT22_1 settings
-  dht22_1_name: dht22_1
-  dht22_1_pin: GPIO4
-  dht22_1_update_interval: "60s"
-  
-  #DHT22_2 settings
-  dht22_2_name: dht22_2
-  dht22_2_pin: GPIO2
-  dht22_2_update_interval: "60s"
-  
 esphome:
   name: ${host_name}
   platform: ESP32
@@ -87,16 +63,8 @@ packages:
   common_restart: !include common/restart.yaml
   common_i2c_bus_b: !include common/i2c_bus_b.yaml   
   camera_esp32cam: !include camera/esp32cam.yaml
-  
-  #sensors_bmp280_1: !include sensors/bmp280_1.yaml
-  #sensors_bmp280_2: !include sensors/bmp280_2.yaml
-  
   sensors_bme280_1: !include sensors/bme280_1.yaml
-  #sensors_bme280_2: !include sensors/bme280_2.yaml
-  
+  sensors_bme280_2: !include sensors/bme280_2.yaml
   sensors_bh1750_1: !include sensors/bh1750_1.yaml
-  
-  sensors_dht22_1: !include sensors/dht22_1.yaml
-  sensors_dht22_2: !include sensors/dht22_2.yaml
   
   #camera_webserver: !include camera/webserver_snapshot.yaml
