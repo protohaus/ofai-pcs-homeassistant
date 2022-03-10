@@ -1,8 +1,8 @@
 substitutions:
   #general settings
-  host_name: pcs1-espcontroller1
-  device_name: pcs1_espcontroller1
-  device_name_upper: pcs1.espcontroller1
+  host_name: pcs1-kin
+  device_name: pcs1_kin
+  device_name_upper: pcs1.kin
   status_led_pin: "GPIO13"
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
