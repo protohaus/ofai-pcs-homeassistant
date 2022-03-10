@@ -82,4 +82,36 @@ button:
       - switch.turn_off: ${device_name}_rtd_enable
       - switch.turn_off: ${device_name}_ec_enable
       - switch.turn_off: ${device_name}_ph_enable
+  
+  # ENABLE/DISABLE ALL SENSOR OUTPUTS
+  - platform: template
+    name: ${device_name_upper}.all.enable_sending_values
+    id: ${device_name}_all_enable_sending_values
+    on_press:
+      - switch.turn_on: ${device_name}_rtd_enable_sending_values
+      - switch.turn_on: ${device_name}_ec_enable_sending_values
+      - switch.turn_on: ${device_name}_ph_enable_sending_values
+  
+  - platform: template
+    name: ${device_name_upper}.all.disable_sending_values
+    id: ${device_name}_all_disable_sending_values
+    on_press:
+      - switch.turn_off: ${device_name}_rtd_enable_sending_values
+      - switch.turn_off: ${device_name}_ec_enable_sending_values
+      - switch.turn_off: ${device_name}_ph_enable_sending_values
+ 
+  # ENABLE/DISABLE ALL TEMPCOMP
+  - platform: template
+    name: ${device_name_upper}.all.enable_tempcomp
+    id: ${device_name}_all_enable_tempcomp
+    on_press:
+      - switch.turn_on: ${device_name}_ec_tempcomp
+      - switch.turn_on: ${device_name}_ph_tempcomp
+  
+  - platform: template
+    name: ${device_name_upper}.all.disable_tempcomp
+    id: ${device_name}_all_disable_tempcomp
+    on_press:
+      - switch.turn_off: ${device_name}_ec_tempcomp
+      - switch.turn_off: ${device_name}_ph_tempcomp
       
