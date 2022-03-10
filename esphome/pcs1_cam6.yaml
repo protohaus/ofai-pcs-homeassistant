@@ -1,0 +1,72 @@
+substitutions:
+  #general settings
+  host_name: pcs1-cam6
+  device_name: pcs1_cam6
+  device_name_upper: pcs1.cam1
+  status_led_pin: GPIO33
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
+  
+  #i2c settings
+  i2c_bus_b_name: bus_b
+  i2c_bus_b_sda: GPIO13
+  i2c_bus_b_scl: GPIO15 
+  
+  # ESP32cam settings
+  esp32cam_flashlight_pin: GPIO04
+  esp32cam_custom_idle_framerate: "0 fps"
+  esp32cam_vertical_flip: "false"
+  esp32cam_horizontal_mirror: "false"
+  esp32cam_max_framerate: "10 fps"
+  esp32cam_resolution: "1600x1200"
+  
+  #bme280_1 settings
+  bme280_1_name: bme280_1
+  bme280_1_i2c_bus: ${i2c_bus_b_name}
+  bme280_1_oversampling: "16x"
+  bme280_1_adress: "0x76"
+  bme280_1_update_interval: "10s"
+  
+  #bmp280_2 settings
+  bme280_2_name: bme280_2
+  bme280_2_i2c_bus: ${i2c_bus_b_name}
+  bme280_2_oversampling: "16x"
+  bme280_2_adress: "0x77"
+  bme280_2_update_interval: "10s"
+  
+  #bh1750_1 settings
+  bh1750_1_name: bh1750_1
+  bh1750_1_i2c_bus: ${i2c_bus_b_name}
+  bh1750_1_adress: "0x23"
+  bh1750_1_resolution: "0.5" 
+  bh1750_1_measurement_duration: "69" 
+  bh1750_1_update_interval: "10s"
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+  #board: nodemcu-32s
+
+# Enable logging
+logger:
+  level: DEBUG
+  
+preferences:
+  flash_write_interval: 1min
+  
+packages:
+  common_api: !include common/api.yaml
+  common_base: !include common/base.yaml
+  common_status: !include common/status.yaml
+  common_status_led: !include common/status_led.yaml
+  common_restart: !include common/restart.yaml
+  common_i2c_bus_b: !include common/i2c_bus_b.yaml   
+  camera_esp32cam: !include camera/esp32cam.yaml
+  sensors_bme280_1: !include sensors/bme280_1.yaml
+  sensors_bme280_2: !include sensors/bme280_2.yaml
+  sensors_bh1750_1: !include sensors/bh1750_1.yaml
+  
+  #camera_webserver: !include camera/webserver_snapshot.yaml
