@@ -65,7 +65,7 @@ class CustomEZOSensor : public sensor::Sensor, public PollingComponent, public i
   void start_send_ec_k_value(void);
   void start_check_ec_k_value(void);
   
-  void start_calibration_temp(void);
+  void start_calibration_rtd(void);
   
   void start_factory_reset(void);
   

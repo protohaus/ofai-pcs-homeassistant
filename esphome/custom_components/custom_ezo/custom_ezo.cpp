@@ -560,7 +560,7 @@ void CustomEZOSensor::start_check_ec_k_value()
 /******************************************************************************
 ** RTD calibration methods
 *******************************************************************************/	
-void CustomEZOSensor::start_calibration_temp()
+void CustomEZOSensor::start_calibration_rtd()
 {
 	if (this->sensor_type_ != SENSOR_TYPE_RTD)
 	{

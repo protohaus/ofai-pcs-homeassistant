@@ -1,8 +1,8 @@
 substitutions:
   #general settings
-  host_name: pcs1-espatlas1
-  device_name: pcs1_espatlas1
-  device_name_upper: pcs1.espatlas1
+  host_name: pcs1-as
+  device_name: pcs1_as
+  device_name_upper: pcs1.as
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
   
@@ -12,26 +12,26 @@ substitutions:
   i2c_bus_a_scl: GPIO22
   
   #Temp Enable Pin
-  enable_temp_pin: GPIO33
+  enable_rtd_pin: GPIO33
   enable_aux_pin: GPIO27
-  enable_cond_pin: GPIO12
+  enable_ec_pin: GPIO12
   enable_ph_pin: GPIO13
   
   # webserver
   web_server_ota_active: "true"
   
   # EZO Settings
-  min_sample_interval_cond: "2000" # 1s
-  max_sample_interval_cond: "3600000" # 60min
+  min_sample_interval_ec: "2000" # 1s
+  max_sample_interval_ec: "3600000" # 60min
   
   min_sample_interval_ph: "2000" # 1s
   max_sample_interval_ph: "3600000" # 60min
   
-  min_sample_interval_temp: "1000" # 1s
-  max_sample_interval_temp: "3600000" # 60min
+  min_sample_interval_rtd: "1000" # 1s
+  max_sample_interval_rtd: "3600000" # 60min
   
-  min_sample_interval_cond_tempcomp: "10000" 
-  max_sample_interval_cond_tempcomp: "3600000"
+  min_sample_interval_ec_tempcomp: "10000" 
+  max_sample_interval_ec_tempcomp: "3600000"
   
   min_sample_interval_ph_tempcomp: "10000" 
   max_sample_interval_ph_tempcomp: "3600000"
@@ -49,22 +49,22 @@ esphome:
     priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - lambda: |-
-          id(${device_name}_cond).set_sensor_type(esphome::ezo::SENSOR_TYPE_EC);
+          id(${device_name}_ec).set_sensor_type(esphome::ezo::SENSOR_TYPE_EC);
           id(${device_name}_ph).set_sensor_type(esphome::ezo::SENSOR_TYPE_PH);
-          id(${device_name}_temp).set_sensor_type(esphome::ezo::SENSOR_TYPE_RTD);
+          id(${device_name}_rtd).set_sensor_type(esphome::ezo::SENSOR_TYPE_RTD);
           
           /***************************************************************
           * enable/disable sensors depending on last boot sensor states
           ***************************************************************/
-          if(id(cond_enabled))
-            id(${device_name}_cond_enable).turn_on();
+          if(id(ec_enabled))
+            id(${device_name}_ec_enable).turn_on();
           else
-            id(${device_name}_cond_enable).turn_off();
+            id(${device_name}_ec_enable).turn_off();
           
-          if(id(temp_enabled))
-            id(${device_name}_temp_enable).turn_on();
+          if(id(rtd_enabled))
+            id(${device_name}_rtd_enable).turn_on();
           else
-            id(${device_name}_temp_enable).turn_off();
+            id(${device_name}_rtd_enable).turn_off();
           
           if(id(ph_enabled))
             id(${device_name}_ph_enable).turn_on();
@@ -75,10 +75,10 @@ esphome:
           /***************************************************************
           * enable/disable temp compensation depending on last boot states
           ***************************************************************/  
-          if(id(cond_tempcomp_enabled))
-            id(${device_name}_cond_tempcomp).turn_on();
+          if(id(ec_tempcomp_enabled))
+            id(${device_name}_ec_tempcomp).turn_on();
           else
-            id(${device_name}_cond_tempcomp).turn_off();
+            id(${device_name}_ec_tempcomp).turn_off();
           
           if(id(ph_tempcomp_enabled))
             id(${device_name}_ph_tempcomp).turn_on();
@@ -89,20 +89,20 @@ esphome:
           * enable/disable value sending
           ***************************************************************/  
           
-          if(id(cond_sending_enabled))
-            id(${device_name}_cond_enable_sending_values).turn_on();
+          if(id(ec_sending_enabled))
+            id(${device_name}_ec_enable_sending_values).turn_on();
           else
-            id(${device_name}_cond_enable_sending_values).turn_off();
+            id(${device_name}_ec_enable_sending_values).turn_off();
           
           if(id(ph_sending_enabled))
             id(${device_name}_ph_enable_sending_values).turn_on();
           else
             id(${device_name}_ph_enable_sending_values).turn_off();
           
-          if(id(temp_sending_enabled))
-            id(${device_name}_temp_enable_sending_values).turn_on();
+          if(id(rtd_sending_enabled))
+            id(${device_name}_rtd_enable_sending_values).turn_on();
           else
-            id(${device_name}_temp_enable_sending_values).turn_off();
+            id(${device_name}_rtd_enable_sending_values).turn_off();
           
 
 # Enable logging
@@ -130,7 +130,7 @@ globals:
   ##
   ############################################################
    
-   - id: cond_enabled
+   - id: ec_enabled
      type: bool
      restore_value: yes
      initial_value: 'true'
@@ -140,12 +140,12 @@ globals:
      restore_value: yes
      initial_value: 'true'
      
-   - id: temp_enabled
+   - id: rtd_enabled
      type: bool
      restore_value: yes
      initial_value: 'true'
    
-   - id: cond_sending_enabled
+   - id: ec_sending_enabled
      type: bool
      restore_value: yes
      initial_value: 'true'
@@ -155,7 +155,7 @@ globals:
      restore_value: yes
      initial_value: 'true'
      
-   - id: temp_sending_enabled
+   - id: rtd_sending_enabled
      type: bool
      restore_value: yes
      initial_value: 'true'
@@ -166,7 +166,7 @@ globals:
    ##
    ############################################################
   
-   - id: cond_tempcomp_enabled
+   - id: ec_tempcomp_enabled
      type: bool
      restore_value: yes
      initial_value: 'false'
@@ -181,7 +181,7 @@ globals:
      restore_value: no
      initial_value: ${default_temp_comp_value}
      
-   - id: cond_tempcomp_timestamp_0
+   - id: ec_tempcomp_timestamp_0
      type: int
      restore_value: no
      initial_value: '0' 
@@ -200,16 +200,16 @@ output:
   ############################################################
   
   - platform: gpio
-    pin: ${enable_cond_pin}
-    id: ${device_name}_cond_enable_pin
+    pin: ${enable_ec_pin}
+    id: ${device_name}_ec_enable_pin
   
   - platform: gpio
     pin: ${enable_ph_pin}
     id: ${device_name}_ph_enable_pin
     
   - platform: gpio
-    pin: ${enable_temp_pin}
-    id: ${device_name}_temp_enable_pin
+    pin: ${enable_rtd_pin}
+    id: ${device_name}_rtd_enable_pin
      
 switch:
   
@@ -220,17 +220,17 @@ switch:
   ############################################################
   
   - platform: template
-    name: ${device_name_upper}.cond.tempcomp
-    id: ${device_name}_cond_tempcomp
+    name: ${device_name_upper}.ec.tempcomp
+    id: ${device_name}_ec_tempcomp
     lambda: |-
-      return id(cond_tempcomp_enabled);
+      return id(ec_tempcomp_enabled);
     turn_on_action:
       - lambda: |-
-          id(cond_tempcomp_enabled) = true;
-          id(cond_tempcomp_timestamp_0) = millis();
+          id(ec_tempcomp_enabled) = true;
+          id(ec_tempcomp_timestamp_0) = millis();
     turn_off_action:
       - lambda: |-
-          id(cond_tempcomp_enabled) = false;
+          id(ec_tempcomp_enabled) = false;
   
   - platform: template
     name: ${device_name_upper}.ph.tempcomp
@@ -251,16 +251,16 @@ switch:
   ##
   ############################################################
   - platform: template
-    name: ${device_name_upper}.temp.cal.activate
-    id: ${device_name}_temp_cal_activate
+    name: ${device_name_upper}.rtd.cal.activate
+    id: ${device_name}_rtd_cal_activate
     lambda: |-
-      return id(${device_name}_temp).calibration_mode_active();
+      return id(${device_name}_rtd).calibration_mode_active();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_temp).activate_calibration();
+          id(${device_name}_rtd).activate_calibration();
     turn_off_action:
       - lambda: |-
-          id(${device_name}_temp).deactivate_calibration();
+          id(${device_name}_rtd).deactivate_calibration();
   
   - platform: template
     name: ${device_name_upper}.ph.cal.activate
@@ -276,18 +276,18 @@ switch:
           id(${device_name}_ph).deactivate_calibration();
           
   - platform: template
-    name: ${device_name_upper}.cond.cal.activate
-    id: ${device_name}_cond_cal_activate
+    name: ${device_name_upper}.ec.cal.activate
+    id: ${device_name}_ec_cal_activate
     restore_state: "true"
     lambda: |-
-      return id(${device_name}_cond).calibration_mode_active();
+      return id(${device_name}_ec).calibration_mode_active();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_cond).activate_calibration();
+          id(${device_name}_ec).activate_calibration();
       
     turn_off_action:
       - lambda: |-
-          id(${device_name}_cond).deactivate_calibration();
+          id(${device_name}_ec).deactivate_calibration();
 
   ############################################################
   ##
@@ -296,47 +296,47 @@ switch:
   ############################################################
   
   - platform: template
-    id: ${device_name}_temp_enable
-    name: ${device_name_upper}.temp.enable
+    id: ${device_name}_rtd_enable
+    name: ${device_name_upper}.rtd.enable
     lambda: |-
-      return id(${device_name}_temp).sensor_enabled();
+      return id(${device_name}_rtd).sensor_enabled();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_temp).enable_sensor();
+          id(${device_name}_rtd).enable_sensor();
       - globals.set:
-          id: temp_enabled
+          id: rtd_enabled
           value: "true"
-      - output.turn_on: ${device_name}_temp_enable_pin
+      - output.turn_on: ${device_name}_rtd_enable_pin
     turn_off_action:
       - lambda: |-
-          id(${device_name}_temp).disable_sensor();
+          id(${device_name}_rtd).disable_sensor();
       - globals.set:
-          id: temp_enabled
+          id: rtd_enabled
           value: "false"
-      - output.turn_off: ${device_name}_temp_enable_pin 
-      - switch.turn_off: ${device_name}_cond_enable
+      - output.turn_off: ${device_name}_rtd_enable_pin 
+      - switch.turn_off: ${device_name}_ec_enable
       - switch.turn_off: ${device_name}_ph_enable
    
   - platform: template
-    id: ${device_name}_cond_enable
-    name: ${device_name_upper}.cond.enable
+    id: ${device_name}_ec_enable
+    name: ${device_name_upper}.ec.enable
     lambda: |-
-      return id(${device_name}_cond).sensor_enabled();
+      return id(${device_name}_ec).sensor_enabled();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_cond).enable_sensor();
+          id(${device_name}_ec).enable_sensor();
       - globals.set:
-          id: cond_enabled
+          id: ec_enabled
           value: "true"
-      - output.turn_off: ${device_name}_cond_enable_pin
-      - switch.turn_on: ${device_name}_temp_enable
+      - output.turn_off: ${device_name}_ec_enable_pin
+      - switch.turn_on: ${device_name}_rtd_enable
     turn_off_action:
       - lambda: |-
-          id(${device_name}_cond).disable_sensor();
+          id(${device_name}_ec).disable_sensor();
       - globals.set:
-          id: cond_enabled
+          id: ec_enabled
           value: "false"
-      - output.turn_on: ${device_name}_cond_enable_pin 
+      - output.turn_on: ${device_name}_ec_enable_pin 
     
   - platform: template
     id: ${device_name}_ph_enable
@@ -350,7 +350,7 @@ switch:
           id: ph_enabled
           value: "true"
       - output.turn_off: ${device_name}_ph_enable_pin
-      - switch.turn_on: ${device_name}_temp_enable
+      - switch.turn_on: ${device_name}_rtd_enable
     turn_off_action:
       - lambda: |-
           id(${device_name}_ph).disable_sensor();
@@ -366,18 +366,18 @@ switch:
   ############################################################
   
   - platform: template
-    id: ${device_name}_temp_enable_sending_values
-    name: ${device_name_upper}.temp.enable_sending_values
+    id: ${device_name}_rtd_enable_sending_values
+    name: ${device_name_upper}.rtd.enable_sending_values
     lambda: |-
-      return id(${device_name}_temp).sending_values();
+      return id(${device_name}_rtd).sending_values();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_temp).enable_sending_values();
-          id(temp_sending_enabled) = true;
+          id(${device_name}_rtd).enable_sending_values();
+          id(rtd_sending_enabled) = true;
     turn_off_action:
       - lambda: |-
-          id(${device_name}_temp).disable_sending_values();
-          id(temp_sending_enabled) = false;
+          id(${device_name}_rtd).disable_sending_values();
+          id(rtd_sending_enabled) = false;
           
   - platform: template
     id: ${device_name}_ph_enable_sending_values
@@ -394,18 +394,18 @@ switch:
           id(ph_sending_enabled) = false;
    
   - platform: template
-    id: ${device_name}_cond_enable_sending_values
-    name: ${device_name_upper}.cond.enable_sending_values
+    id: ${device_name}_ec_enable_sending_values
+    name: ${device_name_upper}.ec.enable_sending_values
     lambda: |-
-      return id(${device_name}_cond).sending_values();
+      return id(${device_name}_ec).sending_values();
     turn_on_action:
       - lambda: |-
-          id(${device_name}_cond).enable_sending_values();
-          id(cond_sending_enabled) = true;
+          id(${device_name}_ec).enable_sending_values();
+          id(ec_sending_enabled) = true;
     turn_off_action:
       - lambda: |-
-          id(${device_name}_cond).disable_sending_values();
-          id(cond_sending_enabled) = false;
+          id(${device_name}_ec).disable_sending_values();
+          id(ec_sending_enabled) = false;
 
    
 button:
@@ -419,16 +419,16 @@ button:
     name: ${device_name_upper}.all.enable
     id: ${device_name}_all_enable
     on_press:
-      - switch.turn_on: ${device_name}_temp_enable
-      - switch.turn_on: ${device_name}_cond_enable
+      - switch.turn_on: ${device_name}_rtd_enable
+      - switch.turn_on: ${device_name}_ec_enable
       - switch.turn_on: ${device_name}_ph_enable
   
   - platform: template
     name: ${device_name_upper}.all.disable
     id: ${device_name}_all_disable
     on_press:
-      - switch.turn_off: ${device_name}_temp_enable
-      - switch.turn_off: ${device_name}_cond_enable
+      - switch.turn_off: ${device_name}_rtd_enable
+      - switch.turn_off: ${device_name}_ec_enable
       - switch.turn_off: ${device_name}_ph_enable
   
   ############################################################
@@ -473,64 +473,64 @@ button:
         
   ############################################################
   ##
-  ##  COND CALIBRATION METHODS
+  ##  EC CALIBRATION METHODS
   ##
   ############################################################       
   - platform: template
-    name: ${device_name_upper}.cond.cal.check
-    id: ${device_name}_cond_cal_check
+    name: ${device_name_upper}.ec.cal.check
+    id: ${device_name}_ec_cal_check
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_check(); 
+        id(${device_name}_ec).start_calibration_check(); 
         
   - platform: template
-    name: ${device_name_upper}.cond.cal.clear
-    id: ${device_name}_cond_cal_clear
+    name: ${device_name_upper}.ec.cal.clear
+    id: ${device_name}_ec_cal_clear
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_clear();  
+        id(${device_name}_ec).start_calibration_clear();  
   
   - platform: template
-    name: ${device_name_upper}.cond.cal.dry
-    id: ${device_name}_cond_cal_dry
+    name: ${device_name_upper}.ec.cal.dry
+    id: ${device_name}_ec_cal_dry
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_ec_dry(); 
+        id(${device_name}_ec).start_calibration_ec_dry(); 
   
   - platform: template
-    name: ${device_name_upper}.cond.cal.single_point
-    id: ${device_name}_cond_cal_single_point
+    name: ${device_name_upper}.ec.cal.single_point
+    id: ${device_name}_ec_cal_single_point
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_ec();   
+        id(${device_name}_ec).start_calibration_ec();   
   
   - platform: template
-    name: ${device_name_upper}.cond.cal.high
-    id: ${device_name}_cond_cal_high
+    name: ${device_name_upper}.ec.cal.high
+    id: ${device_name}_ec_cal_high
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_ec_high();
+        id(${device_name}_ec).start_calibration_ec_high();
   
   - platform: template
-    name: ${device_name_upper}.cond.cal.low
-    id: ${device_name}_cond_cal_low
+    name: ${device_name_upper}.ec.cal.low
+    id: ${device_name}_ec_cal_low
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_calibration_ec_low();  
+        id(${device_name}_ec).start_calibration_ec_low();  
         
   - platform: template
-    name: ${device_name_upper}.cond.k_value.check
-    id: ${device_name}_cond_k_value_check
+    name: ${device_name_upper}.ec.k_value.check
+    id: ${device_name}_ec_k_value_check
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_send_ec_k_value(); 
+        id(${device_name}_ec).start_send_ec_k_value(); 
   
   - platform: template
-    name: ${device_name_upper}.cond.k_value.send
-    id: ${device_name}_cond_k_value_send
+    name: ${device_name_upper}.ec.k_value.send
+    id: ${device_name}_ec_k_value_send
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_check_ec_k_value();
+        id(${device_name}_ec).start_check_ec_k_value();
   
   ############################################################
   ##
@@ -538,25 +538,25 @@ button:
   ##
   ############################################################  
   - platform: template
-    name: ${device_name_upper}.temp.cal.check
-    id: ${device_name}_temp_cal_check
+    name: ${device_name_upper}.rtd.cal.check
+    id: ${device_name}_rtd_cal_check
     on_press:
       lambda: |-
-        id(${device_name}_temp).start_calibration_check(); 
+        id(${device_name}_rtd).start_calibration_check(); 
         
   - platform: template
-    name: ${device_name_upper}.temp.cal.clear
-    id: ${device_name}_temp_cal_clear
+    name: ${device_name_upper}.rtd.cal.clear
+    id: ${device_name}_rtd_cal_clear
     on_press:
       lambda: |-
-        id(${device_name}_temp).start_calibration_clear();  
+        id(${device_name}_rtd).start_calibration_clear();  
         
   - platform: template
-    name: ${device_name_upper}.temp.cal
-    id: ${device_name}_temp_cal
+    name: ${device_name_upper}.rtd.cal
+    id: ${device_name}_rtd_cal
     on_press:
       lambda: |-
-        id(${device_name}_temp).start_calibration_temp(); 
+        id(${device_name}_rtd).start_calibration_rtd(); 
    
   ############################################################
   ##
@@ -564,18 +564,18 @@ button:
   ##
   ############################################################
   - platform: template
-    name: ${device_name_upper}.temp.factory_reset
-    id: ${device_name}_temp_factory_reset
+    name: ${device_name_upper}.rtd.factory_reset
+    id: ${device_name}_rtd_factory_reset
     on_press:
       lambda: |-
-        id(${device_name}_temp).start_factory_reset();
+        id(${device_name}_rtd).start_factory_reset();
   
   - platform: template
-    name: ${device_name_upper}.cond.factory_reset
-    id: ${device_name}_cond_factory_reset
+    name: ${device_name_upper}.ec.factory_reset
+    id: ${device_name}_ec_factory_reset
     on_press:
       lambda: |-
-        id(${device_name}_cond).start_factory_reset();
+        id(${device_name}_ec).start_factory_reset();
   
   - platform: template
     name: ${device_name_upper}.ph.factory_reset
@@ -593,20 +593,20 @@ number:
   ############################################################
   
   - platform: template
-    min_value: ${min_sample_interval_temp}
-    max_value: ${max_sample_interval_temp}
+    min_value: ${min_sample_interval_rtd}
+    max_value: ${max_sample_interval_rtd}
     step: "1"
-    id: ${device_name}_temp_sample_interval
-    name: ${device_name}.temp.sample_interval
+    id: ${device_name}_rtd_sample_interval
+    name: ${device_name}.rtd.sample_interval
     optimistic: true
     mode: box
     restore_value : true
-    initial_value: ${min_sample_interval_temp}
+    initial_value: ${min_sample_interval_rtd}
     update_interval: "10s"
     unit_of_measurement: "ms"
     on_value:
       - lambda: |-
-         id(${device_name}_temp).set_sample_interval(x);
+         id(${device_name}_rtd).set_sample_interval(x);
   
   - platform: template
     min_value: ${min_sample_interval_ph}
@@ -625,20 +625,20 @@ number:
          id(${device_name}_ph).set_sample_interval(x);
          
   - platform: template
-    min_value: ${min_sample_interval_cond}
-    max_value: ${max_sample_interval_cond}
+    min_value: ${min_sample_interval_ec}
+    max_value: ${max_sample_interval_ec}
     step: "1"
-    id: ${device_name}_cond_sample_interval
-    name: ${device_name}.cond.sample_interval
+    id: ${device_name}_ec_sample_interval
+    name: ${device_name}.ec.sample_interval
     optimistic: true
     mode: box
     restore_value : true
-    initial_value: ${min_sample_interval_cond}
+    initial_value: ${min_sample_interval_ec}
     update_interval: "10s"
     unit_of_measurement: "ms"
     on_value:
       - lambda: |-
-         id(${device_name}_cond).set_sample_interval(x);
+         id(${device_name}_ec).set_sample_interval(x);
   
 
   ############################################################
@@ -647,15 +647,15 @@ number:
   ##
   ############################################################
   - platform: template
-    min_value: ${min_sample_interval_cond_tempcomp}
-    max_value: ${max_sample_interval_cond_tempcomp}
+    min_value: ${min_sample_interval_ec_tempcomp}
+    max_value: ${max_sample_interval_ec_tempcomp}
     step: "1"
-    id: ${device_name}_cond_tempcomp_sample_interval
-    name: ${device_name}.cond.tempcomp.sample_interval
+    id: ${device_name}_ec_tempcomp_sample_interval
+    name: ${device_name}.ec.tempcomp.sample_interval
     optimistic: true
     mode: box
     restore_value : true
-    initial_value: ${min_sample_interval_cond_tempcomp}
+    initial_value: ${min_sample_interval_ec_tempcomp}
     update_interval: "10s"
     unit_of_measurement: "ms"
   
@@ -727,15 +727,15 @@ number:
          
   ############################################################
   ##
-  ##  COND CALIBRATION POINTS
+  ##  EC CALIBRATION POINTS
   ##
   ############################################################  
   - platform: template
     min_value: "0"
     max_value: "100000.0"
     step: "0.01"
-    id: ${device_name}_cond_cal_single_value
-    name: ${device_name}.cond.cal.single_value
+    id: ${device_name}_ec_cal_single_value
+    name: ${device_name}.ec.cal.single_value
     optimistic: true
     mode: box
     restore_value : true
@@ -744,14 +744,14 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_cond).set_ec_cal_value(x);  
+         id(${device_name}_ec).set_ec_cal_value(x);  
    
   - platform: template
     min_value: "0"
     max_value: "100000.0"
     step: "0.01"
-    id: ${device_name}_cond_cal_high_value
-    name: ${device_name}.cond.cal.high_value
+    id: ${device_name}_ec_cal_high_value
+    name: ${device_name}.ec.cal.high_value
     optimistic: true
     mode: box
     restore_value : true
@@ -760,14 +760,14 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_cond).set_ec_cal_high_value(x);   
+         id(${device_name}_ec).set_ec_cal_high_value(x);   
   
   - platform: template
     min_value: "0"
     max_value: "100000.0"
     step: "0.01"
-    id: ${device_name}_cond_cal_low_value
-    name: ${device_name}.cond.cal.low_value
+    id: ${device_name}_ec_cal_low_value
+    name: ${device_name}.ec.cal.low_value
     optimistic: true
     mode: box
     restore_value : true
@@ -776,14 +776,14 @@ number:
     unit_of_measurement: "S/m"
     on_value:
       - lambda: |-
-         id(${device_name}_cond).set_ec_cal_low_value(x);   
+         id(${device_name}_ec).set_ec_cal_low_value(x);   
          
   - platform: template
     min_value: "0.1"
     max_value: "10.0"
     step: "0.01"
-    id: ${device_name}_cond_k_value
-    name: ${device_name}.cond.k_value
+    id: ${device_name}_ec_k_value
+    name: ${device_name}.ec.k_value
     optimistic: true
     mode: box
     restore_value : true
@@ -792,7 +792,7 @@ number:
     unit_of_measurement: ""
     on_value:
       - lambda: |-
-         id(${device_name}_cond).set_ec_k_value(x); 
+         id(${device_name}_ec).set_ec_k_value(x); 
    
   ############################################################
   ##
@@ -803,8 +803,8 @@ number:
     min_value: "0"
     max_value: "100.0"
     step: "0.01"
-    id: ${device_name}_temp_cal_value
-    name: ${device_name}.temp.cal.cal_value
+    id: ${device_name}_rtd_cal_value
+    name: ${device_name}.rtd.cal.cal_value
     optimistic: true
     mode: box
     restore_value : true
@@ -813,7 +813,7 @@ number:
     unit_of_measurement: "°C"
     on_value:
       - lambda: |-
-         id(${device_name}_temp).set_rtd_cal_value(x);   
+         id(${device_name}_rtd).set_rtd_cal_value(x);   
          
 sensor:
   
@@ -824,8 +824,8 @@ sensor:
   ############################################################
   
   - platform: custom_ezo
-    id: ${device_name}_temp
-    name: ${device_name_upper}.temp
+    id: ${device_name}_rtd
+    name: ${device_name_upper}.rtd
     address: 102
     accuracy_decimals: 2
     unit_of_measurement: "°C"
@@ -840,8 +840,8 @@ sensor:
     update_interval: 0.1s
           
   - platform: custom_ezo
-    id: ${device_name}_cond
-    name: ${device_name_upper}.cond
+    id: ${device_name}_ec
+    name: ${device_name_upper}.ec
     address: 100
     accuracy_decimals: 2
     unit_of_measurement: "μS/cm"
@@ -849,10 +849,10 @@ sensor:
 
 binary_sensor:
   - platform: template
-    name: "${device_name_upper}.temp.error"
-    id: ${device_name}_temp_error
+    name: "${device_name_upper}.rtd.error"
+    id: ${device_name}_rtd_error
     lambda: |-
-      if (id(${device_name}_temp).retry_counter() >= ${max_retry_attempts})
+      if (id(${device_name}_rtd).retry_counter() >= ${max_retry_attempts})
       {
          return true;
       }else
@@ -864,11 +864,11 @@ binary_sensor:
         if:
           condition:
             lambda: |-
-              return id(temp_enabled);
+              return id(rtd_enabled);
           then:
-            - switch.turn_off: ${device_name}_temp_enable
+            - switch.turn_off: ${device_name}_rtd_enable
             - delay: 2s
-            - switch.turn_on: ${device_name}_temp_enable
+            - switch.turn_on: ${device_name}_rtd_enable
               
   - platform: template
     name: "${device_name_upper}.ph.error"
@@ -886,17 +886,17 @@ binary_sensor:
         if:
           condition:
             lambda: |-
-              return id(temp_enabled);
+              return id(rtd_enabled);
           then:
             - switch.turn_off: ${device_name}_ph_enable
             - delay: 2s
             - switch.turn_on: ${device_name}_ph_enable
   
   - platform: template
-    name: "${device_name_upper}.cond.error"
-    id: ${device_name}_cond_error
+    name: "${device_name_upper}.ec.error"
+    id: ${device_name}_ec_error
     lambda: |-
-      if (id(${device_name}_cond).retry_counter() >= ${max_retry_attempts})
+      if (id(${device_name}_ec).retry_counter() >= ${max_retry_attempts})
       {
          return true;
       }else
@@ -908,33 +908,33 @@ binary_sensor:
         if:
           condition:
             lambda: |-
-              return id(temp_enabled);
+              return id(rtd_enabled);
           then:
-            - switch.turn_off: ${device_name}_cond_enable
+            - switch.turn_off: ${device_name}_ec_enable
             - delay: 2s
-            - switch.turn_on: ${device_name}_cond_enable
+            - switch.turn_on: ${device_name}_ec_enable
               
 interval:
   - interval: 1s
     then:
       lambda: |-
-        if (id(cond_tempcomp_enabled))
+        if (id(ec_tempcomp_enabled))
         {
           int time_now = millis();
           // integer overflow protection -> restart waiting timer -> (TODO: maybe implement exact value reset via max integer)
-          if (time_now < id(cond_tempcomp_timestamp_0))
-          	id(cond_tempcomp_timestamp_0) = time_now;
+          if (time_now < id(ec_tempcomp_timestamp_0))
+          	id(ec_tempcomp_timestamp_0) = time_now;
           
           // check if we should send a sample
-          if (time_now - id(cond_tempcomp_timestamp_0) >= id(${device_name}_cond_tempcomp_sample_interval).state)
+          if (time_now - id(ec_tempcomp_timestamp_0) >= id(${device_name}_ec_tempcomp_sample_interval).state)
           {
-            id(${device_name}_cond).set_tempcomp_value(id(${device_name}_temp).state);
-            id(cond_tempcomp_timestamp_0) = time_now;
+            id(${device_name}_ec).set_tempcomp_value(id(${device_name}_rtd).state);
+            id(ec_tempcomp_timestamp_0) = time_now;
           }
         }
         else
         {
-          id(${device_name}_cond).set_tempcomp_value(id(tempcomp_default_value));
+          id(${device_name}_ec).set_tempcomp_value(id(tempcomp_default_value));
         }
           
         if(id(ph_tempcomp_enabled))
@@ -948,7 +948,7 @@ interval:
           // check if we should send a sample
           if (time_now - id(ph_tempcomp_timestamp_0) >= id(${device_name}_ph_tempcomp_sample_interval).state)
           {
-            id(${device_name}_ph).set_tempcomp_value(id(${device_name}_temp).state);
+            id(${device_name}_ph).set_tempcomp_value(id(${device_name}_rtd).state);
             id(ph_tempcomp_timestamp_0) = time_now;
           }
         }
