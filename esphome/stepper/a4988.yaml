@@ -11,6 +11,10 @@ esphome:
     - stepper/steppercontroller.h
     - stepper/stepper_modes.h
     - stepper/stepper_error.h   
+  on_shutdown:
+    then:
+      lambda: |-
+        get_controller(id(${controller}))->disable_motor();
     
 stepper:
   - platform: a4988
@@ -63,9 +67,8 @@ ota:
   on_begin:
     then:
       lambda: |-
-        get_controller(id(${controller}))->stop();
         get_controller(id(${controller}))->disable_motor();
-    
+      
 binary_sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.active"
