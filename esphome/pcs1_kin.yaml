@@ -28,7 +28,8 @@ substitutions:
   stepper_initial_step_width: "2000"
   stepper_update_interval_ms: "1000"
   stepper_error_homing_difference: "1000"
-  
+  stepper_max_turns_per_hour: "18"
+  stepper_initial_turns_per_hour: "3"
   
   # homing settings
   homing_high_speed: "800"
@@ -79,6 +80,7 @@ preferences:
 packages:
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
+  common_boot_finished: !include common/boot_finished.yaml
   common_status: !include common/status.yaml
   common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml

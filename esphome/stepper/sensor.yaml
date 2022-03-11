@@ -21,7 +21,7 @@ sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.angle"
     id: ${stepper_motor_id}_angle
-    unit_of_measurement: "deg"
+    unit_of_measurement: "°"
     state_class: "measurement"
     accuracy_decimals: "3"
     lambda: |-
@@ -31,7 +31,7 @@ sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.global_angle"
     id: ${stepper_motor_id}_global_angle
-    unit_of_measurement: "deg"
+    unit_of_measurement: "°"
     state_class: "measurement"
     accuracy_decimals: "3"
     lambda: |-
@@ -41,7 +41,7 @@ sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.angular_velocity"
     id: ${stepper_motor_id}_angular_velocity
-    unit_of_measurement: "deg/s"
+    unit_of_measurement: "°/s"
     state_class: "measurement"
     accuracy_decimals: "3"
     lambda: |-
@@ -106,7 +106,7 @@ sensor:
   - platform: template
     name: "${stepper_motor_id_upper}.step_angle"
     id: ${stepper_motor_id}_step_angle
-    unit_of_measurement: "deg"
+    unit_of_measurement: "°"
     state_class: "measurement"
     lambda: |-
       return get_controller(id(${controller}))->step_angle();
@@ -174,7 +174,7 @@ sensor:
     name: "${stepper_motor_id_upper}.plant_gear_rotation_angle"
     id: ${stepper_motor_id}_plant_gear_rotation_angle
     state_class: "measurement"
-    unit_of_measurement: "deg"
+    unit_of_measurement: "°"
     lambda: |-
       return get_controller(id(${controller}))->plant_gear_rotation_angle();
     update_interval: ${sensor_update_interval_fast}  

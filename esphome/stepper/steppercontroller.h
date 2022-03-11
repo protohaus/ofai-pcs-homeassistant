@@ -329,16 +329,20 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_speed(int speed_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			requested_speed(speed_);
 			speed(speed_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void on_set_speed_turns_per_hour(float turns_per_hour_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			float angular_velocity = turns_per_hour_ / (60 * 60 / 360.0);
 			float speed_ = angular_velocity / (360.0 / KINEMATICS_FULL_TURN_STEPS);
 			requested_speed(speed_);
 			speed(speed_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void set_speed_zero()
@@ -400,9 +404,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_acceleration(int acceleration_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			ESP_LOGD(TAG, "Set: acceleration!");
 			acceleration_requested(acceleration_);
 			acceleration(acceleration_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void acceleration_requested(int acceleration_)
@@ -434,9 +440,11 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 		void on_set_deceleration(int deceleration_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			ESP_LOGD(TAG, "Set: deceleration!");
 			deceleration_requested(deceleration_);
 			deceleration(deceleration_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void deceleration_requested(int deceleration_)
@@ -457,13 +465,18 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 		
 	    void on_set_step_width(int step_width_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
+			ESP_LOGD(TAG, "Set: step_width!");
 			step_width(step_width_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		void on_set_step_angle(float step_angle_)
 		{
+			xSemaphoreTake(mutex_main_loop, 100);
 			float step_width_ = angle_to_steps(step_angle_);
-			step_width((int)step_width_);
+			step_width(step_width_);
+			xSemaphoreGive(mutex_main_loop);
 		}
 		
 		float step_angle()

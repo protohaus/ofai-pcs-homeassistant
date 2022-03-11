@@ -1,0 +1,13 @@
+esphome: 
+  on_boot:
+      priority: -200 # Highest priority, ensures enable pin to be turned off first
+      then:
+        - globals.set:
+            id: boot_finished
+            value: 'true'
+
+globals:
+  - id: boot_finished
+    type: bool
+    restore_value: no
+    initial_value: 'false'
