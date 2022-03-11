@@ -153,33 +153,9 @@ input_number:
     max: 1
     step: 0.01
     mode: slider
-  
-  led_13_set_level:
-    name: led_13.set_level
-    initial: 0
-    min: 0
-    max: 1
-    step: 0.01
-    mode: slider
-  
-  led_14_set_level:
-    name: led_14.set_level
-    initial: 0
-    min: 0
-    max: 1
-    step: 0.01
-    mode: slider
-  
-  led_15_set_level:
-    name: led_15.set_level
-    initial: 0
-    min: 0
-    max: 1
-    step: 0.01
-    mode: slider
     
-  led_16_set_level:
-    name: led_16.set_level
+  pwm_fan_set_level:
+    name: pwm_fan.set_level
     initial: 0
     min: 0
     max: 1
@@ -194,7 +170,7 @@ automation controller_led_1_level:
       platform: state
       entity_id: input_number.led_1_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_1_set_level
+      - service: esphome.pcs1_led_led_1_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
           
@@ -205,7 +181,7 @@ automation controller_led_3_level:
       platform: state
       entity_id: input_number.led_3_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_3_set_level
+      - service: esphome.pcs1_led_led_3_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -216,7 +192,7 @@ automation controller_led_4_level:
       platform: state
       entity_id: input_number.led_4_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_4_set_level
+      - service: esphome.pcs1_led_led_4_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -227,7 +203,7 @@ automation controller_led_5_level:
       platform: state
       entity_id: input_number.led_5_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_5_set_level
+      - service: esphome.pcs1_led_led_5_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -238,7 +214,7 @@ automation controller_led_6_level:
       platform: state
       entity_id: input_number.led_6_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_6_set_level
+      - service: esphome.pcs1_led_led_6_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -249,7 +225,7 @@ automation controller_led_7_level:
       platform: state
       entity_id: input_number.led_7_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_7_set_level
+      - service: esphome.pcs1_led_led_7_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -260,7 +236,7 @@ automation controller_led_8_level:
       platform: state
       entity_id: input_number.led_8_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_8_set_level
+      - service: esphome.pcs1_led_led_8_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -271,7 +247,7 @@ automation controller_led_9_level:
       platform: state
       entity_id: input_number.led_9_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_9_set_level
+      - service: esphome.pcs1_led_led_9_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -282,7 +258,7 @@ automation controller_led_10_level:
       platform: state
       entity_id: input_number.led_10_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_10_set_level
+      - service: esphome.pcs1_led_led_10_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -293,7 +269,7 @@ automation controller_led_11_level:
       platform: state
       entity_id: input_number.led_11_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_11_set_level
+      - service: esphome.pcs1_led_led_11_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
@@ -304,50 +280,17 @@ automation controller_led_12_level:
       platform: state
       entity_id: input_number.led_12_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_12_set_level
+      - service: esphome.pcs1_led_led_12_set_level
         data_template:
           led_level: '{{ trigger.to_state.state | float }}'
 
-automation controller_led_13_level:
-  - alias: Send level value to led controller 2
-    id: led_13_send_level
+automation controller_led_12_level:
+  - alias: Send level value to pwm_fan 2
+    id: pwm_fan_send_level
     trigger:
       platform: state
-      entity_id: input_number.led_13_set_level
+      entity_id: input_number.pwm_fan_set_level
     action:
-      - service: esphome.pcs1_ledcontroller_led_13_set_level
+      - service: esphome.pcs1_led_pwm_fan_set_level
         data_template:
-          led_level: '{{ trigger.to_state.state | float }}'
-
-automation controller_led_14_level:
-  - alias: Send level value to led controller 2
-    id: led_14_send_level
-    trigger:
-      platform: state
-      entity_id: input_number.led_14_set_level
-    action:
-      - service: esphome.pcs1_ledcontroller_led_14_set_level
-        data_template:
-          led_level: '{{ trigger.to_state.state | float }}'
-
-automation controller_led_15_level:
-  - alias: Send level value to led controller 2
-    id: led_15_send_level
-    trigger:
-      platform: state
-      entity_id: input_number.led_15_set_level
-    action:
-      - service: esphome.pcs1_ledcontroller_led_15_set_level
-        data_template:
-          led_level: '{{ trigger.to_state.state | float }}'
-
-automation controller_led_16_level:
-  - alias: Send level value to led controller 2
-    id: led_16_send_level
-    trigger:
-      platform: state
-      entity_id: input_number.led_16_set_level
-    action:
-      - service: esphome.pcs1_ledcontroller_led_16_set_level
-        data_template:
-          led_level: '{{ trigger.to_state.state | float }}'
+          pwm_fan: '{{ trigger.to_state.state | float }}'
