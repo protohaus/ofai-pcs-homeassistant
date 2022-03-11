@@ -1,6 +1,8 @@
 # MQTT Broker Settings
 mqtt:
+  id: ${device_name}_mqtt_client
   broker: !secret host_wlan0_static_ip
   username: !secret mqtt_usr
   password: !secret mqtt_pw
-  discovery: false
+  discovery: ${mqtt_discovery}
+  port: !secret mqtt_port

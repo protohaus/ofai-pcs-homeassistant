@@ -48,6 +48,7 @@ esphome:
   #board: nodemcu-32s    
   
 packages:
+  #common_mqtt: !include common/mqtt.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml

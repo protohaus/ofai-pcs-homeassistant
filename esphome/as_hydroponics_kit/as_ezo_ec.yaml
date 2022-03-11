@@ -49,6 +49,7 @@ sensor:
     accuracy_decimals: 2
     unit_of_measurement: "μS/cm"
     update_interval: 0.1s
+    internal: ${entities_internal}
     
 globals:
    
@@ -66,7 +67,7 @@ globals:
    - id: ec_tempcomp_enabled
      type: bool
      restore_value: yes
-     initial_value: 'false'
+     initial_value: 'true'
   
    - id: ec_tempcomp_timestamp_0
      type: int
@@ -111,7 +112,8 @@ switch:
     turn_off_action:
       - lambda: |-
           id(${device_name}_ec).deactivate_calibration();
-
+    internal: ${entities_internal}
+    
   # ENABLE/DISABLE SENSOR
   - platform: template
     id: ${device_name}_ec_enable
@@ -158,56 +160,64 @@ button:
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_check(); 
-        
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.cal.clear
     id: ${device_name}_ec_cal_clear
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_clear();  
-  
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.cal.dry
     id: ${device_name}_ec_cal_dry
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_ec_dry(); 
-  
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.cal.single_point
     id: ${device_name}_ec_cal_single_point
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_ec();   
-  
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.cal.high
     id: ${device_name}_ec_cal_high
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_ec_high();
-  
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.cal.low
     id: ${device_name}_ec_cal_low
     on_press:
       lambda: |-
         id(${device_name}_ec).start_calibration_ec_low();  
-        
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.k_value.check
     id: ${device_name}_ec_k_value_check
     on_press:
       lambda: |-
         id(${device_name}_ec).start_send_ec_k_value(); 
-  
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.ec.k_value.send
     id: ${device_name}_ec_k_value_send
     on_press:
       lambda: |-
         id(${device_name}_ec).start_check_ec_k_value();
-
+    internal: ${entities_internal}
+    
   # FACTORY RESET
   - platform: template
     name: ${device_name_upper}.ec.factory_reset
@@ -215,7 +225,8 @@ button:
     on_press:
       lambda: |-
         id(${device_name}_ec).start_factory_reset();
-
+    internal: ${entities_internal}
+    
 number:
 
   # SAMPLE INTERVAL TIME IN [MS]
@@ -265,7 +276,8 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_ec).set_ec_cal_value(x);  
-   
+    internal: ${entities_internal}
+    
   - platform: template
     min_value: "0"
     max_value: "100000.0"
@@ -281,7 +293,8 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_ec).set_ec_cal_high_value(x);   
-  
+    internal: ${entities_internal}
+    
   - platform: template
     min_value: "0"
     max_value: "100000.0"
@@ -297,7 +310,8 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_ec).set_ec_cal_low_value(x);   
-         
+    internal: ${entities_internal}
+    
   - platform: template
     min_value: "0.1"
     max_value: "10.0"
@@ -313,7 +327,8 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_ec).set_ec_k_value(x); 
-         
+    internal: ${entities_internal}
+    
 binary_sensor:
 
   # ERROR CHECKING SENSOR
@@ -338,7 +353,7 @@ binary_sensor:
             - switch.turn_off: ${device_name}_ec_enable
             - delay: 2s
             - switch.turn_on: ${device_name}_ec_enable
-
+    
 interval:
 
   # TEMPCOMP SET INTERVAL

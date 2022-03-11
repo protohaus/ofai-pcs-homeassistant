@@ -1,0 +1,69 @@
+globals:
+  - id: ph_mqtt_timestamp_0
+    type: int
+    restore_value: no
+    initial_value: '0' 
+  
+  - id: ph_mqtt_enabled
+    type: bool
+    restore_value: yes
+    initial_value: ${mqtt_ph_enabled}
+
+number: 
+  - platform: template
+    min_value: ${min_mqtt_interval_ph}
+    max_value: ${max_mqtt_interval_ph}
+    step: "1"
+    id: ${device_name}_ph_mqtt_sample_interval
+    name: ${device_name}.ph.mqtt.sample_interval
+    optimistic: true
+    mode: box
+    restore_value : true
+    initial_value: ${min_mqtt_interval_ph}
+    update_interval: "10s"
+    unit_of_measurement: "ms"
+    internal: ${mqtt_entities_internal}
+    
+switch:
+  
+  # TEMPERATURE COMPENSATION
+  - platform: template
+    name: ${device_name_upper}.ph.mqtt
+    id: ${device_name}_ph_mqtt
+    lambda: |-
+      return id(ph_mqtt_enabled);
+    turn_on_action:
+      - lambda: |-
+          id(ph_mqtt_enabled) = true;
+          id(ph_mqtt_timestamp_0) = millis();
+    turn_off_action:
+      - lambda: |-
+          id(ph_mqtt_enabled) = false;
+    internal: ${mqtt_entities_internal}
+          
+interval:
+  - interval: 5s
+    then:    
+      lambda: |-
+        if(!${mqtt_entities_internal})
+        {
+          if (id(ph_mqtt_enabled))
+          {
+            int time_now = millis();
+            // integer overflow protection -> restart waiting timer -> (TODO: maybe implement exact value reset via max integer)
+            if (time_now < id(ph_mqtt_timestamp_0))
+            	id(ph_mqtt_timestamp_0) = time_now;
+            
+            // check if we should send a sample
+            if (time_now - id(ph_mqtt_timestamp_0) >= id(${device_name}_ph_mqtt_sample_interval).state)
+            {
+              id(${device_name}_mqtt_client).publish_json("${host_name}/ph", [=](JsonObject root) 
+              {
+                root["ph"] = id(${device_name}_ph).state;
+              });
+              //id(${device_name}_mqtt_client).publish("${host_name}/ph", id(${device_name}_ph).state);
+              
+              id(ph_mqtt_timestamp_0) = time_now;
+            }
+          }
+        }

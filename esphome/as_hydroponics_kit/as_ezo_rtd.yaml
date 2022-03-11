@@ -39,6 +39,7 @@ sensor:
     accuracy_decimals: 2
     unit_of_measurement: "°C"
     update_interval: 0.1s
+    internal: ${entities_internal}
     
 globals:
    
@@ -74,7 +75,8 @@ switch:
     turn_off_action:
       - lambda: |-
           id(${device_name}_rtd).deactivate_calibration();
-
+    internal: ${entities_internal}
+    
   # ENABLE/DISABLE SENSOR
   - platform: template
     id: ${device_name}_rtd_enable
@@ -113,7 +115,7 @@ switch:
       - lambda: |-
           id(${device_name}_rtd).disable_sending_values();
           id(rtd_sending_enabled) = false;
-          
+    
 button:
 
   # CALIBRATION METHODS  
@@ -123,21 +125,24 @@ button:
     on_press:
       lambda: |-
         id(${device_name}_rtd).start_calibration_check(); 
-        
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.rtd.cal.clear
     id: ${device_name}_rtd_cal_clear
     on_press:
       lambda: |-
         id(${device_name}_rtd).start_calibration_clear();  
-        
+    internal: ${entities_internal}
+    
   - platform: template
     name: ${device_name_upper}.rtd.cal
     id: ${device_name}_rtd_cal
     on_press:
       lambda: |-
         id(${device_name}_rtd).start_calibration_rtd(); 
-   
+    internal: ${entities_internal}
+    
   # FACTORY RESET
   - platform: template
     name: ${device_name_upper}.rtd.factory_reset
@@ -145,7 +150,8 @@ button:
     on_press:
       lambda: |-
         id(${device_name}_rtd).start_factory_reset();
-
+    internal: ${entities_internal}
+    
 number:
   
   # SAMPLE INTERVAL TIME IN [MS]
@@ -164,7 +170,7 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_rtd).set_sample_interval(x);
-  
+    
   # CALIBRATION POINTS
   - platform: template
     min_value: "0"
@@ -181,7 +187,8 @@ number:
     on_value:
       - lambda: |-
          id(${device_name}_rtd).set_rtd_cal_value(x);   
-
+    internal: ${entities_internal}
+    
 binary_sensor:
 
   # ERROR CHECKING SENSOR    
