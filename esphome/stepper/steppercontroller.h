@@ -1100,7 +1100,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			{
 				case STEPPER_MODE_HOMING:
 				{
-					if((m_proximity_switch_global_home->state || !m_global_homing) && 
+					if((!m_proximity_switch_global_home->state || !m_global_homing) && 
 					   m_homing.sensors_enabled && 
 					   m_homing.started &&
 					   !m_homing.found_low_precision)
@@ -1137,7 +1137,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			{
 				case STEPPER_MODE_HOMING:
 				{
-					if((m_proximity_switch_global_home->state || !m_global_homing)&& 
+					if((!m_proximity_switch_global_home->state || !m_global_homing)&& 
 					m_homing.sensors_enabled && 
 					m_homing.started &&
 					m_homing.found_low_precision &&
@@ -1623,7 +1623,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			if(!m_homing.started)
             {
 				// drive backward until we are out of range from the homing position stop
-				if(m_proximity_switch_home->state)
+				if(!m_proximity_switch_home->state)
 				{
 					if(m_calibration_mode_active && m_global_homing)
 						set_speed_high();
@@ -1767,7 +1767,7 @@ class cStepperController : public PollingComponent, public CustomAPIDevice {
 			if(!m_rangeestimation.started)
             {
 				// drive backward until we are out of range from the homing position stop
-				if(m_proximity_switch_home->state)
+				if(!m_proximity_switch_home->state)
 				{
 					set_speed_high();
 					direction_forward(false);

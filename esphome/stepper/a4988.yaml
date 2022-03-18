@@ -103,11 +103,11 @@ binary_sensor:
         pullup: true
     filters:
       - delayed_on: 50ms    
-    on_press:
+    on_release:
       then:
         lambda: |-
           get_controller(id(${controller}))->proximity_switch_home_pressed();
-    on_release:
+    on_press:
       then:
         lambda: |-
           get_controller(id(${controller}))->proximity_switch_home_released();
@@ -122,11 +122,11 @@ binary_sensor:
         pullup: true
     filters:
       - delayed_on: 50ms
-    on_press:
+    on_release:
       then:
         lambda: |-
           get_controller(id(${controller}))->proximity_switch_pinion_wheel_pressed();
-    on_release:
+    on_press:
       then:
         lambda: |-
           get_controller(id(${controller}))->proximity_switch_pinion_wheel_released();
