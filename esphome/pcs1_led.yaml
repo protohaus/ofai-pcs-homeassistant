@@ -74,67 +74,67 @@ output:
   - platform: ledc
     pin: "GPIO16"
     id: led_panel_1
-    frequency: 1Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO17"
     id: led_panel_2
-    frequency: 1Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO18"
     id: led_panel_3
-    frequency: 2Hz
+    frequency: 1000Hz
     
   - platform: ledc
     pin: "GPIO19"
     id: led_panel_4
-    frequency: 2Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO21"
     id: led_panel_5
-    frequency: 5Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO22"
     id: led_panel_6
-    frequency: 5Hz
+    frequency: 1000Hz
     
   - platform: ledc
     pin: "GPIO23"
     id: led_panel_7
-    frequency: 10Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO25"
     id: led_panel_8
-    frequency: 10Hz
+    frequency: 1000Hz
     
   - platform: ledc
     pin: "GPIO27"
     id: led_panel_9
-    frequency: 20Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO26"
     id: led_panel_10
-    frequency: 20Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO33"
     id: led_panel_11
-    frequency: 50Hz
+    frequency: 1000Hz
     
   - platform: ledc
     pin: "GPIO32"
     id: led_panel_12
-    frequency: 50Hz
+    frequency: 1000Hz
 
   - platform: ledc
     pin: "GPIO15"
     id: pwm_fan
-    frequency: 80Hz
+    frequency: 25kHz
     
 globals:
   - id: led_is_on
@@ -158,18 +158,18 @@ switch:
          return false;
     turn_on_action:
       then:
-        - output.turn_on: led_panel_1
-        - output.turn_on: led_panel_2
-        - output.turn_on: led_panel_3
-        - output.turn_on: led_panel_4
-        - output.turn_on: led_panel_5
-        - output.turn_on: led_panel_6
-        - output.turn_on: led_panel_7
-        - output.turn_on: led_panel_8
-        - output.turn_on: led_panel_9
-        - output.turn_on: led_panel_10
-        - output.turn_on: led_panel_11
-        - output.turn_on: led_panel_12
+        - output.turn_on: led_panel_1        #  ESP 1         #        
+        - output.turn_on: led_panel_2        #                #
+        - output.turn_on: led_panel_3        #                #
+        - output.turn_on: led_panel_4        #                #
+        - output.turn_on: led_panel_5        #                #
+        - output.turn_on: led_panel_6        #                #
+        - output.turn_on: led_panel_7        #                #
+        - output.turn_on: led_panel_8        #                #
+        - output.turn_on: led_panel_9        # led weiß 1&3   #
+        - output.turn_on: led_panel_10       # led weiß 2&4   #
+        - output.turn_on: led_panel_11       #                #
+        - output.turn_on: led_panel_12       #                #
         - globals.set:
             id: led_is_on
             value: "true"
