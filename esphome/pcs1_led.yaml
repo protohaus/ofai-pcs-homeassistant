@@ -8,6 +8,7 @@ substitutions:
   status_led_interval_booting: 3s
   settings_log_level: DEBUG
   settings_flash_write_interval: 1min
+  settings_static_ip: ${settings_static_ip_pcs1_led1}
   
 dallas:
   - pin: GPIO13
@@ -26,6 +27,7 @@ preferences:
   flash_write_interval: 1min
   
 packages:
+  pcs_config: !include .pcs_config.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml

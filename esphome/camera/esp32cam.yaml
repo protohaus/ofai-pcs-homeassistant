@@ -28,3 +28,8 @@ switch:
     name: ${device_name_upper}.flashlight
     id: ${device_name}_flashlight
     pin: ${esp32cam_flashlight_pin}
+
+button:
+  - platform: template
+    name: ${device_name_upper}.snapshot
+    id: ${device_name}_snapshot

@@ -7,6 +7,7 @@ substitutions:
   status_led_interval_booting: 3s
   settings_log_level: DEBUG
   settings_flash_write_interval: 1min
+  settings_static_ip: ${settings_static_ip_pcs1_as}
   
   #I2C Bus
   i2c_bus_a_name: i2c_bus_a
@@ -40,7 +41,24 @@ substitutions:
   
   min_sample_interval_ph_tempcomp: "10000" 
   max_sample_interval_ph_tempcomp: "60000"
-
+  
+  min_mqtt_interval_ec: "1000"
+  max_mqtt_interval_ec: "3600000"
+  
+  min_mqtt_interval_ph: "1000"
+  max_mqtt_interval_ph: "3600000"
+  
+  min_mqtt_interval_rtd: "1000"
+  max_mqtt_interval_rtd: "3600000"
+  
+  entities_internal: "false"
+  
+  mqtt_rtd_enabled: "true"
+  mqtt_ec_enabled: "true"
+  mqtt_ph_enabled: "true"
+  
+  mqtt_entities_internal: "false"
+  
 esphome:
   name: ${host_name}
   platform: ESP32
@@ -48,6 +66,7 @@ esphome:
   #board: nodemcu-32s    
   
 packages:
+  pcs_config: !include .pcs_config.yaml
   #common_mqtt: !include common/mqtt.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml

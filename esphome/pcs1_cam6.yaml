@@ -2,12 +2,13 @@ substitutions:
   #general settings
   host_name: pcs1-cam6
   device_name: pcs1_cam6
-  device_name_upper: pcs1.cam1
+  device_name_upper: pcs1.cam6
   status_led_pin: GPIO33
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
   settings_log_level: DEBUG
   settings_flash_write_interval: 1min
+  settings_static_ip: ${settings_static_ip_pcs1_cam6}
   
   #i2c settings
   i2c_bus_b_name: bus_b
@@ -58,6 +59,7 @@ preferences:
   flash_write_interval: 1min
   
 packages:
+  pcs_config: !include .pcs_config.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
@@ -65,8 +67,8 @@ packages:
   common_restart: !include common/restart.yaml
   common_i2c_bus_b: !include common/i2c_bus_b.yaml   
   camera_esp32cam: !include camera/esp32cam.yaml
-  sensors_bme280_1: !include sensors/bme280_1.yaml
-  sensors_bme280_2: !include sensors/bme280_2.yaml
+  #sensors_bme280_1: !include sensors/bme280_1.yaml
+  #sensors_bme280_2: !include sensors/bme280_2.yaml
   sensors_bh1750_1: !include sensors/bh1750_1.yaml
   
   #camera_webserver: !include camera/webserver_snapshot.yaml
