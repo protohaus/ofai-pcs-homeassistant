@@ -3,20 +3,46 @@ esphome:
     priority: -200 # Highest priority, ensures enable pin to be turned off first
     then:
       - output.turn_off: ${stepper_motor_id}_enable_pin # set the enable pin to HIGH -> disables all motor functions
-      #- switch.turn_off: ${device_name}_fan
+      - output.turn_off: ${device_name}_pwm_fan
       
 output:
   - platform: gpio
     pin: ${stepper_enable_pin}
     id: ${stepper_motor_id}_enable_pin
 
-#switch:
-#  - platform: gpio
-#    pin: ${fan_pin}
-#    name: ${device_name_upper}.fan
-#    id: ${device_name}_fan
-#    inverted: "true"
-#    internal: "true"
+  - platform: ledc
+    pin: ${fan_pin}
+    id: ${device_name}_pwm_fan
+    frequency: ${fan_frequency}
+
+globals:
+  - id: fan_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+    
+switch:
+  - platform: template
+    name: ${device_name_upper}.fan
+    id: ${device_name}_fan
+    internal: true
+    lambda: |-
+       if (id(fan_is_on) == true)
+         return true;
+       else
+         return false;
+    turn_on_action:
+      then:
+        - output.turn_on: ${device_name}_pwm_fan
+        - globals.set:
+            id: fan_is_on
+            value: "true"
+    turn_off_action:
+      then:
+        - output.turn_off: ${device_name}_pwm_fan
+        - globals.set:
+            id: fan_is_on
+            value: "false"  
     
 binary_sensor:
   - platform: template
@@ -34,60 +60,25 @@ binary_sensor:
     on_press:
       then:
         - output.turn_on: ${stepper_motor_id}_enable_pin
-        #- switch.turn_off: ${device_name}_fan
+        - switch.turn_off: ${device_name}_fan
     on_release:
         - output.turn_off: ${stepper_motor_id}_enable_pin
-        #- switch.turn_on: ${device_name}_fan
-
-  - platform: gpio
-    name: ${stepper_motor_id_upper}.error.diag_pin_1
-    id: ${stepper_motor_id}_error_diag_pin_1
-    pin: 
-      number: ${stepper_diag_pin_1}
-      mode:
-        input: true
-        pullup: true
-      inverted: false
-    on_press:
-      lambda: |-
-        get_controller(id(${controller}))->emergency_stop("DIAG Pin 1 == HIGH", STEPPER_ERROR_DIAG);
+        - switch.turn_on: ${device_name}_fan
       
-  - platform: gpio
-    name: ${stepper_motor_id_upper}.error.diag_pin_2
-    id: ${stepper_motor_id}_error_diag_pin_2
-    pin: 
-      number: ${stepper_diag_pin_2}
-      mode:
-        input: true
-        pullup: true
-      inverted: false
-    #on_press:
-    #  lambda: |-
-    #    get_controller(id(${controller}))->emergency_stop("DIAG Pin 2 == HIGH", STEPPER_ERROR_DIAG);
-      
-  - platform: gpio
-    name: ${stepper_motor_id_upper}.error.diag_pin_3
-    id: ${stepper_motor_id}_error_diag_pin_3
-    pin: 
-      number: ${stepper_diag_pin_3}
-      mode:
-        input: true
-        pullup: true
-      inverted: false
-    #on_press:
-    #  lambda: |-
-    #    get_controller(id(${controller}))->emergency_stop("DIAG Pin 3 == HIGH", STEPPER_ERROR_DIAG);
-      
-#   interval:
-#  - interval: 60s
-#    then:
-#      if:
-#        condition:
-#          lambda: |-
-#            return (get_controller(id(${controller}))->is_active() == true ? true : false);
-#        then:
-#          - switch.turn_on: ${device_name}_fan
-#          - delay: 40s
-#          - switch.turn_off: ${device_name}_fan
-#        else:
-#          - switch.turn_off: ${device_name}_fan
+interval:
+  - interval: 60s
+    then:
+      if:
+        condition:
+          lambda: |-
+            return (get_controller(id(${controller}))->is_active() == true ? true : false);
+        then:
+          - output.set_level:
+              id: ${device_name}_pwm_fan
+              level: !lambda 'return 0.5;'
+          - delay: 40s
+          - output.set_level:
+              id: ${device_name}_pwm_fan
+              level: !lambda 'return 0.1;'
+        else:
+          - switch.turn_off: ${device_name}_fan

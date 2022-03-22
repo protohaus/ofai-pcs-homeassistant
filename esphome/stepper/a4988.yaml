@@ -28,7 +28,7 @@ stepper:
     sleep_pin: ${stepper_sleep_pin} 
     acceleration: ${stepper_acceleration}
     deceleration: ${stepper_deceleration}
-    
+
 custom_component:
   - id: ${controller}
     lambda: |-
@@ -132,7 +132,8 @@ binary_sensor:
           get_controller(id(${controller}))->proximity_switch_pinion_wheel_released();
           
     
-switch:    
+switch:     
+           
   - platform: template
     name: ${stepper_motor_id_upper}.enable_motor
     id: ${stepper_motor_id}_enable_motor
@@ -289,7 +290,7 @@ button:
 
 
 number:
-
+               
   #- platform: template
   #  min_value: "-2293800"
   #  max_value: "2293800"

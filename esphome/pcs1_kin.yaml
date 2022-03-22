@@ -38,7 +38,8 @@ substitutions:
   homing_low_speed: "75"
   
   #fans
-  fan_pin: GPIO21 #GPIO18
+  fan_pin: GPIO23 #GPIO18
+  fan_frequency: "10kHz"
   
   # Proximity Switch settings
   sensor_proximity_switch_pinion_wheel_pin: GPIO32 #PS_02
@@ -60,7 +61,7 @@ substitutions:
   sensor_current_pin: GPIO34
   
   # Dallas Temperature Sensors
-  sensor_dallas_hub_1_pin: GPIO14
+  sensor_dallas_hub_1_pin: GPIO25
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
@@ -77,7 +78,7 @@ logger:
   
 preferences:
   flash_write_interval: 1min
-
+           
 packages:
   pcs_config: !include .pcs_config.yaml
   common_api: !include common/api.yaml
@@ -87,11 +88,14 @@ packages:
   #common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
   stepper_a4988: !include stepper/a4988.yaml
-  stepper_tmc2209_addon: !include stepper/tmc2209_addon.yaml
+  stepper_diag_1: !include stepper/tmc2209_addon.yaml
+  stepper_diag_2: !include stepper/stepper_diag_1.yaml
+  stepper_diag_3: !include stepper/stepper_diag_2.yaml
+  #stepper_tmc2209_addon: !include stepper/stepper_diag_3.yaml
   stepper_sensor: !include stepper/sensor.yaml
   error_handling: !include stepper/error_handling.yaml
-  #sensor_current: !include sensors/current.yaml
-  #sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
+  sensor_current: !include sensors/current.yaml
+  sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
   #sensor_dallas_1: !include sensors/dallas_2.yaml
   
   

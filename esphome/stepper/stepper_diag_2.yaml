@@ -1,0 +1,13 @@
+binary_sensor:
+  - platform: gpio
+    name: ${stepper_motor_id_upper}.error.diag_pin_2
+    id: ${stepper_motor_id}_error_diag_pin_2
+    pin: 
+      number: ${stepper_diag_pin_2}
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+    on_press:
+      lambda: |-
+        get_controller(id(${controller}))->emergency_stop("DIAG Pin 2 == HIGH", STEPPER_ERROR_DIAG);
