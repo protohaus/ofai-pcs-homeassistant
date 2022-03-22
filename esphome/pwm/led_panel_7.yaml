@@ -1,7 +1,7 @@
 output:
   - platform: ledc
     pin: ${pwm_led_panel_7_pin}
-    id: ${device_name}_${pwm_led_panel_7_name}
+    id: ${device_name}_${pwm_led_panel_7_name}_output
     frequency: ${pwm_led_frequency}
 
 number:       
@@ -20,5 +20,5 @@ number:
     on_value:
       - logger.log: "Set ${pwm_led_panel_7_name} level"
       - output.set_level:
-           id: ${device_name}_${pwm_led_panel_7_name}
+           id: ${device_name}_${pwm_led_panel_7_name}_output
            level: !lambda 'return x;'

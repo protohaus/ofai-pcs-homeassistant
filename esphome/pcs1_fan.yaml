@@ -1,0 +1,90 @@
+substitutions:
+  #general settings
+  host_name: pcs1-fan
+  device_name: pcs1_fan
+  device_name_upper: pcs1.fan
+  status_led_pin: GPIO33
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
+  settings_static_ip: ${settings_static_ip_pcs1_led1}
+  
+  # Dallas settings
+  sensor_dallas_hub_1_pin: GPIO25
+  sensor_dallas_hub_1_name: dallas_hub_1
+  sensor_dallas_hub_1_update_interval: 1s
+  sensor_dallas_1_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_1_name: dallas_1
+  sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_2_name: dallas_2
+  
+  # Hall Sensor settings
+  sensor_current_hall_1_pin: GPIO35
+  sensor_current_hall_1_name: hall_1
+  
+  sensor_current_hall_2_pin: GPIO35
+  sensor_current_hall_2_name: hall_2
+  
+  # LED Settings
+  pwm_led_frequency: "1000Hz"
+  
+  pwm_led_panel_1_pin: GPIO16
+  pwm_led_panel_2_pin: GPIO17
+  pwm_led_panel_3_pin: GPIO18
+  pwm_led_panel_4_pin: GPIO19
+  pwm_led_panel_5_pin: GPIO21
+  pwm_led_panel_6_pin: GPIO22
+  pwm_led_panel_7_pin: GPIO23
+  pwm_led_panel_8_pin: GPIO25
+  pwm_led_panel_9_pin: GPIO27
+  pwm_led_panel_10_pin: GPIO26
+  pwm_led_panel_11_pin: GPIO33
+  pwm_led_panel_12_pin: GPIO32
+  
+  pwm_led_panel_1_name: panel_1
+  pwm_led_panel_2_name: panel_2
+  pwm_led_panel_3_name: panel_3
+  pwm_led_panel_4_name: panel_4
+  pwm_led_panel_5_name: panel_5
+  pwm_led_panel_6_name: panel_6
+  pwm_led_panel_7_name: panel_7
+  pwm_led_panel_8_name: panel_8
+  pwm_led_panel_9_name: panel_9
+  pwm_led_panel_10_name: panel_10
+  pwm_led_panel_11_name: panel_11
+  pwm_led_panel_12_name: panel_12
+  
+  # PWM settings
+  pwm_fan_frequency: "25kHz"
+  pwm_fan_pin: "GPIO15"
+  pwm_fan_name: fan
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+  #board: nodemcu-32s
+  
+packages:
+  common_api: !include common/api.yaml
+  common_base: !include common/base.yaml
+  common_status: !include common/status.yaml
+  common_restart: !include common/restart.yaml
+  #sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
+  #sensor_dallas_1: !include sensors/dallas_1.yaml
+  #sensor_dallas_2: !include sensors/dallas_2.yaml
+  #sensor_current_hall_1: !include sensors/current_hall_1.yaml
+  #sensor_current_hall_2: !include sensors/current_hall_2.yaml
+  pwm_led_1: !include pwm/fan.yaml
+  #pwm_led_2: !include pwm/led_panel_2.yaml
+  #pwm_led_3: !include pwm/led_panel_3.yaml
+  #pwm_led_4: !include pwm/led_panel_4.yaml
+  #pwm_led_5: !include pwm/led_panel_5.yaml
+  #pwm_led_6: !include pwm/led_panel_6.yaml
+  #pwm_led_7: !include pwm/led_panel_7.yaml
+  #pwm_led_8: !include pwm/led_panel_8.yaml
+  #pwm_led_9: !include pwm/led_panel_9.yaml
+  #pwm_led_10: !include pwm/led_panel_10.yaml
+  #pwm_led_11: !include pwm/led_panel_11.yaml
+  #pwm_led_12: !include pwm/led_panel_12.yaml

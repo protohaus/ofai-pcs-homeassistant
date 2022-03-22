@@ -1,8 +1,8 @@
 substitutions:
   #general settings
-  host_name: pcs1-led1
-  device_name: pcs1_led1
-  device_name_upper: pcs1.led1
+  host_name: pcs1-led2
+  device_name: pcs1_led2
+  device_name_upper: pcs1.led2
   status_led_pin: GPIO33
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
@@ -35,20 +35,20 @@ substitutions:
   pwm_led_panel_5_pin: GPIO21
   pwm_led_panel_6_pin: GPIO22
   pwm_led_panel_7_pin: GPIO23
-  #pwm_led_panel_8_pin: GPIO25
+  pwm_led_panel_8_pin: GPIO25
   #pwm_led_panel_9_pin: GPIO27
   #pwm_led_panel_10_pin: GPIO26
   #pwm_led_panel_11_pin: GPIO33
   #pwm_led_panel_12_pin: GPIO32
   
-  pwm_led_panel_1_name: cc_1_730nm
-  pwm_led_panel_2_name: cc_2_730nm
-  pwm_led_panel_3_name: cc_3_730nm
-  pwm_led_panel_4_name: cc_4_730nm
-  pwm_led_panel_5_name: cc_5_660nm
-  pwm_led_panel_6_name: cc_6_660nm
-  pwm_led_panel_7_name: cc_7_660nm
-  #pwm_led_panel_8_name: cc_8
+  pwm_led_panel_1_name: cc_1_630nm
+  pwm_led_panel_2_name: cc_2_630nm
+  pwm_led_panel_3_name: cc_3_630nm
+  pwm_led_panel_4_name: cc_4_630nm
+  pwm_led_panel_5_name: cc_5_630nm
+  pwm_led_panel_6_name: cc_6_630nm
+  pwm_led_panel_7_name: cc_7_630nm
+  pwm_led_panel_8_name: cc_8_630nm
   #pwm_led_panel_9_name: cc_9
   #pwm_led_panel_10_name: cc_10
   #pwm_led_panel_11_name: cc_11
@@ -82,3 +82,8 @@ packages:
   pwm_led_5: !include pwm/led_panel_5.yaml
   pwm_led_6: !include pwm/led_panel_6.yaml
   pwm_led_7: !include pwm/led_panel_7.yaml
+  pwm_led_8: !include pwm/led_panel_8.yaml
+  #pwm_led_9: !include pwm/led_panel_9.yaml
+  #pwm_led_10: !include pwm/led_panel_10.yaml
+  #pwm_led_11: !include pwm/led_panel_11.yaml
+  #pwm_led_12: !include pwm/led_panel_12.yaml
