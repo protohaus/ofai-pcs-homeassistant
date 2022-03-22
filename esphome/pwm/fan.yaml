@@ -1,0 +1,5 @@
+output:
+  - platform: ledc
+    pin: ${pwm_fan_pin}
+    id: ${device_name}_${pwm_fan_name}
+    frequency: ${pwm_fan_frequency}
