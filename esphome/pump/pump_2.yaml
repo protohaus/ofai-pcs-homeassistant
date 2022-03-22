@@ -1,0 +1,7 @@
+switch:         
+  - platform: gpio
+    name: ${device_name_upper}.pump_2
+    id: ${device_name}_pump_2
+    pin:
+      number: ${pump_2_pin}
+      inverted: ${pump_2_inverted}

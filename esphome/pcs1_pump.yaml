@@ -1,0 +1,39 @@
+substitutions:
+  #general settings
+  host_name: pcs1-pump
+  device_name: pcs1_pump
+  device_name_upper: pcs1.pump
+  status_led_pin: "GPIO13"
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
+  
+  # pump settings
+  pump_1_pin: "GPIO32"
+  pump_2_pin: "GPIO33"
+  
+  pump_1_inverted: "false"
+  pump_2_inverted: "false"
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+
+# Enable logging
+logger:
+  level: DEBUG
+  
+preferences:
+  flash_write_interval: 1min
+           
+packages:
+  common_api: !include common/api.yaml
+  common_base: !include common/base.yaml
+  common_boot_finished: !include common/boot_finished.yaml
+  common_status: !include common/status.yaml
+  #common_status_led: !include common/status_led.yaml
+  common_restart: !include common/restart.yaml
+  pump_1: !include pump/pump_1.yaml
+  pump_2: !include pump/pump_2.yaml
