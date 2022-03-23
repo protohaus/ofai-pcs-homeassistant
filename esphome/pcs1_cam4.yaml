@@ -69,6 +69,6 @@ packages:
   camera_esp32cam: !include camera/esp32cam.yaml
   #sensors_bme280_1: !include sensors/bme280_1.yaml
   #sensors_bme280_2: !include sensors/bme280_2.yaml
-  sensors_bh1750_1: !include sensors/bh1750_1.yaml
+  #sensors_bh1750_1: !include sensors/bh1750_1.yaml
   
   #camera_webserver: !include camera/webserver_snapshot.yaml

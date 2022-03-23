@@ -20,44 +20,22 @@ substitutions:
   
   # Hall Sensor settings
   sensor_current_hall_1_pin: GPIO35
-  sensor_current_hall_1_name: hall_1
+  sensor_current_hall_1_name: hall_a
   
   sensor_current_hall_2_pin: GPIO34
-  sensor_current_hall_2_name: hall_2
+  sensor_current_hall_2_name: hall_b
   
   # LED Settings
   pwm_led_frequency: "1000Hz"
   
-  pwm_led_panel_1_pin: GPIO16
-  pwm_led_panel_2_pin: GPIO17
-  pwm_led_panel_3_pin: GPIO18
-  pwm_led_panel_4_pin: GPIO19
-  pwm_led_panel_5_pin: GPIO21
-  pwm_led_panel_6_pin: GPIO22
-  pwm_led_panel_7_pin: GPIO23
-  #pwm_led_panel_8_pin: GPIO25
-  #pwm_led_panel_9_pin: GPIO27
-  #pwm_led_panel_10_pin: GPIO26
-  #pwm_led_panel_11_pin: GPIO33
-  #pwm_led_panel_12_pin: GPIO32
-  
-  pwm_led_panel_1_name: cc_1_730nm
-  pwm_led_panel_2_name: cc_2_730nm
-  pwm_led_panel_3_name: cc_3_730nm
-  pwm_led_panel_4_name: cc_4_730nm
-  pwm_led_panel_5_name: cc_5_660nm
-  pwm_led_panel_6_name: cc_6_660nm
-  pwm_led_panel_7_name: cc_7_660nm
-  #pwm_led_panel_8_name: cc_8
-  #pwm_led_panel_9_name: cc_9
-  #pwm_led_panel_10_name: cc_10
-  #pwm_led_panel_11_name: cc_11
-  #pwm_led_panel_12_name: cc_12
-  
-  # PWM settings
-  #pwm_fan_frequency: "25kHz"
-  #pwm_fan_pin: GPIO15
-  #pwm_fan_name: fan
+  pwm_led_cc_1_name: cc_a_1_1730nm
+  pwm_led_cc_2_name: cc_a_2_1730nm
+  pwm_led_cc_3_name: cc_a_3_1730nm
+  pwm_led_cc_4_name: cc_a_4_1730nm
+  pwm_led_cc_5_name: cc_b_1_660nm
+  pwm_led_cc_6_name: cc_b_2_660nm
+  pwm_led_cc_7_name: cc_b_3_660nm
+  pwm_led_cc_8_name: cc_b_4_660nm
   
 esphome:
   name: ${host_name}
@@ -75,10 +53,12 @@ packages:
   #sensor_dallas_2: !include sensors/dallas_2.yaml
   sensor_current_hall_1: !include sensors/current_hall_1.yaml
   sensor_current_hall_2: !include sensors/current_hall_2.yaml
-  pwm_led_1: !include pwm/led_panel_1.yaml
-  pwm_led_2: !include pwm/led_panel_2.yaml
-  pwm_led_3: !include pwm/led_panel_3.yaml
-  pwm_led_4: !include pwm/led_panel_4.yaml
-  pwm_led_5: !include pwm/led_panel_5.yaml
-  pwm_led_6: !include pwm/led_panel_6.yaml
-  pwm_led_7: !include pwm/led_panel_7.yaml
+  pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
+  pwm_led_1: !include pwm/led_cc_1.yaml
+  pwm_led_2: !include pwm/led_cc_2.yaml
+  pwm_led_3: !include pwm/led_cc_3.yaml
+  pwm_led_4: !include pwm/led_cc_4.yaml
+  pwm_led_5: !include pwm/led_cc_5.yaml
+  pwm_led_6: !include pwm/led_cc_6.yaml
+  pwm_led_7: !include pwm/led_cc_7.yaml
+  pwm_led_8: !include pwm/led_cc_8.yaml

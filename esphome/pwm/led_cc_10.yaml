@@ -1,0 +1,27 @@
+output:
+  - platform: ledc
+    pin: ${pwm_led_cc_10_pin}
+    id: ${device_name}_${pwm_led_cc_10_name}_output
+    frequency: ${pwm_led_frequency}
+
+number:       
+  - platform: template
+    min_value: "0.0"
+    max_value: "1.0"
+    step: "0.01"
+    id: ${device_name}_${pwm_led_cc_10_name}
+    name: ${device_name}.${pwm_led_cc_10_name}
+    optimistic: true
+    mode: slider
+    restore_value : false
+    initial_value: "0"
+    update_interval: "10s"
+    unit_of_measurement: ""
+    on_value:
+      - logger.log: "Set ${pwm_led_cc_10_name} level"
+      - output.set_level:
+           id: ${device_name}_${pwm_led_cc_10_name}_output
+           level: !lambda 'return x;'
+      - output.ledc.set_frequency:
+          id: ${device_name}_${pwm_led_cc_10_name}_output
+          frequency: ${pwm_led_frequency}

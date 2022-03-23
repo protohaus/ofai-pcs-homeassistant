@@ -6,9 +6,8 @@ substitutions:
   status_led_pin: "GPIO13"
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
-  settings_log_level: DEBUG
+  settings_log_level: VERBOSE
   settings_flash_write_interval: 1min
-  settings_static_ip: ${settings_static_ip_pcs1_kin}
   
   #stepper settings
   stepper_step_pin: GPIO27  # GPIO26
@@ -64,8 +63,8 @@ substitutions:
   sensor_dallas_hub_1_pin: GPIO25
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
-  sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_2_name: dallas2
+  sensor_dallas_3_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_3_name: dallas_3
   
 esphome:
   name: ${host_name}
@@ -80,7 +79,6 @@ preferences:
   flash_write_interval: 1min
            
 packages:
-  pcs_config: !include .pcs_config.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_boot_finished: !include common/boot_finished.yaml
@@ -96,7 +94,7 @@ packages:
   error_handling: !include stepper/error_handling.yaml
   sensor_current: !include sensors/current.yaml
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  #sensor_dallas_1: !include sensors/dallas_2.yaml
+  sensor_dallas_1: !include sensors/dallas_3.yaml
   
   
 #interval:

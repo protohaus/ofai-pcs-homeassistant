@@ -1,16 +1,16 @@
 substitutions:
   #general settings
-  host_name: pcs1-led3
-  device_name: pcs1_led3
-  device_name_upper: pcs1.led3
+  host_name: pcs1-led0
+  device_name: pcs1_led0
+  device_name_upper: pcs1.led0
   status_led_pin: GPIO33
   status_led_interval_ok: 10s
   status_led_interval_booting: 3s
-  settings_log_level: DEBUG
+  settings_log_level: VERBOSE
   settings_flash_write_interval: 1min
   
   # Dallas settings
-  sensor_dallas_hub_1_pin: GPIO25
+  sensor_dallas_hub_1_pin: GPIO13
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_1_hub_id: ${sensor_dallas_hub_1_name}
@@ -18,17 +18,17 @@ substitutions:
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_2_name: dallas_2
   
-  # Hall Sensor settings
-  sensor_current_hall_1_pin: GPIO35
-  sensor_current_hall_1_name: hall_a
-  
   # LED Settings
   pwm_led_frequency: "1000Hz"
+
+  pwm_led_cc_9_name: cc_a_1_white
+  pwm_led_cc_10_name: cc_a_2_white
+  pwm_led_cc_11_name: cc_a_3_520nm
   
-  pwm_led_cc_1_name: cc_a_1_butterfly
-  pwm_led_cc_2_name: cc_a_2_butterfly
-  pwm_led_cc_3_name: cc_a_3_butterfly
-  pwm_led_cc_4_name: cc_a_4_butterfly
+  # PWM settings
+  pwm_fan_frequency: "1000Hz"
+  pwm_fan_pin: "GPIO32"
+  pwm_fan_name: cc_a_4_fan
   
 esphome:
   name: ${host_name}
@@ -40,12 +40,11 @@ packages:
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   common_restart: !include common/restart.yaml
-  #sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  #sensor_dallas_1: !include sensors/dallas_1.yaml
-  #sensor_dallas_2: !include sensors/dallas_2.yaml
-  sensor_current_hall_1: !include sensors/current_hall_1.yaml
+  sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
+  sensor_dallas_1: !include sensors/dallas_1.yaml
+  sensor_dallas_2: !include sensors/dallas_2.yaml
   pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
-  pwm_led_1: !include pwm/led_cc_1.yaml
-  pwm_led_2: !include pwm/led_cc_2.yaml
-  pwm_led_3: !include pwm/led_cc_3.yaml
-  pwm_led_4: !include pwm/led_cc_4.yaml
+  pwm_fan: !include pwm/fan.yaml
+  pwm_led_9: !include pwm/led_cc_9.yaml
+  pwm_led_10: !include pwm/led_cc_10.yaml
+  pwm_led_11: !include pwm/led_cc_11.yaml
