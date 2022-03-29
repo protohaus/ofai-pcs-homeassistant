@@ -7,7 +7,7 @@ output:
 number:       
   - platform: template
     min_value: "0.0"
-    max_value: "1.0"
+    max_value: ${pwm_led_cc_3_max_value}
     step: "0.001"
     id: ${device_name}_${pwm_led_cc_3_name}
     name: ${device_name}.${pwm_led_cc_3_name}

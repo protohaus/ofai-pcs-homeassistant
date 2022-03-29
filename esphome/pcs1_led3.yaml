@@ -30,6 +30,11 @@ substitutions:
   pwm_led_cc_3_name: cc_a_3_butterfly
   pwm_led_cc_4_name: cc_a_4_butterfly
   
+  pwm_led_cc_1_max_value: "0.2"
+  pwm_led_cc_2_max_value: "0.2"
+  pwm_led_cc_3_max_value: "0.2"
+  pwm_led_cc_4_max_value: "0.2"
+  
 esphome:
   name: ${host_name}
   platform: ESP32

@@ -20,13 +20,18 @@ substitutions:
   
   # LED Settings
   pwm_led_frequency: "1000Hz"
-
   pwm_led_cc_9_name: cc_a_1_white
   pwm_led_cc_10_name: cc_a_2_white
   pwm_led_cc_11_name: cc_a_3_520nm
   
+  pwm_led_cc_9_max_value: "0.2"
+  pwm_led_cc_10_max_value: "0.2"
+  pwm_led_cc_11_max_value: "0.2"
+  
+  
   # PWM settings
   pwm_fan_frequency: "1000Hz"
+  pwm_fan_max_value: "1.0"
   pwm_fan_pin: "GPIO32"
   pwm_fan_name: cc_a_4_fan
   
