@@ -63,8 +63,8 @@ substitutions:
   sensor_dallas_hub_1_pin: GPIO25
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
-  sensor_dallas_3_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_3_name: dallas_3
+  sensor_dallas_4_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_4_name: dallas_4
   
 esphome:
   name: ${host_name}
@@ -89,12 +89,12 @@ packages:
   stepper_diag_1: !include stepper/tmc2209_addon.yaml
   stepper_diag_2: !include stepper/stepper_diag_1.yaml
   stepper_diag_3: !include stepper/stepper_diag_2.yaml
-  #stepper_tmc2209_addon: !include stepper/stepper_diag_3.yaml
+  stepper_tmc2209_addon: !include stepper/stepper_diag_3.yaml
   stepper_sensor: !include stepper/sensor.yaml
   error_handling: !include stepper/error_handling.yaml
   sensor_current: !include sensors/current.yaml
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  sensor_dallas_1: !include sensors/dallas_3.yaml
+  sensor_dallas_1: !include sensors/dallas_4.yaml
   
   
 #interval:

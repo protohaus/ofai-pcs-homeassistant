@@ -28,10 +28,10 @@ substitutions:
   # LED Settings
   pwm_led_frequency: "1000Hz"
   
-  pwm_led_cc_1_name: cc_a_1_1730nm
-  pwm_led_cc_2_name: cc_a_2_1730nm
-  pwm_led_cc_3_name: cc_a_3_1730nm
-  pwm_led_cc_4_name: cc_a_4_1730nm
+  pwm_led_cc_1_name: cc_a_1_730nm
+  pwm_led_cc_2_name: cc_a_2_730nm
+  pwm_led_cc_3_name: cc_a_3_730nm
+  pwm_led_cc_4_name: cc_a_4_730nm
   pwm_led_cc_5_name: cc_b_1_660nm
   pwm_led_cc_6_name: cc_b_2_660nm
   pwm_led_cc_7_name: cc_b_3_660nm
