@@ -13,9 +13,6 @@ substitutions:
   pump_1_pin: "GPIO32"
   pump_2_pin: "GPIO33"
   
-  pump_1_inverted: "false"
-  pump_2_inverted: "false"
-  
 esphome:
   name: ${host_name}
   platform: ESP32

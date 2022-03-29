@@ -1,10 +1,10 @@
 sensor:
   - platform: adc
-    pin: ${sensor_current_pin}
-    name: "${device_name_upper}.current"
-    id: ${device_name}_current
+    pin: ${sensor_current_hall_1_pin}
+    name: "${device_name_upper}.${sensor_current_hall_1_name}.current"
+    id: ${device_name}_${sensor_current_hall_1_name}_current
     unit_of_measurement: A
-    update_interval: 0.1s
+    update_interval: 1s
     attenuation: auto  # auto, 0db, 2.5db, 6db, 11db
     filters:
       - sliding_window_moving_average:
