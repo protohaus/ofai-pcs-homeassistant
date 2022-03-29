@@ -1,7 +1,47 @@
 switch:         
-  - platform: gpio
+  - platform: template
     name: ${device_name_upper}.pump_2
     id: ${device_name}_pump_2
-    pin:
-      number: ${pump_2_pin}
-      inverted: ${pump_2_inverted}
+    lambda: |-
+       if (id(pump_2_is_on) == true)
+         return true;
+       else
+         return false;
+    turn_on_action:
+      then:
+        - output.turn_on: ${device_name}_pump_2_output
+        - globals.set:
+            id: pump_2_is_on
+            value: "true"
+    turn_off_action:
+      then:
+        - output.turn_off: ${device_name}_pump_2_output
+        - globals.set:
+            id: pump_2_is_on
+            value: "false"  
+      
+output:
+  - platform: gpio
+    pin: ${pump_2_pin}
+    id: ${device_name}_pump_2_output
+
+globals:
+  - id: pump_2_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+
+interval:
+  - interval: 60 s
+    then:
+      - if:
+          condition:
+            not:
+              api.connected:
+          then:
+            lambda: |-
+              if (id(boot_finished))
+              {
+                id(${device_name}_pump_2).turn_off();
+              }
+              
