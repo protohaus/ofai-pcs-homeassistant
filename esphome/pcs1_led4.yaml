@@ -35,6 +35,25 @@ substitutions:
   pwm_led_cc_3_max_value: "0.2"
   pwm_led_cc_4_max_value: "0.2"
   
+button:
+  - platform: template
+    name: ${device_name}.cc_on
+    id: ${device_name}_cc_on
+    on_press:
+      - button.press: ${device_name}_${pwm_led_cc_1_name}_on
+      - button.press: ${device_name}_${pwm_led_cc_2_name}_on
+      - button.press: ${device_name}_${pwm_led_cc_3_name}_on
+      - button.press: ${device_name}_${pwm_led_cc_4_name}_on
+  
+  - platform: template
+    name: ${device_name}.cc_off
+    id: ${device_name}_cc_off
+    on_press:
+      - button.press: ${device_name}_${pwm_led_cc_1_name}_off
+      - button.press: ${device_name}_${pwm_led_cc_2_name}_off
+      - button.press: ${device_name}_${pwm_led_cc_3_name}_off
+      - button.press: ${device_name}_${pwm_led_cc_4_name}_off
+          
 esphome:
   name: ${host_name}
   platform: ESP32

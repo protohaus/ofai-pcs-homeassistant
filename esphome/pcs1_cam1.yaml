@@ -20,7 +20,7 @@ substitutions:
   esp32cam_custom_idle_framerate: "0 fps"
   esp32cam_vertical_flip: "false"
   esp32cam_horizontal_mirror: "false"
-  esp32cam_max_framerate: "10 fps"
+  esp32cam_max_framerate: "1 fps"
   esp32cam_resolution: "1600x1200"
   
   #bme280_1 settings

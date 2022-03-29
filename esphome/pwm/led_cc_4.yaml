@@ -25,3 +25,20 @@ number:
       - output.ledc.set_frequency:
           id: ${device_name}_${pwm_led_cc_4_name}_output
           frequency: ${pwm_led_frequency}
+
+button:
+  - platform: template
+    name: ${device_name}.${pwm_led_cc_4_name}_on
+    id: ${device_name}_${pwm_led_cc_4_name}_on
+    on_press:
+      - number.set:
+          id: ${device_name}_${pwm_led_cc_4_name}
+          value: ${pwm_led_cc_4_max_value}
+          
+  - platform: template
+    name: ${device_name}.${pwm_led_cc_4_name}_off
+    id: ${device_name}_${pwm_led_cc_4_name}_off
+    on_press:
+      - number.set:
+          id: ${device_name}_${pwm_led_cc_4_name}
+          value: 0

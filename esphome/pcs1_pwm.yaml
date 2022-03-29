@@ -34,7 +34,24 @@ substitutions:
   pwm_fan_max_value: "1.0"
   pwm_fan_pin: "GPIO32"
   pwm_fan_name: cc_a_4_fan
+
+button:
+  - platform: template
+    name: ${device_name}.cc_on
+    id: ${device_name}_cc_on
+    on_press:
+      - button.press: ${device_name}_${pwm_led_cc_9_name}_on
+      - button.press: ${device_name}_${pwm_led_cc_10_name}_on
+      - button.press: ${device_name}_${pwm_led_cc_11_name}_on
   
+  - platform: template
+    name: ${device_name}.cc_off
+    id: ${device_name}_cc_off
+    on_press:
+      - button.press: ${device_name}_${pwm_led_cc_9_name}_off
+      - button.press: ${device_name}_${pwm_led_cc_10_name}_off
+      - button.press: ${device_name}_${pwm_led_cc_11_name}_off
+      
 esphome:
   name: ${host_name}
   platform: ESP32
