@@ -72,7 +72,30 @@ button:
       - button.press: ${device_name}_${pwm_led_cc_6_name}_off
       - button.press: ${device_name}_${pwm_led_cc_7_name}_off
       - button.press: ${device_name}_${pwm_led_cc_8_name}_off
-      
+
+globals:
+  - id: ${device_name}_leds_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+    
+switch:        
+  - platform: template
+    name: ${device_name}.cc_switch
+    id: ${device_name}_cc_switch
+    lambda: |-
+      return id(${device_name}_leds_on);
+    turn_on_action:
+      - button.press: ${device_name}_cc_on
+      - globals.set:
+          id: ${device_name}_leds_on
+          value: "true"
+    turn_off_action:
+      - button.press: ${device_name}_cc_off
+      - globals.set:
+          id: ${device_name}_leds_on
+          value: "false"
+          
 esphome:
   name: ${host_name}
   platform: ESP32
