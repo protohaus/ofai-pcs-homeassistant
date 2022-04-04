@@ -84,6 +84,7 @@ wifi:
   - ssid: !secret wifi_protohaus_ssid
     password: !secret wifi_protohaus_pw
   
+  
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "$device_name_upper AP"
