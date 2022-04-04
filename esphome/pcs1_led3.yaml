@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-led3
+  host_name: ofai-pcs1-led3
   device_name: pcs1_led3
   device_name_upper: pcs1.led3
   status_led_pin: GPIO33

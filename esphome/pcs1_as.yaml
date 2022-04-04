@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-as
+  host_name: ofai-pcs1-as
   device_name: pcs1_as
   device_name_upper: pcs1.as
   status_led_interval_ok: 10s

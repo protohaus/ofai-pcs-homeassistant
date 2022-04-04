@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-cam6
+  host_name: ofai-pcs1-cam6
   device_name: pcs1_cam6
   device_name_upper: pcs1.cam6
   status_led_pin: GPIO33

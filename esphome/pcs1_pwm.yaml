@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-pwm
+  host_name: ofai-pcs1-pwm
   device_name: pcs1_pwm
   device_name_upper: pcs1.pwm
   status_led_pin: GPIO33

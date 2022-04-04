@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-pump
+  host_name: ofai-pcs1-pump
   device_name: pcs1_pump
   device_name_upper: pcs1.pump
   status_led_pin: "GPIO13"

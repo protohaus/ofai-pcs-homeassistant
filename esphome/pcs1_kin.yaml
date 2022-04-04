@@ -1,6 +1,6 @@
 substitutions:
   #general settings
-  host_name: pcs1-kin
+  host_name: ofai-pcs1-kin
   device_name: pcs1_kin
   device_name_upper: pcs1.kin
   status_led_pin: "GPIO13"
