@@ -1,0 +1,123 @@
+substitutions:
+  #general settings
+  host_name: fabman-test
+  device_name: fabman_test
+  device_name_upper: fabman.test
+  status_led_pin: "GPIO13"
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  fabman_url: !secret fabman_access_url
+  fabman_token: !secret fabman_access_token
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
+  
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+
+preferences:
+  flash_write_interval: 1min
+
+packages:
+  common_api: !include common/api.yaml
+  common_base: !include common/base.yaml
+  common_status: !include common/status.yaml
+  #common_status_led: !include common/status_led.yaml
+  common_restart: !include common/restart.yaml
+
+  
+globals:
+  - id: member_id                  
+    type: int                           
+    restore_value: no                   
+    initial_value: "0"
+  
+  - id: number_of_admin_card_ids
+    type: int
+    restore_value: yes                   
+    initial_value: "0"
+    
+  - id: admin_card_ids
+    type: int[40]
+    restore_value: yes                   
+    initial_value: "{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}"
+    
+http_request:
+  useragent: esphome/device
+  timeout: 10s
+
+text_sensor:
+  - platform: template
+    name: "Member ID"
+    id: member_id_sensor
+    icon: mdi:wan
+    
+button:
+  - platform: template
+    name: http_button
+    id: http_button
+    on_press:
+      then:
+        - lambda: |-
+           long int card_id = 0;
+           sscanf("04623A12664E80","%x",&card_id);
+           //std::string hex_string = hex(card_id);
+           
+        - http_request.get:
+            url: !lambda 'return ${fabman_url};'
+            headers:
+              Content-Type: application/json
+              Authorization: '${fabman_token}'
+            verify_ssl: false
+            on_response:
+              then:
+                - logger.log:
+                    format: 'Response status: %d'
+                    args:
+                      - status_code
+                - lambda: |-
+                    if(status_code == 200)
+                    {
+                      ESP_LOGD("main", "HTTP GET Successfull");
+                      const char* payload_ = http_request_httprequestcomponent->get_string();
+                      size_t size_ = strlen(payload_);
+                      ESP_LOGD("main", "total payload size: %d bytes", (int)size_);
+                      DynamicJsonDocument buffer(500);  // we only extract [{"id": 00000000}] -> max. size: 48
+                      StaticJsonDocument<64> filter;
+                      filter[0]["id"] = true;
+                      deserializeJson(buffer, payload_, DeserializationOption::Filter(filter));
+                      JsonObject root = buffer[0];
+                      int memberId = root["id"];  
+                      id(member_id) = memberId;
+                      ESP_LOGD("main", "The member ID is: %d", memberId);
+                    }else
+                    {
+                      ESP_LOGD("main", "HTTP GET Request returned an error");
+                    }                     
+                    
+                    
+     # then:
+        #- lambda: |-
+        #    HTTPClient http;
+        #    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        #    //http.Authorization = new AuthenticationHeaderValue("Bearer", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        #    //http.DefaultRequestHeaders.Add("Authorization", "Bearer " + "XXXXXXXXXXXXXXXXXXXXXXXXXX");
+        #    //http.begin("https://fabman.io/api/v1/members?keyType=nfca&keyToken=04623A12664E80");
+        #    //http.GET();
+        #    //it.printf("The sensor value is: %s", http.getString().c_str());//
+      
+      #then:
+      #  - lambda: |-
+      #      http_request::HttpRequestSendAction<> http;
+      #      http = new http_request::HttpRequestSendAction<>(http_request_httprequestcomponent);
+      #      http->set_url("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      #      http->set_method("GET");
+      #      http->add_header("Content-Type", "application/json");
+      #      http->add_header("Authorization", "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      #      http_request_httprequestresponsetrigger = new http_request::HttpRequestResponseTrigger();
+      #      http->register_response_trigger(http_request_httprequestresponsetrigger);
+      #      automation_28 = new Automation<int32_t>(http_request_httprequestresponsetrigger);
+      #      lambdaaction_22 = new LambdaAction<int32_t>([=](int32_t status_code) -> void {
+      #          ESP_LOGD("main", "Response status: %d", status_code);
+      #      });
