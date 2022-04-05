@@ -1,9 +1,9 @@
 wifi:
-  #ssid: !secret wifi_ap_ssid
-  #password: !secret wifi_ap_pw
+  ssid: !secret wifi_ap_ssid
+  password: !secret wifi_ap_pw
 
-  ssid: !secret wifi_makeracademy_ssid
-  password: !secret wifi_makeracademy_pw
+  #ssid: !secret wifi_makeracademy_ssid
+  #password: !secret wifi_makeracademy_pw
   
   #ssid: !secret wifi_messe_ssid
   #password: !secret wifi_messe_pw
