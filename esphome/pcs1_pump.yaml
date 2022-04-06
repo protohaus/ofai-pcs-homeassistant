@@ -11,7 +11,9 @@ substitutions:
   
   # pump settings
   pump_1_pin: "GPIO32"
-  pump_2_pin: "GPIO33"
+  pump_2_pin: "GPIO33" 
+  pump_automation_interval: "30 min"  
+  pump_automation_interval_length: "30 s"  
   
 esphome:
   name: ${host_name}
@@ -32,5 +34,4 @@ packages:
   common_status: !include common/status.yaml
   #common_status_led: !include common/status_led.yaml
   common_restart: !include common/restart.yaml
-  pump_1: !include pump/pump_1.yaml
-  pump_2: !include pump/pump_2.yaml
+  pumps: !include pump/pumps.yaml
