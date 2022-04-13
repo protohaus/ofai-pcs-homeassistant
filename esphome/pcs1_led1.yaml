@@ -10,13 +10,26 @@ substitutions:
   settings_flash_write_interval: 1min
   
   # Dallas settings
-  sensor_dallas_hub_1_pin: GPIO25
+  sensor_dallas_hub_1_pin: GPIO13
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
-  sensor_dallas_1_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_1_name: dallas_1
-  sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_2_name: dallas_2
+  sensor_dallas_6_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_6_name: dallas_fan_140mm_1
+  sensor_dallas_9_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_9_name: dallas_fan_140mm_2
+  sensor_dallas_5_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_5_name: dallas_fan_140mm_3
+  sensor_dallas_7_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_7_name: dallas_fan_140mm_4
+  
+  sensor_dallas_11_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_11_name: dallas_fan_80mm_1
+  sensor_dallas_12_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_12_name: dallas_fan_80mm_2
+  sensor_dallas_10_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_10_name: dallas_fan_80mm_3
+  sensor_dallas_8_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_8_name: dallas_fan_80mm_4
   
   # Hall Sensor settings
   sensor_current_hall_1_pin: GPIO35
@@ -176,9 +189,15 @@ packages:
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   common_restart: !include common/restart.yaml
-  #sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  #sensor_dallas_1: !include sensors/dallas_1.yaml
-  #sensor_dallas_2: !include sensors/dallas_2.yaml
+  sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
+  sensor_dallas_5: !include sensors/dallas_5.yaml
+  sensor_dallas_6: !include sensors/dallas_6.yaml
+  sensor_dallas_7: !include sensors/dallas_7.yaml
+  sensor_dallas_8: !include sensors/dallas_8.yaml
+  sensor_dallas_9: !include sensors/dallas_9.yaml
+  sensor_dallas_10: !include sensors/dallas_10.yaml
+  sensor_dallas_11: !include sensors/dallas_11.yaml
+  sensor_dallas_12: !include sensors/dallas_12.yaml
   sensor_current_hall_1: !include sensors/current_hall_1.yaml
   sensor_current_hall_2: !include sensors/current_hall_2.yaml
   pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
