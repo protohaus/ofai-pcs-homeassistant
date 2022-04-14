@@ -91,7 +91,7 @@ packages:
   stepper_diag_3: !include stepper/stepper_diag_2.yaml
   stepper_tmc2209_addon: !include stepper/stepper_diag_3.yaml
   stepper_sensor: !include stepper/sensor.yaml
-  #error_handling: !include stepper/error_handling.yaml
+  error_handling: !include stepper/error_handling.yaml
   error_connection_handling: !include stepper/error_connection_handling.yaml
   sensor_current: !include sensors/current.yaml
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml

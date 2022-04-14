@@ -14,9 +14,9 @@ substitutions:
   sensor_dallas_hub_1_name: dallas_hub_1
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_1_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_1_name: dallas_1
+  sensor_dallas_1_name: dallas_inside
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
-  sensor_dallas_2_name: dallas_2
+  sensor_dallas_2_name: dallas_outside
   
   # LED Settings
   pwm_led_frequency: "1000Hz"

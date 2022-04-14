@@ -1,1 +1,26 @@
-[]
+- id: looper
+  alias: looper
+  trigger:
+  - id: trigger_looper
+    platform: state
+    entity_id: input_boolean.activate_looper
+    to: 'on'
+  condition:
+  - condition: trigger
+    id: trigger_looper
+  action:
+  - repeat:
+      while:
+      - condition: or
+        conditions:
+          - condition: template
+              value_template: '{{ repeat.index <= 50}}'
+          #- condition: template
+          #    value_template: 
+      sequence:
+      - service: persistent_notification.create
+        data_template:
+          title: Looper {{now().timestamp()|timestamp_local}}
+          message: Looper has triggered.
+      - delay: 00:00:10
+  initial_state: true
