@@ -1,0 +1,14 @@
+interval:
+  - interval: 60 s
+    then:
+      - if:
+          condition:
+            not:
+              api.connected:
+          then:
+            lambda: |-
+              if(id(boot_finished))
+                get_controller(id(${controller}))->emergency_stop("API disconnected", STEPPER_ERROR_CONNECTION);
+          else:
+            lambda: |-
+              get_controller(id(${controller}))->reset_error_code();
