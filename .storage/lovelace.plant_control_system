@@ -1,0 +1,1308 @@
+{
+    "version": 1,
+    "minor_version": 1,
+    "key": "lovelace.plant_control_system",
+    "data": {
+        "config": {
+            "views": [
+                {
+                    "theme": "Backend-selected",
+                    "title": "PCS-1",
+                    "path": "pcs-1",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_cam1_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam1_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam2_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam2_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam3_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam3_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam4_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam4_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam5_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam5_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam6_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam6_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_cam7_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_cam7_restart"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_led1_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led1_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_led2_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led2_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_led3_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led3_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_led4_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led4_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_pwm_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_pwm_restart"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "binary_sensor.pcs1_kin_status",
+                                "button.pcs1_kin_restart",
+                                "binary_sensor.pcs1_pump_status",
+                                "button.pcs1_pump_restart",
+                                "binary_sensor.pcs1_as_status",
+                                "button.pcs1_as_restart"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "Sensors",
+                    "path": "t",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam1_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam3_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam4_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam5_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam6_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_dallas_4_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_2_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_3_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_4_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_2_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_3_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_4_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_dallas_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_dallas_2_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_dallas_24_36v_case_temperature"
+                                }
+                            ],
+                            "title": "Temperature"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_cam1_bme280_1_humidity",
+                                "sensor.pcs1_cam3_bme280_1_humidity",
+                                "sensor.pcs1_cam4_bme280_1_humidity",
+                                "sensor.pcs1_cam5_bme280_1_humidity",
+                                "sensor.pcs1_cam6_bme280_1_humidity"
+                            ],
+                            "title": "Humidity"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_cam1_bme280_1_pressure",
+                                "sensor.pcs1_cam3_bme280_1_pressure",
+                                "sensor.pcs1_cam4_bme280_1_pressure",
+                                "sensor.pcs1_cam5_bme280_1_pressure",
+                                "sensor.pcs1_cam6_bme280_1_pressure"
+                            ],
+                            "title": "Pressure"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_cam1_bh1750_1_illuminance",
+                                "sensor.pcs1_cam3_bh1750_1_illuminance",
+                                "sensor.pcs1_cam4_bh1750_1_illuminance",
+                                "sensor.pcs1_cam5_bh1750_1_illuminance",
+                                "sensor.pcs1_cam6_bh1750_1_illuminance"
+                            ],
+                            "title": "Illuminance"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_kin_current",
+                                "sensor.pcs1_led1_hall_a_current",
+                                "sensor.pcs1_led1_hall_b_current",
+                                "sensor.pcs1_led2_hall_a_current",
+                                "sensor.pcs1_led2_hall_b_current",
+                                "sensor.pcs1_led3_hall_a_current",
+                                "sensor.pcs1_led4_hall_a_current"
+                            ],
+                            "title": "Current"
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "CAMERAS",
+                    "path": "test",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam1_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 1"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam4_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 4"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam2_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 2"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam5_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 5"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam3_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 3"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam6_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 6"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-1",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam1_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam1_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam1_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam1_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam1_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-1"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam1_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam1_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam1_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam1_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-1 Data"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-2",
+                    "path": "cam-2",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam2_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam2_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam2_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam2_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam2_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-2"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam2_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam2_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam2_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam2_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam2_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-2 Data"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-3",
+                    "path": "cam-3",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam3_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam3_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam3_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam3_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam3_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-3"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam3_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam3_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam3_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam3_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-3 Data"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-4",
+                    "path": "cam-4",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam4_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam4_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam4_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam4_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam4_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-4"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam4_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam4_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam4_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam4_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-4 Data"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-5",
+                    "path": "cam-5",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam5_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam5_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam5_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam5_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam5_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-5"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam5_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam5_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam5_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam5_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-5 Data"
+                        }
+                    ]
+                },
+                {
+                    "title": "CAM-6",
+                    "path": "cam-6",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.pcs1_cam6_status"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam6_restart"
+                                        },
+                                        {
+                                            "entity": "sensor.pcs1_cam6_wifi_signal"
+                                        },
+                                        {
+                                            "entity": "switch.pcs1_cam6_flashlight"
+                                        },
+                                        {
+                                            "entity": "button.pcs1_cam6_snapshot"
+                                        }
+                                    ],
+                                    "title": "CAM-6"
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam6_camera",
+                                    "aspect_ratio": "3:1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_cam6_bme280_1_humidity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam6_bme280_1_pressure"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam6_bme280_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
+                                }
+                            ],
+                            "title": "CAM-6 Data"
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "CAM-7",
+                    "path": "cam-7",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        "binary_sensor.pcs1_cam7_status",
+                                        "button.pcs1_cam7_restart",
+                                        "sensor.pcs1_cam7_wifi_signal",
+                                        "switch.pcs1_cam7_flashlight",
+                                        "button.pcs1_cam7_snapshot"
+                                    ]
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.pcs1_cam7_camera"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "Kinematics",
+                    "path": "controller",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "button.pcs1_kin_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_status"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_wifi_signal"
+                                }
+                            ],
+                            "title": "Basic Information",
+                            "state_color": true,
+                            "show_header_toggle": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_active"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_mode"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_automation_mode"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_speed"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_step_angle"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_position"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_angular_velocity"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_turns_per_hour"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_number_of_cycles"
+                                }
+                            ],
+                            "title": "Stepper Status",
+                            "state_color": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "number.pcs1_kin_stepper_set_requested_target_angle"
+                                },
+                                {
+                                    "entity": "number.pcs1_kin_stepper_set_speed"
+                                },
+                                {
+                                    "entity": "number.pcs1_kin_stepper_set_step_angle"
+                                },
+                                {
+                                    "entity": "switch.pcs1_kin_stepper_enable_motor"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_stop"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_goto_home"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_goto_requested_target_position"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_step_fw"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_step_bw"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_drive_fw"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_drive_bw"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_find_next_home"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_find_next_global_home"
+                                }
+                            ],
+                            "title": "Development Controll"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_kin_proximity_switch_pinion_wheel_count"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_proximity_switch_expected_pinion_wheel_count"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_homing_is_valid"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_homing_difference"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_start_global_homing"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_start_local_homing"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_set_zero_position"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_set_homing_valid"
+                                }
+                            ],
+                            "title": "Homing"
+                        },
+                        {
+                            "type": "gauge",
+                            "entity": "sensor.pcs1_kin_stepper_angle",
+                            "min": 0,
+                            "max": 1080,
+                            "needle": true,
+                            "unit": "\u00b0",
+                            "name": "Global Rotation Angle"
+                        },
+                        {
+                            "type": "gauge",
+                            "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
+                            "min": 0,
+                            "max": 360,
+                            "name": "Plant gear Rotation Angle",
+                            "unit": "\u00b0",
+                            "needle": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "button.pcs1_kin_stepper_error_reset_errors"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_error_code"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_1"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_2"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_3"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_error_pinionwheel_check"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_stepper_error_homing_difference_check"
+                                }
+                            ],
+                            "title": "Error handling"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_kin_current"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_dallas_4_temperature"
+                                }
+                            ],
+                            "title": "Measurements"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_kin_stepper_start_automation"
+                                }
+                            ],
+                            "title": "Automation Controll"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_proximity_global_home"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_proximity_home"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_proximity_pinion_wheel"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "LED",
+                    "path": "led-1",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_pwm_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_pwm_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_dallas_1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pwm_dallas_2_temperature"
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_1_white"
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_2_white"
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_3_520nm"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pwm_cc_switch"
+                                },
+                                {
+                                    "entity": "fan.pcs1_pwm_cc_a_4_fan"
+                                }
+                            ],
+                            "title": "PWM"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_led1_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led1_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_hall_a_current"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_hall_b_current"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_1_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_2_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_3_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_4_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_a_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_b_switch"
+                                }
+                            ],
+                            "title": "LED 1",
+                            "show_header_toggle": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_led2_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led2_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led2_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led2_hall_a_current"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led2_hall_b_current"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led2_cc_switch"
+                                }
+                            ],
+                            "title": "LED 2"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_led3_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led3_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led3_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led3_hall_a_current"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_1_butterfly"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_2_butterfly"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_3_butterfly"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_4_butterfly"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led3_cc_switch"
+                                }
+                            ],
+                            "title": "LED 3"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_led4_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_led4_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led4_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led4_hall_a_current"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_1_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_2_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_3_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_4_450nm"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led4_cc_switch"
+                                }
+                            ],
+                            "title": "LED 4"
+                        }
+                    ]
+                },
+                {
+                    "title": "Pump",
+                    "path": "pump",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_pump_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_pump_restart"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_pump_wifi_signal"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pump_enable"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pump_single_activation"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pump_automation"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "Atlas Scientific",
+                    "path": "atlas-scientific",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "binary_sensor.pcs1_as_status",
+                                "button.pcs1_as_restart",
+                                "sensor.pcs1_as_wifi_signal"
+                            ],
+                            "title": "Basic Information"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_as_ec",
+                                "sensor.pcs1_as_ph",
+                                "sensor.pcs1_as_rtd"
+                            ],
+                            "title": "Sensor values"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_as_ec_enable"
+                                },
+                                {
+                                    "entity": "switch.pcs1_as_ph_enable"
+                                },
+                                {
+                                    "entity": "switch.pcs1_as_rtd_enable"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_all_enable"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_all_disable"
+                                }
+                            ],
+                            "title": "Enable Sensors",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "number.pcs1_as_ec_sample_interval",
+                                "number.pcs1_as_ph_sample_interval",
+                                "number.pcs1_as_rtd_sample_interval"
+                            ],
+                            "title": "Sample times"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_as_ec_tempcomp"
+                                },
+                                {
+                                    "entity": "switch.pcs1_as_ph_tempcomp"
+                                },
+                                {
+                                    "entity": "number.pcs1_as_ec_tempcomp_sample_interval"
+                                },
+                                {
+                                    "entity": "number.pcs1_as_ph_tempcomp_sample_interval"
+                                }
+                            ],
+                            "title": "Temperature compensation",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "switch.pcs1_as_ec_enable_sending_values",
+                                "switch.pcs1_as_ph_enable_sending_values",
+                                "switch.pcs1_as_rtd_enable_sending_values"
+                            ],
+                            "title": "Sending Values",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_as_ph_cal_activate"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_ph_cal_check"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_ph_cal_clear"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_ph_cal_mid"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_ph_cal_high"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_ph_cal_low"
+                                },
+                                {
+                                    "entity": "number.pcs1_as_ph_cal_mid_value"
+                                },
+                                {
+                                    "entity": "number.pcs1_as_ph_cal_high_value"
+                                },
+                                {
+                                    "entity": "number.pcs1_as_ph_cal_low_value"
+                                }
+                            ],
+                            "title": "PH Calibration"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "switch.pcs1_as_ec_cal_activate",
+                                "button.pcs1_as_ec_cal_check",
+                                "button.pcs1_as_ec_cal_clear",
+                                "button.pcs1_as_ec_cal_dry",
+                                "button.pcs1_as_ec_cal_high",
+                                "button.pcs1_as_ec_cal_low",
+                                "button.pcs1_as_ec_cal_single_point",
+                                "number.pcs1_as_ec_cal_high_value",
+                                "number.pcs1_as_ec_cal_low_value",
+                                "number.pcs1_as_ec_cal_single_value",
+                                "button.pcs1_as_ec_k_value_check",
+                                "button.pcs1_as_ec_k_value_send",
+                                "number.pcs1_as_ec_k_value"
+                            ],
+                            "title": "EC Calibration"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "switch.pcs1_as_rtd_cal_activate",
+                                "button.pcs1_as_rtd_cal_check",
+                                "button.pcs1_as_rtd_cal_clear",
+                                "button.pcs1_as_rtd_cal",
+                                "number.pcs1_as_rtd_cal_cal_value"
+                            ],
+                            "title": "RTD Calibration"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "button.pcs1_as_ec_factory_reset",
+                                "button.pcs1_as_ph_factory_reset",
+                                "button.pcs1_as_rtd_factory_reset"
+                            ],
+                            "title": "Factory Reset",
+                            "show_header_toggle": false
+                        }
+                    ]
+                },
+                {
+                    "title": "Node-RED",
+                    "path": "node-red",
+                    "icon": "",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "iframe",
+                            "url": "http://ofai-pcs-homeassistant.local:1880/endpoint/ui",
+                            "aspect_ratio": "100%"
+                        },
+                        {
+                            "type": "iframe",
+                            "url": "http://ofai-pcs-homeassistant.local:3000",
+                            "aspect_ratio": "100%"
+                        }
+                    ]
+                },
+                {
+                    "title": "Fabman API access",
+                    "path": "fabman-api-access",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "button.http_button_2",
+                                "sensor.member_id_2"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "title": "Plant Control System"
+        }
+    }
+}

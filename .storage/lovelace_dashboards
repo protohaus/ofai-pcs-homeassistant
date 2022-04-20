@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "minor_version": 1,
+    "key": "lovelace_dashboards",
+    "data": {
+        "items": [
+            {
+                "require_admin": true,
+                "show_in_sidebar": true,
+                "icon": "mdi:cog",
+                "title": "Admin Control Panel",
+                "url_path": "plant-control-system",
+                "mode": "storage",
+                "id": "plant_control_system"
+            },
+            {
+                "show_in_sidebar": true,
+                "icon": "mdi:flower",
+                "title": "Plant Control System",
+                "require_admin": false,
+                "mode": "storage",
+                "url_path": "lovelace-pcs",
+                "id": "lovelace_pcs"
+            }
+        ]
+    }
+}

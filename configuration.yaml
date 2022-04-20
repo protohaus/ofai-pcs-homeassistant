@@ -50,19 +50,6 @@ switch:
     mode: on
     toggle_for: 1
     
-  - platform: template
-    switches:
-      red_leds:
-        value_template: "{{ is_state('sensor.red_leds', 'on') }}"
-        turn_on:
-          service: switch.turn_on
-          target:
-            entity_id: switch.pcs1_led1_cc_switch
-        turn_off:
-          service: switch.turn_off
-          target:
-            entity_id: switch.pcs1_led1_cc_switch
-    
 input_boolean:
   prevent_deep_sleep:
     name: Prevent Deep Sleep
@@ -84,28 +71,113 @@ input_boolean:
 input_number:
   
 # Example configuration.yaml entry
-#sensor:
-#  - platform: average
-#    name: 'pcs1.led1.dallas_fan_140mm_average.temperature'
-#    id: pcs1_led1_dallas_fan_140mm_average_temperature
-#    entities:
-#      - sensor.pcs1_led1_dallas_fan_140mm_1_temperature
-#      - sensor.pcs1_led1_dallas_fan_140mm_2_temperature
-#      - sensor.pcs1_led1_dallas_fan_140mm_3_temperature
-#      - sensor.pcs1_led1_dallas_fan_140mm_4_temperature
-#      
-#  - platform: average
-#    name: 'pcs1.led1.dallas_fan_80mm_average.temperature'
-#    id: pcs1_led1_dallas_fan_80mm_average_temperature
-#    entities:
-#      - sensor.pcs1_led1_dallas_fan_80mm_1_temperature
-#      - sensor.pcs1_led1_dallas_fan_80mm_2_temperature
-#      - sensor.pcs1_led1_dallas_fan_80mm_3_temperature
-#      - sensor.pcs1_led1_dallas_fan_80mm_4_temperature
-#      
-#  - platform: average
-#    name: 'pcs1.led1.dallas_average.temperature'
-#    id: pcs1_led1_dallas_average_temperature
-#    entities:
-#      - sensor.pcs1_led1_dallas_fan_140mm_mean_temperature
-#      - sensor.pcs1_led1_dallas_fan_80mm_mean_temperature
+sensor:
+  - platform: average
+    name: 'pcs1.led_panel_fan_80mm.average_temperature'
+    entities:
+      - sensor.pcs1_led1_dallas_fan_140mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_4_temperature
+      
+  - platform: average
+    name: 'pcs1.led_panel.fan_140mm.average_temperature'
+    entities:
+      - sensor.pcs1_led1_dallas_fan_80mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_4_temperature
+      
+  - platform: average
+    name: 'pcs1.led_panel.average_temperature'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_led_panel_fan_140mm_average_temperature
+      - sensor.pcs1_led_panel_fan_80mm_average_temperature
+
+  - platform: min_max
+    type: max
+    name: "pcs1.led_panel.max_temperature"
+    entity_ids:
+      - sensor.pcs1_led1_dallas_fan_80mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_4_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_4_temperature
+  
+  - platform: average
+    name: 'pcs1.led_panel.average_max_temperature'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_led_panel_max_temperature
+      
+  - platform: average
+    name: 'pcs1.outside.average_temperature'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_pwm_dallas_2_temperature
+  
+  - platform: average
+    name: 'pcs1.electronics_area.average_temperature'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_pwm_dallas_1_temperature
+    
+  - platform: average
+    name: 'pcs1.growth_chamber.average_temperature'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_cam1_bme280_1_temperature
+      - sensor.pcs1_cam3_bme280_1_temperature
+      - sensor.pcs1_cam4_bme280_1_temperature
+      - sensor.pcs1_cam5_bme280_1_temperature
+      - sensor.pcs1_cam6_bme280_1_temperature
+      
+  - platform: average
+    name: 'pcs1.growth_chamber.average_humidity'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_cam1_bme280_1_humidity
+      - sensor.pcs1_cam3_bme280_1_humidity
+      - sensor.pcs1_cam4_bme280_1_humidity
+      - sensor.pcs1_cam5_bme280_1_humidity
+      - sensor.pcs1_cam6_bme280_1_humidity
+  
+  - platform: average
+    name: 'pcs1.growth_chamber.average_pressure'
+    duration: 00:01:00
+    entities:
+      - sensor.pcs1_cam1_bme280_1_pressure
+      - sensor.pcs1_cam3_bme280_1_pressure
+      - sensor.pcs1_cam4_bme280_1_pressure
+      - sensor.pcs1_cam5_bme280_1_pressure
+      - sensor.pcs1_cam6_bme280_1_pressure
+      
+  - platform: average
+    name: 'pcs1.growth_chamber.average_illuminance'
+    duration: 00:00:5
+    entities:
+      - sensor.pcs1_cam1_bh1750_1_illuminance
+      - sensor.pcs1_cam3_bh1750_1_illuminance
+      - sensor.pcs1_cam4_bh1750_1_illuminance
+      - sensor.pcs1_cam5_bh1750_1_illuminance
+      - sensor.pcs1_cam6_bh1750_1_illuminance
+      
+  - platform: min_max
+    type: max
+    name: "pcs1.led1.growth_chamber.max_illuminance"
+    entity_ids:
+      - sensor.pcs1_cam1_bh1750_1_illuminance
+      - sensor.pcs1_cam3_bh1750_1_illuminance
+      - sensor.pcs1_cam4_bh1750_1_illuminance
+      - sensor.pcs1_cam5_bh1750_1_illuminance
+      - sensor.pcs1_cam6_bh1750_1_illuminance
+      
+  - platform: average
+    name: 'pcs1.growth_chamber.average_max_illuminance'
+    duration: 00:00:5
+    entities:
+      - sensor.pcs1_led1_growth_chamber_max_illuminance

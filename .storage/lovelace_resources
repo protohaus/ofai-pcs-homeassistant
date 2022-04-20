@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "minor_version": 1,
+    "key": "lovelace_resources",
+    "data": {
+        "items": [
+            {
+                "url": "/hacsfiles/lovelace-plotly-graph-card/plotly-graph-card.js?hacstag=413812496122",
+                "type": "module",
+                "id": "bd707541567449dea92926e36a90e51b"
+            },
+            {
+                "url": "local/community/lovelace-plotly-graph-card/plotly-graph-card.js",
+                "type": "module",
+                "id": "80ebaba1524e4fd78cee6b6148cae5bc"
+            },
+            {
+                "url": "local/community/mini-graph-card/mini-graph-card-bundle.js",
+                "type": "module",
+                "id": "68c8a827def6447c8a8df8e597378c65"
+            }
+        ]
+    }
+}

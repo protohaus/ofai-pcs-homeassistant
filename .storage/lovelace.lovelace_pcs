@@ -1,0 +1,334 @@
+{
+    "version": 1,
+    "minor_version": 1,
+    "key": "lovelace.lovelace_pcs",
+    "data": {
+        "config": {
+            "views": [
+                {
+                    "theme": "Backend-selected",
+                    "title": "Home",
+                    "icon": "",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.activate_kinematics_automation",
+                                    "icon": "mdi:cog-play"
+                                },
+                                {
+                                    "entity": "input_boolean.activate_led_automation",
+                                    "icon": "mdi:lightbulb-group-outline"
+                                }
+                            ],
+                            "title": "Automations",
+                            "show_header_toggle": false,
+                            "state_color": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_led1_cc_switch",
+                                    "name": "Red",
+                                    "icon": "mdi:lightbulb"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led4_cc_switch",
+                                    "name": "Blue",
+                                    "icon": "mdi:lightbulb"
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_3_520nm",
+                                    "name": "Green",
+                                    "icon": ""
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_1_white",
+                                    "name": "White"
+                                }
+                            ],
+                            "state_color": true,
+                            "title": "LEDs"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "switch.pcs1_kin_stepper_enable_motor",
+                                    "name": "Enable kinematics controller",
+                                    "icon": "mdi:cog"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_start_global_homing",
+                                    "name": "Global homing",
+                                    "icon": "mdi:home"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_find_next_home",
+                                    "name": "Go to next home",
+                                    "icon": "mdi:walk"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_drive_fw",
+                                    "name": "Drive forward",
+                                    "icon": "mdi:skip-forward"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_drive_bw",
+                                    "name": "Drive backward",
+                                    "icon": "mdi:skip-backward"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_stop",
+                                    "icon": "mdi:stop-circle-outline",
+                                    "name": "Stop"
+                                }
+                            ],
+                            "title": "Kinematics",
+                            "state_color": true
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "LEDs",
+                    "path": "leds",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
+                                }
+                            ],
+                            "title": "Red",
+                            "state_color": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_pwm_cc_a_3_520nm"
+                            ],
+                            "title": "Green"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_pwm_cc_a_1_white",
+                                "light.pcs1_pwm_cc_a_2_white"
+                            ],
+                            "title": "White"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_led4_cc_a_1_450nm",
+                                "light.pcs1_led4_cc_a_2_450nm",
+                                "light.pcs1_led4_cc_a_3_450nm",
+                                "light.pcs1_led4_cc_a_4_450nm"
+                            ],
+                            "title": "Blue"
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "Sensor data",
+                    "path": "sensor-data",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "custom:plotly-graph",
+                            "title": "Temperature and Humidity",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
+                                    "line": {
+                                        "color": "blue",
+                                        "dash": "dot",
+                                        "width": 2
+                                    },
+                                    "name": "growth_chamber_humidity",
+                                    "show_value": true
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_temperature",
+                                    "line": {
+                                        "color": "orange",
+                                        "width": 2
+                                    },
+                                    "name": "led_panel_average_temp",
+                                    "show_value": true
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
+                                    "line": {
+                                        "color": "red",
+                                        "width": 2
+                                    },
+                                    "name": "led_panel_max_temp",
+                                    "show_value": true
+                                },
+                                {
+                                    "entity": "sensor.pcs1_outside_average_temperature",
+                                    "line": {
+                                        "color": "blue",
+                                        "width": 2
+                                    },
+                                    "name": "outside_temp",
+                                    "show_value": true
+                                },
+                                {
+                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
+                                    "line": {
+                                        "color": "black",
+                                        "width": 2
+                                    },
+                                    "name": "electronics_area_temp",
+                                    "show_value": true
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
+                                    "line": {
+                                        "color": "green",
+                                        "width": 2
+                                    },
+                                    "name": "growth_chamber_temp",
+                                    "show_value": true
+                                }
+                            ],
+                            "hours_to_show": 3,
+                            "refresh_interval": 10,
+                            "layout": {
+                                "height": 500,
+                                "xaxis": {
+                                    "rangeselector": {
+                                        "y": 1.2,
+                                        "buttons": [
+                                            {
+                                                "count": 30,
+                                                "step": "minute"
+                                            },
+                                            {
+                                                "count": 1,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 6,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 24,
+                                                "step": "hour"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
+                    "title": "Cameras",
+                    "path": "cameras",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam1_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 1"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam2_camera",
+                            "name": "Cam 2",
+                            "aspect_ratio": "3:2"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam3_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 3"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam4_camera",
+                            "name": "Cam 4",
+                            "aspect_ratio": "3:2"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam5_camera",
+                            "name": "Cam 5",
+                            "aspect_ratio": "3:2"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam6_camera",
+                            "name": "Cam 6",
+                            "aspect_ratio": "3:2"
+                        }
+                    ]
+                }
+            ],
+            "title": "Plant Control System"
+        }
+    }
+}
