@@ -48,6 +48,10 @@
                                 {
                                     "entity": "light.pcs1_pwm_cc_a_1_white",
                                     "name": "White"
+                                },
+                                {
+                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
+                                    "name": "Fan"
                                 }
                             ],
                             "state_color": true,
@@ -165,6 +169,16 @@
                                 "light.pcs1_led4_cc_a_4_450nm"
                             ],
                             "title": "Blue"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
+                                    "name": "Fan"
+                                }
+                            ],
+                            "title": "Fan"
                         }
                     ]
                 },
