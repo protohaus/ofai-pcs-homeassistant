@@ -113,7 +113,7 @@ sensor:
     duration: 00:01:00
     entities:
       - sensor.pcs1_led_panel_max_temperature
-      
+        
   - platform: average
     name: 'pcs1.outside.average_temperature'
     duration: 00:01:00
