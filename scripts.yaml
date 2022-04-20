@@ -1,52 +1,846 @@
 camera_sequence:
   mode: single
-  alias: Camera sequence
+  alias: camera_sequence
   icon: mdi:camera
   sequence:
-    - alias: Cam 1 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam1_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam1_flashlight
-      
-    - alias: Cam 2 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam2_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam2_flashlight
-      
-    - alias: Cam 3 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam3_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam3_flashlight
-      
-    - alias: Cam 4 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam4_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam4_flashlight
+  - service: homeassistant.turn_on
+    entity_id: input_boolean.camera_sequence_taking_photos
+  - alias: Cam 1 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam1_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam1_flashlight
+  - alias: Cam 2 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam2_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam2_flashlight
+  - alias: Cam 3 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam3_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam3_flashlight
+  - alias: Cam 4 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam4_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam4_flashlight
+  - alias: Cam 5 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam5_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam5_flashlight
+  - alias: Cam 6 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam6_flashlight
+  - delay:
+      seconds: 1
+  - service: switch.turn_off
+    entity_id: switch.pcs1_cam6_flashlight
+  - alias: Cam 7 Flashlight
+    service: switch.turn_on
+    entity_id: switch.pcs1_cam7_flashlight
+  - delay:
+      seconds: 1
+  - alias: White Light off
+    service: switch.turn_off
+    entity_id: switch.pcs1_cam7_flashlight
+  - service: homeassistant.turn_off
+    entity_id: input_boolean.camera_sequence_taking_photos
+camera_squence_stop:
+  mode: restart
+  alias: camera_squence_stop
+  icon: mdi:close-octagon
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.camera_squence
     
-    - alias: Cam 5 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam5_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam5_flashlight
-      
-    - alias: Cam 6 Flashlight
-      service: switch.turn_on
-      entity_id: switch.pcs1_cam6_flashlight
-    - delay:
-        seconds: 1
-    - service: switch.turn_off
-      entity_id: switch.pcs1_cam6_flashlight
+lights_off:
+  mode: restart
+  alias: lights_off
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - alias: PWM Light OFF
+    service: switch.turn_off
+    entity_id: switch.pcs1_pwm_cc_switch
+  - alias: LED 1 Light OFF
+    service: switch.turn_off
+    entity_id: switch.pcs1_led1_cc_switch
+  - alias: LED 2 Light OFF
+    service: switch.turn_off
+    entity_id: switch.pcs1_led2_cc_switch
+  - alias: LED 3 Light OFF
+    service: switch.turn_off
+    entity_id: switch.pcs1_led3_cc_switch
+  - alias: LED 4 Light OFF
+    service: switch.turn_off
+    entity_id: switch.pcs1_led4_cc_switch
+light_effect_squence:
+  mode: restart
+  alias: light_effect_squence
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_on
+    data: {}
+    target:
+      entity_id: fan.pcs1_pwm_cc_a_4_fan
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %} 
+        script.pcs1_led3_butterfly_shutdown
+        {% else %} 
+        script.dummy
+        {% endif %}
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_pwm_520nm_bootup
+        {% else %} 
+        script.dummy
+        {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led1_730nm_bootup
+        {% else %}
+        script.dummy
+        {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_pwm_520nm_shutdown
+        {% else %}
+        script.dummy
+        {% endif %}
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led1_660nm_bootup
+        {% else %}
+        script.dummy
+        {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led1_730nm_shutdown
+        {% else %}
+        script.dummy
+        {% endif %}
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led2_630nm_bootup
+        {% else %}
+        script.dummy
+        {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led1_660nm_shutdown
+        {% else %}
+        script.dummy
+        {% endif %}
+  - service_template: >
+        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+        script.pcs1_led4_450nm_bootup
+        {% else %}
+        script.dummy
+        {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+       script.pcs1_led2_630nm_shutdown
+       {% else %}
+       script.dummy
+       {% endif %}
+  - service_template: >
+       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+       script.pcs1_led3_butterfly_bootup 
+       {% else %}   
+       script.dummy
+       {% endif %}
+  - delay:
+      seconds: 10
+  - service_template: >
+       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
+       script.pcs1_led4_450nm_shutdown
+       {% else %}
+       script.dummy
+       {% endif %}
+  - delay:
+      seconds: 10
+light_effect_squence_stop:
+  mode: restart
+  alias: light_effect_squence_stop
+  icon: mdi:close-octagon
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.light_effect_squence
+  - service: homeassistant.turn_off
+    entity_id: script.led_bootup_stop
+led_bootup:
+  mode: restart
+  alias: led_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: script.pcs1_pwm_520nm_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led1_730nm_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led1_660nm_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led2_630nm_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led3_butterfly_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led4_450nm_bootup
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_pwm_white_bootup
+    data: {}
+led_bootup_stop:
+  mode: restart
+  alias: led_bootup_stop
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.led_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_520nm_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_730nm_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_660nm_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led2_630nm_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led3_butterfly_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led4_450nm_bootup
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_white_bootup
+led_shutdown:
+  mode: restart
+  alias: led_shutdown
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: script.pcs1_pwm_white_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led4_450nm_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led3_butterfly_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led2_630nm_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led1_660nm_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_led1_730nm_shutdown
+    data: {}
+  - delay:
+      seconds: 1
+  - service: script.pcs1_pwm_520nm_shutdown
+    data: {}
+led_shutdown_stop:
+  mode: restart
+  alias: led_shutdown_stop
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.led_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_520nm_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_730nm_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_660nm_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led2_630nm_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led3_butterfly_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led4_450nm_shutdown
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_white_shutdown
+pcs1_pwm_white_bootup:
+  mode: restart
+  alias: pcs1_pwm_white_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_pwm_cc_a_1_white
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_pwm_cc_a_2_white
+pcs1_pwm_white_bootup_stop:
+  mode: restart
+  alias: pcs1_pwm_white_bootup_stop
+  icon: mdi:close-octagon
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_white_bootup
+pcs1_pwm_520nm_bootup:
+  mode: restart
+  alias: pcs1_pwm_520nm_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_pwm_cc_a_3_520nm
+pcs1_pwm_520nm_bootup_stop:
+  mode: restart
+  alias: pcs1_pwm_520nm_bootup_stop
+  icon: mdi:close-octagon
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_520nm_bootup
+pcs1_pwm_white_shutdown:
+  mode: restart
+  alias: pcs1_pwm_white_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_pwm_cc_a_2_white
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_pwm_cc_a_1_white
+pcs1_pwm_white_shutdown_stop:
+  mode: restart
+  alias: pcs1_pwm_white_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_white_shutdown
+pcs1_pwm_520nm_shutdown:
+  mode: restart
+  alias: pcs1_pwm_520nm_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_pwm_cc_a_3_520nm
+pcs1_pwm_520nm_shutdown_stop:
+  mode: restart
+  alias: pcs1_pwm_520nm_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_pwm_520nm_shutdown
+pcs1_led1_730nm_bootup:
+  mode: restart
+  alias: pcs1_led1_730nm_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_a_1_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_a_2_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_a_3_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_a_4_730nm
+pcs1_led1_730nm_bootup_stop:
+  mode: restart
+  alias: pcs1_led1_730nm_bootup_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_730nm_bootup
+pcs1_led1_660nm_bootup:
+  mode: restart
+  alias: pcs1_led1_660nm_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_b_1_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_b_2_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_b_3_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led1_cc_b_4_660nm
+pcs1_led1_660nm_bootup_stop:
+  mode: restart
+  alias: pcs1_led1_660nm_bootup_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_660nm_bootup
+pcs1_led1_660nm_shutdown:
+  mode: restart
+  alias: pcs1_led1_660nm_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led1_cc_b_4_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led1_cc_b_3_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led1_cc_b_2_660nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led1_cc_b_1_660nm
+pcs1_led1_660nm_shutdown_stop:
+  mode: restart
+  alias: pcs1_led1_660nm_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_660nm_shutdown
+pcs1_led1_730nm_shutdown:
+  mode: restart
+  alias: pcs1_led1_730nm_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led1_cc_a_4_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led1_cc_a_3_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led1_cc_a_2_730nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led1_cc_a_1_730nm
+pcs1_led1_730nm_shutdown_stop:
+  mode: restart
+  alias: pcs1_led1_730nm_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led1_730nm_shutdown
+pcs1_led2_630nm_bootup:
+  mode: restart
+  alias: pcs1_led2_630nm_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_a_1_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_a_2_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_a_3_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_a_4_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_b_1_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_b_2_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_b_3_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led2_cc_b_4_630nm
+pcs1_led2_630nm_bootup_stop:
+  mode: restart
+  alias: pcs1_led2_630nm_bootup_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led2_630nm_bootup
+pcs1_led2_630nm_shutdown:
+  mode: restart
+  alias: pcs1_led2_630nm_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_b_4_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_b_3_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_b_2_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_b_1_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_a_4_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_a_3_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_a_2_630nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.pcs1_led2_cc_a_1_630nm
+pcs1_led2_630nm_shutdown_stop:
+  mode: restart
+  alias: pcs1_led2_630nm_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led2_630nm_shutdown
+pcs1_led3_butterfly_bootup:
+  mode: restart
+  alias: pcs1_led3_butterfly_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led3_cc_a_1_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led3_cc_a_2_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led3_cc_a_3_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led3_cc_a_4_butterfly
+pcs1_led3_butterfly_bootup_stop:
+  mode: restart
+  alias: pcs1_led3_butterfly_bootup_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led3_butterfly_bootup
+pcs1_led3_butterfly_shutdown:
+  mode: restart
+  alias: pcs1_led3_butterfly_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led3_cc_a_4_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led3_cc_a_3_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led3_cc_a_2_butterfly
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led3_cc_a_1_butterfly
+pcs1_led3_butterfly_shutdown_stop:
+  mode: restart
+  alias: pcs1_led3_butterfly_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led3_butterfly_shutdown
+pcs1_led4_450nm_bootup:
+  mode: restart
+  alias: pcs1_led4_450nm_bootup
+  icon: mdi:lightbulb-group-outline
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led4_cc_a_1_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led4_cc_a_2_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led4_cc_a_3_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 100
+    target:
+      entity_id: light.pcs1_led4_cc_a_4_450nm
+pcs1_led4_450nm_bootup_stop:
+  mode: restart
+  alias: pcs1_led4_450nm_bootup_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led4_450nm_bootup
+pcs1_led4_450nm_shutdown:
+  mode: restart
+  alias: pcs1_led4_450nm_shutdown
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led4_cc_a_4_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led4_cc_a_3_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led4_cc_a_2_450nm
+  - delay:
+      seconds: 1
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.pcs1_led4_cc_a_1_450nm
+pcs1_led4_450nm_shutdown_stop:
+  mode: restart
+  alias: pcs1_led4_450nm_shutdown_stop
+  icon: mdi:lightbulb-group-off
+  sequence:
+  - service: homeassistant.turn_off
+    entity_id: script.pcs1_led4_450nm_shutdown
+dummy:
+  alias: dummy
+  sequence:
+  - delay:
+      seconds: 10
+  mode: restart

@@ -99,6 +99,7 @@ switch:
   - platform: template
     name: ${device_name_upper}.automation
     id: ${device_name}_automation
+    icon: mdi:water-pump
     lambda: |-
        if (id(pump_automation_is_on) == true)
          return true;

@@ -17,6 +17,8 @@ substitutions:
   sensor_dallas_1_name: dallas_inside
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_2_name: dallas_outside
+  sensor_dallas_3_hub_id: ${sensor_dallas_hub_1_name}
+  sensor_dallas_3_name: dallas_24_36V_case
   
   # LED Settings
   pwm_led_frequency: "1000Hz"
@@ -24,9 +26,9 @@ substitutions:
   pwm_led_cc_10_name: cc_a_2_white
   pwm_led_cc_11_name: cc_a_3_520nm
   
-  pwm_led_cc_9_max_value: "0.2"
-  pwm_led_cc_10_max_value: "0.2"
-  pwm_led_cc_11_max_value: "0.2"
+  pwm_led_cc_9_max_value: "0.1"
+  pwm_led_cc_10_max_value: "0.1"
+  pwm_led_cc_11_max_value: "0.4"
   
   
   # PWM settings
@@ -40,17 +42,17 @@ button:
     name: ${device_name}.cc_on
     id: ${device_name}_cc_on
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_9_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_10_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_11_name}_on
+      - light.turn_on: ${device_name}_${pwm_led_cc_9_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_10_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_11_name}
   
   - platform: template
     name: ${device_name}.cc_off
     id: ${device_name}_cc_off
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_9_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_10_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_11_name}_off
+      - light.turn_off: ${device_name}_${pwm_led_cc_9_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_10_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_11_name}
 
 globals:
   - id: ${device_name}_leds_on
@@ -58,7 +60,25 @@ globals:
     restore_value: no
     initial_value: "false"  
     
-switch:        
+switch:  
+  - platform: template
+    name: ${device_name}.cc_white_switch
+    id: ${device_name}_cc_white_switch
+    lambda: |-
+      return id(${device_name}_leds_on);
+    turn_on_action:
+      - light.turn_on: ${device_name}_${pwm_led_cc_9_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_10_name}
+      - globals.set:
+          id: ${device_name}_leds_on
+          value: "true"
+    turn_off_action:
+      - light.turn_off: ${device_name}_${pwm_led_cc_9_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_10_name}
+      - globals.set:
+          id: ${device_name}_leds_on
+          value: "false"
+          
   - platform: template
     name: ${device_name}.cc_switch
     id: ${device_name}_cc_switch
@@ -88,6 +108,7 @@ packages:
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
   sensor_dallas_1: !include sensors/dallas_1.yaml
   sensor_dallas_2: !include sensors/dallas_2.yaml
+  sensor_dallas_3: !include sensors/dallas_3.yaml
   pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
   pwm_fan: !include pwm/fan.yaml
   pwm_led_9: !include pwm/led_cc_9.yaml

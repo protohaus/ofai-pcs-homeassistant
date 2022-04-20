@@ -37,42 +37,66 @@ substitutions:
   pwm_led_cc_7_name: cc_b_3_630nm
   pwm_led_cc_8_name: cc_b_4_630nm
   
-  pwm_led_cc_1_max_value: "0.2"
-  pwm_led_cc_2_max_value: "0.2"
-  pwm_led_cc_3_max_value: "0.2"
-  pwm_led_cc_4_max_value: "0.2"
-  pwm_led_cc_5_max_value: "0.2"
-  pwm_led_cc_6_max_value: "0.2"
-  pwm_led_cc_7_max_value: "0.2"
-  pwm_led_cc_8_max_value: "0.2"
+  pwm_led_cc_1_max_value: "0.05"
+  pwm_led_cc_2_max_value: "0.05"
+  pwm_led_cc_3_max_value: "0.05"
+  pwm_led_cc_4_max_value: "0.05"
+  pwm_led_cc_5_max_value: "0.05"
+  pwm_led_cc_6_max_value: "0.05"
+  pwm_led_cc_7_max_value: "0.05"
+  pwm_led_cc_8_max_value: "0.05"
   
 button:
   - platform: template
     name: ${device_name}.cc_on
     id: ${device_name}_cc_on
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_5_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_6_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_7_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_8_name}_on
+      - button.press: ${device_name}_cc_a_on
+      - button.press: ${device_name}_cc_b_on
   
   - platform: template
     name: ${device_name}.cc_off
     id: ${device_name}_cc_off
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_5_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_6_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_7_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_8_name}_off
+      - button.press: ${device_name}_cc_a_off
+      - button.press: ${device_name}_cc_b_off
+      
+  - platform: template
+    name: ${device_name}.cc_a_on
+    id: ${device_name}_cc_a_on
+    on_press:
+      - light.turn_on: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_4_name}
+  
+  - platform: template
+    name: ${device_name}.cc_a_off
+    id: ${device_name}_cc_a_off
+    on_press:
+      - light.turn_off: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_4_name}
 
+  - platform: template
+    name: ${device_name}.cc_b_on
+    id: ${device_name}_cc_b_on
+    on_press:
+      - light.turn_on: ${device_name}_${pwm_led_cc_5_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_6_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_7_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_8_name}
+  
+  - platform: template
+    name: ${device_name}.cc_b_off
+    id: ${device_name}_cc_b_off
+    on_press:
+      - light.turn_off: ${device_name}_${pwm_led_cc_5_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_6_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_7_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_8_name}
+      
 globals:
   - id: ${device_name}_leds_on
     type: bool

@@ -1,5 +1,7 @@
 - id: looper
   alias: looper
+  initial_state: true
+  mode: restart
   trigger:
   - id: trigger_looper
     platform: state
@@ -13,14 +15,144 @@
       while:
       - condition: or
         conditions:
-          - condition: template
-              value_template: '{{ repeat.index <= 50}}'
-          #- condition: template
-          #    value_template: 
+        - condition: template
+          value_template: '{% if is_state(''input_boolean.activate_looper'', ''on'')
+            %} true {% else %} false {% endif %}'
       sequence:
       - service: persistent_notification.create
         data_template:
           title: Looper {{now().timestamp()|timestamp_local}}
           message: Looper has triggered.
-      - delay: 00:00:10
+      - delay: 00:00:01
+- id: kinematics_automation
+  alias: Kinematics automation
+  description: 'Cycles every 10 minutes.
+
+    Starts the Camera Sequence and starts the kinematics automation.'
+  trigger:
+  - id: trigger_kinematics_on
+    platform: state
+    entity_id: input_boolean.activate_kinematics_automation
+    to: 'on'
+  - id: trigger_kinematics_off
+    platform: state
+    entity_id: input_boolean.activate_kinematics_automation
+    to: 'off'
+  - platform: state
+    entity_id: switch.pcs1_kin_stepper_enable_motor
+    to: 'off'
+    id: motor_disabled_trigger
+  condition:
+  - condition: or
+    conditions:
+    - condition: trigger
+      id: trigger_kinematics_on
+    - condition: trigger
+      id: trigger_kinematics_off
+    - condition: trigger
+      id: motor_disabled_trigger
+  action:
+  - repeat:
+      while:
+      - condition: or
+        conditions:
+        - condition: template
+          value_template: '{% if is_state(''input_boolean.activate_kinematics_automation'',
+            ''on'') %} true {% else %} false {% endif %}'
+      sequence:
+      - service: persistent_notification.create
+        data_template:
+          title: kinematics_automation {{now().timestamp()|timestamp_local}}
+          message: Kinematics automation has been triggered->making pictures and start
+            kinematics
+      - service: script.lights_off
+        data: {}
+      - service: light.turn_on
+        data:
+          transition: 0
+          brightness_pct: 50
+        target:
+          entity_id: light.pcs1_pwm_cc_a_1_white
+      - service: light.turn_on
+        data:
+          transition: 0
+          brightness_pct: 50
+        target:
+          entity_id: light.pcs1_pwm_cc_a_2_white
+      - service: script.camera_sequence
+        data: {}
+      - service: light.turn_off
+        data:
+          transition: 0
+        target:
+          entity_id: light.pcs1_pwm_cc_a_1_white
+      - service: light.turn_off
+        data:
+          transition: 0
+        target:
+          entity_id: light.pcs1_pwm_cc_a_2_white
+      - delay: 00:00:03
+      - device_id: f3746047665b62108319ce9c828b6b08
+        domain: button
+        entity_id: button.pcs1_kin_stepper_set_homing_valid
+        type: press
+      - type: turn_on
+        device_id: f3746047665b62108319ce9c828b6b08
+        entity_id: switch.pcs1_kin_stepper_start_automation
+        domain: switch
+      - delay: 00:09:50
+  - service: homeassistant.turn_off
+    data: {}
+    target:
+      entity_id: switch.pcs1_kin_stepper_start_automation
+  - service: homeassistant.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.activate_kinematics_automation
+  - service: script.camera_sequence_stop
+    data: {}
+  mode: restart
   initial_state: true
+- id: led_automation
+  alias: LED automation
+  mode: restart
+  initial_state: true
+  trigger:
+  - id: trigger_led_on
+    platform: state
+    entity_id: input_boolean.activate_led_automation
+    to: 'on'
+  - id: trigger_led_off
+    platform: state
+    entity_id: input_boolean.activate_led_automation
+    to: 'off'
+  condition:
+  - condition: or
+    conditions:
+    - condition: trigger
+      id: trigger_led_on
+    - condition: trigger
+      id: trigger_led_off
+  action:
+  - repeat:
+      while:
+      - condition: or
+        conditions:
+        - condition: template
+          value_template: '{% if is_state(''input_boolean.activate_led_automation'',
+            ''on'') %} true {% else %} false {% endif %}'
+      sequence:
+      - service: persistent_notification.create
+        data_template:
+          title: led_automation {{now().timestamp()|timestamp_local}}
+          message: Led automation has been triggered - starting LED sequence
+      - service: script.light_effect_squence
+        data: {}
+  - service: script.light_effect_squence_stop
+    data: {}
+  - service: script.lights_off
+    data: {}
+  - service: homeassistant.turn_off
+    data: {}
+    target:
+      entity_id: fan.pcs1_pwm_cc_a_4_fan

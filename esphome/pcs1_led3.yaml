@@ -40,19 +40,19 @@ button:
     name: ${device_name}.cc_on
     id: ${device_name}_cc_on
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_on
+      - light.turn_on: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_4_name}
   
   - platform: template
     name: ${device_name}.cc_off
     id: ${device_name}_cc_off
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_off
+      - light.turn_off: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_4_name}
 
 globals:
   - id: ${device_name}_leds_on
@@ -87,9 +87,6 @@ packages:
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   common_restart: !include common/restart.yaml
-  #sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  #sensor_dallas_1: !include sensors/dallas_1.yaml
-  #sensor_dallas_2: !include sensors/dallas_2.yaml
   sensor_current_hall_1: !include sensors/current_hall_1.yaml
   pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
   pwm_led_1: !include pwm/led_cc_1.yaml

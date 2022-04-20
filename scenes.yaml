@@ -1,0 +1,228 @@
+###########################################################
+# PCS1
+###########################################################
+
+#################
+## PWM Controller
+#################
+
+
+# LED White
+- name: pcs1_pwm_white_on
+  entities:
+    light.pcs1_pwm_cc_a_1_white:
+     state: on
+     transition: 10
+    light.pcs1_pwm_cc_a_2_white:
+     state: on
+     transition: 10
+- name: pcs1_pwm_white_off
+  entities:
+    light.pcs1_pwm_cc_a_1_white:
+     state: off
+     transition: 10
+    light.pcs1_pwm_cc_a_2_white:
+     state: off
+     transition: 10
+
+# LED 520nm
+- name: pcs1_pwm_520nm_on
+  entities:
+    light.pcs1_pwm_cc_a_3_520nm:
+     state: on
+     transition: 10
+- name: pcs1_pwm_520nm_off
+  entities:
+    light.pcs1_pwm_cc_a_3_520nm:
+     state: off
+     transition: 10
+     
+#################    
+# LED1 Controller
+#################
+
+# LED 730nm
+- name: pcs1_led1_730nm_on
+  entities:
+    light.pcs1_led1_cc_a_1_730nm:
+     state: on
+     transition: 10
+    light.pcs1_led1_cc_a_2_730nm:
+     state: on
+     transition: 10
+    light.pcs1_led1_cc_a_3_730nm:
+     state: on
+     transition: 10
+    light.pcs1_led1_cc_a_4_730nm:
+     state: on
+     transition: 10
+- name: pcs1_led1_730nm_off
+  entities:
+    light.pcs1_led1_cc_a_1_730nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_a_2_730nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_a_3_730nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_a_4_730nm:
+     state: off
+     transition: 10
+
+# LED 660nm
+- name: pcs1_led1_660nm_on
+  entities:
+    light.pcs1_led1_cc_b_1_660nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led1_cc_b_2_660nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led1_cc_b_3_660nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led1_cc_b_4_660nm:
+     state: on
+     transition: 10
+- name: pcs1_led1_660nm_off
+  entities:
+    light.pcs1_led1_cc_b_1_660nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_b_2_660nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_b_3_660nm:
+     state: off
+     transition: 10
+    light.pcs1_led1_cc_b_4_660nm:
+     state: off
+     transition: 10
+
+#################    
+# LED2 Controller
+#################
+
+# LED 630nm
+- name: pcs1_led2_630nm_on
+  entities:
+    light.pcs1_led2_cc_a_1_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_a_2_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_a_3_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_a_4_630nm:
+     state: on
+     transition: 10
+    light.pcs1_led2_cc_b_1_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_b_2_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_b_3_630nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led2_cc_b_4_630nm:
+     state: on
+     transition: 10
+- name: pcs1_led2_630nm_off
+  entities:
+    light.pcs1_led2_cc_a_1_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_a_2_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_a_3_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_a_4_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_b_1_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_b_2_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_b_3_630nm:
+     state: off
+     transition: 10
+    light.pcs1_led2_cc_b_4_630nm:
+     state: off
+     transition: 10
+
+#################    
+# LED3 Controller
+#################
+
+# LED butterfly
+- name: pcs1_led3_butterfly_on
+  entities:
+    light.pcs1_led3_cc_a_1_butterfly:
+     state: on        
+     transition: 10   
+    light.pcs1_led3_cc_a_2_butterfly:
+     state: on        
+     transition: 10   
+    light.pcs1_led3_cc_a_3_butterfly:
+     state: on        
+     transition: 10   
+    light.pcs1_led3_cc_a_4_butterfly:
+     state: on
+     transition: 10
+- name: pcs1_led3_butterfly_off
+  entities:
+    light.pcs1_led3_cc_a_1_butterfly:
+     state: off
+     transition: 10
+    light.pcs1_led3_cc_a_2_butterfly:
+     state: off
+     transition: 10
+    light.pcs1_led3_cc_a_3_butterfly:
+     state: off
+     transition: 10
+    light.pcs1_led3_cc_a_4_butterfly:
+     state: off
+     transition: 10
+     
+#################    
+# LED4 Controller
+#################
+
+# LED 450nm
+- name: pcs1_led4_450nm_on
+  entities:
+    light.pcs1_led4_cc_a_1_450nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led4_cc_a_2_450nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led4_cc_a_3_450nm:
+     state: on        
+     transition: 10   
+    light.pcs1_led4_cc_a_4_450nm:
+     state: on
+     transition: 10
+- name: pcs1_led4_450nm_off
+  entities:
+    light.pcs1_led4_cc_a_1_450nm:
+     state: off
+     transition: 10
+    light.pcs1_led4_cc_a_2_450nm:
+     state: off
+     transition: 10
+    light.pcs1_led4_cc_a_3_450nm:
+     state: off
+     transition: 10
+    light.pcs1_led4_cc_a_4_450nm:
+     state: off
+     transition: 10

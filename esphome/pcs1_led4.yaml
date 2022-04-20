@@ -40,19 +40,19 @@ button:
     name: ${device_name}.cc_on
     id: ${device_name}_cc_on
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_on
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_on
+      - light.turn_on: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_on: ${device_name}_${pwm_led_cc_4_name}
   
   - platform: template
     name: ${device_name}.cc_off
     id: ${device_name}_cc_off
     on_press:
-      - button.press: ${device_name}_${pwm_led_cc_1_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_2_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_3_name}_off
-      - button.press: ${device_name}_${pwm_led_cc_4_name}_off
+      - light.turn_off: ${device_name}_${pwm_led_cc_1_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_2_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_3_name}
+      - light.turn_off: ${device_name}_${pwm_led_cc_4_name}
 
 globals:
   - id: ${device_name}_leds_on
