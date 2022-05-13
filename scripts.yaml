@@ -47,16 +47,16 @@ camera_sequence:
       seconds: 1
   - service: switch.turn_off
     entity_id: switch.pcs1_cam6_flashlight
-  - alias: Cam 7 Flashlight
-    service: switch.turn_on
-    entity_id: switch.pcs1_cam7_flashlight
-  - delay:
-      seconds: 1
-  - alias: White Light off
-    service: switch.turn_off
-    entity_id: switch.pcs1_cam7_flashlight
-  - service: homeassistant.turn_off
-    entity_id: input_boolean.camera_sequence_taking_photos
+  #- alias: Cam 7 Flashlight
+  #  service: switch.turn_on
+  #  entity_id: switch.pcs1_cam7_flashlight
+  #- delay:
+  #    seconds: 1
+  #- alias: White Light off
+  #  service: switch.turn_off
+  #  entity_id: switch.pcs1_cam7_flashlight
+  #- service: homeassistant.turn_off
+  #  entity_id: input_boolean.camera_sequence_taking_photos
 camera_squence_stop:
   mode: restart
   alias: camera_squence_stop
@@ -94,92 +94,59 @@ light_effect_squence:
     data: {}
     target:
       entity_id: fan.pcs1_pwm_cc_a_4_fan
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %} 
-        script.pcs1_led3_butterfly_shutdown
-        {% else %} 
-        script.dummy
-        {% endif %}
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_pwm_520nm_bootup
-        {% else %} 
-        script.dummy
-        {% endif %}
+  #- service_template: >
+  #      {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %} 
+  #      script.pcs1_led3_butterfly_shutdown
+  #      {% else %} 
+  #      script.dummy
+  #      {% endif %}
+  - service: script.pcs1_pwm_520nm_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led1_730nm_bootup
-        {% else %}
-        script.dummy
-        {% endif %}
+  - service: script.pcs1_led1_730nm_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_pwm_520nm_shutdown
-        {% else %}
-        script.dummy
-        {% endif %}
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led1_660nm_bootup
-        {% else %}
-        script.dummy
-        {% endif %}
+  - service: script.pcs1_pwm_520nm_shutdown
+    data: {}
+  - service: script.pcs1_led1_660nm_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led1_730nm_shutdown
-        {% else %}
-        script.dummy
-        {% endif %}
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led2_630nm_bootup
-        {% else %}
-        script.dummy
-        {% endif %}
+  - service: script.pcs1_led1_730nm_shutdown
+    data: {}
+  - service: script.pcs1_led2_630nm_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led1_660nm_shutdown
-        {% else %}
-        script.dummy
-        {% endif %}
-  - service_template: >
-        {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-        script.pcs1_led4_450nm_bootup
-        {% else %}
-        script.dummy
-        {% endif %}
+  - service: script.pcs1_led1_660nm_shutdown
+    data: {}
+  - service: script.pcs1_led4_450nm_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-       script.pcs1_led2_630nm_shutdown
-       {% else %}
-       script.dummy
-       {% endif %}
-  - service_template: >
-       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-       script.pcs1_led3_butterfly_bootup 
-       {% else %}   
-       script.dummy
-       {% endif %}
+  - service: script.pcs1_led2_630nm_shutdown
+    data: {}
+  - service: script.pcs1_led3_butterfly_bootup
+    data: {}
   - delay:
       seconds: 10
-  - service_template: >
-       {% if is_state('input_boolean.camera_sequence_taking_photos', 'off') %}
-       script.pcs1_led4_450nm_shutdown
-       {% else %}
-       script.dummy
-       {% endif %}
+  - service: script.pcs1_led4_450nm_shutdown
+    data: {}
   - delay:
       seconds: 10
+  - service: script.pcs1_led3_butterfly_shutdown
+    data: {}
+  - delay:
+      seconds: 10
+  - service: script.pcs1_pwm_white_bootup
+    data: {}
+  - delay:
+      minutes: 5
+  - service: script.pcs1_pwm_white_shutdown
+    data: {}
+        
 light_effect_squence_stop:
   mode: restart
   alias: light_effect_squence_stop

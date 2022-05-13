@@ -47,7 +47,11 @@
                                 },
                                 {
                                     "entity": "light.pcs1_pwm_cc_a_1_white",
-                                    "name": "White"
+                                    "name": "White 1"
+                                },
+                                {
+                                    "entity": "light.pcs1_pwm_cc_a_2_white",
+                                    "name": "White 2"
                                 },
                                 {
                                     "entity": "fan.pcs1_pwm_cc_a_4_fan",
@@ -55,7 +59,8 @@
                                 }
                             ],
                             "state_color": true,
-                            "title": "LEDs"
+                            "title": "LEDs",
+                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -89,96 +94,21 @@
                                     "entity": "button.pcs1_kin_stepper_stop",
                                     "icon": "mdi:stop-circle-outline",
                                     "name": "Stop"
+                                },
+                                {
+                                    "entity": "switch.pcs1_kin_stepper_start_automation",
+                                    "name": "Start 10 min. Automation",
+                                    "icon": "mdi:cog"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_stepper_set_homing_valid",
+                                    "name": "Set Homing valid",
+                                    "icon": "mdi:alert-circle-check-outline"
                                 }
                             ],
                             "title": "Kinematics",
-                            "state_color": true
-                        }
-                    ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "LEDs",
-                    "path": "leds",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
-                                }
-                            ],
-                            "title": "Red",
-                            "state_color": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_pwm_cc_a_3_520nm"
-                            ],
-                            "title": "Green"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_pwm_cc_a_1_white",
-                                "light.pcs1_pwm_cc_a_2_white"
-                            ],
-                            "title": "White"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_led4_cc_a_1_450nm",
-                                "light.pcs1_led4_cc_a_2_450nm",
-                                "light.pcs1_led4_cc_a_3_450nm",
-                                "light.pcs1_led4_cc_a_4_450nm"
-                            ],
-                            "title": "Blue"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
-                                    "name": "Fan"
-                                }
-                            ],
-                            "title": "Fan"
+                            "state_color": true,
+                            "show_header_toggle": false
                         }
                     ]
                 },
@@ -281,6 +211,92 @@
                 },
                 {
                     "theme": "Backend-selected",
+                    "title": "LEDs",
+                    "path": "leds",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
+                                }
+                            ],
+                            "title": "Red",
+                            "state_color": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_pwm_cc_a_3_520nm"
+                            ],
+                            "title": "Green"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_pwm_cc_a_1_white",
+                                "light.pcs1_pwm_cc_a_2_white"
+                            ],
+                            "title": "White"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_led4_cc_a_1_450nm",
+                                "light.pcs1_led4_cc_a_2_450nm",
+                                "light.pcs1_led4_cc_a_3_450nm",
+                                "light.pcs1_led4_cc_a_4_450nm"
+                            ],
+                            "title": "Blue"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
+                                    "name": "Fan"
+                                }
+                            ],
+                            "title": "Fan"
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
                     "title": "Cameras",
                     "path": "cameras",
                     "badges": [],
@@ -338,6 +354,15 @@
                             "entity": "camera.pcs1_cam6_camera",
                             "name": "Cam 6",
                             "aspect_ratio": "3:2"
+                        },
+                        {
+                            "show_state": true,
+                            "show_name": true,
+                            "camera_view": "auto",
+                            "type": "picture-entity",
+                            "entity": "camera.pcs1_cam7_camera",
+                            "aspect_ratio": "3:2",
+                            "name": "Cam 7"
                         }
                     ]
                 }
