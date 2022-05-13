@@ -1,0 +1,5 @@
+spi:
+  - id: ${spi_bus_a_name}
+    clk_pin: ${spi_bus_a_clk}
+    mosi_pin:  ${spi_bus_a_mosi}
+    miso_pin: ${spi_bus_a_miso}
