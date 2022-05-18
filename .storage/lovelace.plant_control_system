@@ -1288,15 +1288,32 @@
                     ]
                 },
                 {
-                    "title": "Fabman API access",
+                    "theme": "Backend-selected",
+                    "title": "Mushroom",
                     "path": "fabman-api-access",
                     "badges": [],
                     "cards": [
                         {
+                            "type": "light",
+                            "entity": "light.esp32_mushroombox_neo_pixel"
+                        },
+                        {
                             "type": "entities",
                             "entities": [
-                                "button.http_button_2",
-                                "sensor.member_id_2"
+                                "light.esp32_mushroombox_neo_pixel",
+                                "switch.esp32_mushroombox_neo_pixel_switch"
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.esp32_mushroombox_neo_pixel"
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "number.esp32_mushroombox_set_brightness_red"
                             ]
                         }
                     ]
