@@ -15,21 +15,29 @@ substitutions:
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_6_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_6_name: dallas_fan_140mm_1
+  sensor_dallas_6_force_update: "true"
   sensor_dallas_9_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_9_name: dallas_fan_140mm_2
+  sensor_dallas_9_force_update: "true"
   sensor_dallas_5_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_5_name: dallas_fan_140mm_3
+  sensor_dallas_5_force_update: "true"
   sensor_dallas_7_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_7_name: dallas_fan_140mm_4
+  sensor_dallas_7_force_update: "true"
   
   sensor_dallas_11_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_11_name: dallas_fan_80mm_1
+  sensor_dallas_11_force_update: "true"
   sensor_dallas_12_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_12_name: dallas_fan_80mm_2
+  sensor_dallas_12_force_update: "true"
   sensor_dallas_10_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_10_name: dallas_fan_80mm_3
+  sensor_dallas_10_force_update: "true"
   sensor_dallas_8_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_8_name: dallas_fan_80mm_4
+  sensor_dallas_8_force_update: "true"
   
   # Hall Sensor settings
   sensor_current_hall_1_pin: GPIO35
@@ -50,14 +58,14 @@ substitutions:
   pwm_led_cc_7_name: cc_b_3_660nm
   pwm_led_cc_8_name: cc_b_4_660nm
   
-  pwm_led_cc_1_max_value: "0.2"
-  pwm_led_cc_2_max_value: "0.2"
-  pwm_led_cc_3_max_value: "0.2"
-  pwm_led_cc_4_max_value: "0.2"
-  pwm_led_cc_5_max_value: "0.1"
-  pwm_led_cc_6_max_value: "0.1"
-  pwm_led_cc_7_max_value: "0.1"
-  pwm_led_cc_8_max_value: "0.1"
+  pwm_led_cc_1_max_value: "0.5"
+  pwm_led_cc_2_max_value: "0.5"
+  pwm_led_cc_3_max_value: "0.5"
+  pwm_led_cc_4_max_value: "0.5"
+  pwm_led_cc_5_max_value: "0.5"
+  pwm_led_cc_6_max_value: "0.5"
+  pwm_led_cc_7_max_value: "0.5"
+  pwm_led_cc_8_max_value: "0.5"
 
 button:
   - platform: template

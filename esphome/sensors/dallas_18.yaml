@@ -4,3 +4,4 @@ sensor:
     name: "${device_name_upper}.${sensor_dallas_18_name}.temperature"
     id: ${device_name}_${sensor_dallas_18_name}_temperature
     dallas_id : ${sensor_dallas_18_hub_id}
+    force_update: ${sensor_dallas_18_force_update}

@@ -15,10 +15,13 @@ substitutions:
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_1_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_1_name: dallas_inside
+  sensor_dallas_1_force_update: "true"
   sensor_dallas_2_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_2_name: dallas_outside
+  sensor_dallas_2_force_update: "true"
   sensor_dallas_3_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_3_name: dallas_24_36V_case
+  sensor_dallas_3_force_update: "true"
   
   # LED Settings
   pwm_led_frequency: "1000Hz"
@@ -26,9 +29,9 @@ substitutions:
   pwm_led_cc_10_name: cc_a_2_white
   pwm_led_cc_11_name: cc_a_3_520nm
   
-  pwm_led_cc_9_max_value: "0.1"
-  pwm_led_cc_10_max_value: "0.1"
-  pwm_led_cc_11_max_value: "0.4"
+  pwm_led_cc_9_max_value: "0.5"
+  pwm_led_cc_10_max_value: "0.5"
+  pwm_led_cc_11_max_value: "0.5"
   
   
   # PWM settings
