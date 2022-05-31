@@ -79,10 +79,13 @@ wifi:
   networks:
   - ssid: !secret njb_wifi_ap_ssid
     password: !secret njb_wifi_ap_pw
-  - ssid: !secret wifi_makeracademy_ssid
-    password: !secret wifi_makeracademy_pw
-  - ssid: !secret wifi_protohaus_ssid
-    password: !secret wifi_protohaus_pw
+    priority: 3
+  #- ssid: !secret wifi_makeracademy_ssid
+  #  password: !secret wifi_makeracademy_pw
+  #  priority: 2
+  #- ssid: !secret wifi_protohaus_ssid
+  #  password: !secret wifi_protohaus_pw
+  #  priority: 1
   
   
   # Enable fallback hotspot (captive portal) in case wifi connection fails
