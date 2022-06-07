@@ -1,6 +1,6 @@
 sensor:
   - platform: dallas
-    address: 0xca02109245ad2528
+    address: ${dallas_11_adress}
     name: "${device_name_upper}.${sensor_dallas_11_name}.temperature"
     id: ${device_name}_${sensor_dallas_11_name}_temperature
     dallas_id : ${sensor_dallas_11_hub_id}
