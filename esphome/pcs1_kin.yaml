@@ -65,6 +65,7 @@ substitutions:
   sensor_dallas_hub_1_update_interval: 1s
   sensor_dallas_4_hub_id: ${sensor_dallas_hub_1_name}
   sensor_dallas_4_name: dallas_4
+  sensor_dallas_4_force_update: "false"
   
 esphome:
   name: ${host_name}
@@ -96,6 +97,7 @@ packages:
   sensor_current: !include sensors/current.yaml
   sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
   sensor_dallas_1: !include sensors/dallas_4.yaml
+  sensor_dallas_adress_config: !include sensors/dallas_adress_config.yaml
   
   
 #interval:

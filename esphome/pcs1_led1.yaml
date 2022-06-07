@@ -58,14 +58,14 @@ substitutions:
   pwm_led_cc_7_name: cc_b_3_660nm
   pwm_led_cc_8_name: cc_b_4_660nm
   
-  pwm_led_cc_1_max_value: "0.5"
-  pwm_led_cc_2_max_value: "0.5"
-  pwm_led_cc_3_max_value: "0.5"
-  pwm_led_cc_4_max_value: "0.5"
-  pwm_led_cc_5_max_value: "0.5"
-  pwm_led_cc_6_max_value: "0.5"
-  pwm_led_cc_7_max_value: "0.5"
-  pwm_led_cc_8_max_value: "0.5"
+  pwm_led_cc_1_max_value: "1.0"
+  pwm_led_cc_2_max_value: "1.0"
+  pwm_led_cc_3_max_value: "1.0"
+  pwm_led_cc_4_max_value: "1.0"
+  pwm_led_cc_5_max_value: "1.0"
+  pwm_led_cc_6_max_value: "1.0"
+  pwm_led_cc_7_max_value: "1.0"
+  pwm_led_cc_8_max_value: "1.0"
 
 button:
   - platform: template
@@ -206,6 +206,7 @@ packages:
   sensor_dallas_10: !include sensors/dallas_10.yaml
   sensor_dallas_11: !include sensors/dallas_11.yaml
   sensor_dallas_12: !include sensors/dallas_12.yaml
+  sensor_dallas_adress_config: !include sensors/dallas_adress_config.yaml
   sensor_current_hall_1: !include sensors/current_hall_1.yaml
   sensor_current_hall_2: !include sensors/current_hall_2.yaml
   pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
