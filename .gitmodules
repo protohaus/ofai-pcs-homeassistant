@@ -22,3 +22,6 @@
 [submodule "esphome/esphome-mushroombox"]
 	path = esphome/esphome-mushroombox
 	url = https://github.com/protohaus/esphome-mushroombox.git
+[submodule "esphome/esphome-common"]
+	path = esphome/esphome-common
+	url = https://github.com/protohaus/esphome-common.git
