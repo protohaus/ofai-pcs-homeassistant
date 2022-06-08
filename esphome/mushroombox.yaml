@@ -1,0 +1,29 @@
+substitutions:
+  #general settings
+  host_name: esp32-mushroombox
+  device_name: esp32_mushroombox
+  device_name_upper: esp32.mushroombox
+  status_led_interval_ok: 10s
+  status_led_interval_booting: 3s
+  settings_log_level: DEBUG
+  settings_flash_write_interval: 1min
+  
+  #I2C Bus
+  i2c_bus_a_name: i2c_bus_a
+  i2c_bus_a_sda: GPIO23
+  i2c_bus_a_scl: GPIO22
+
+  # webserver
+  web_server_ota_active: "true"
+             
+esphome:
+  name: ${host_name}
+  platform: ESP32
+  board: esp32dev
+  
+packages:
+  common_ota: !include /config/esphome/esphome-common/ota.yaml
+  common_logger: !include /config/esphome/esphome-common/logger.yaml
+  common_preferences: !include /config/esphome/esphome-common/preferences.yaml
+  common_restart: !include /config/esphome/esphome-common/restart.yaml
+  mushroombox: !include /config/esphome/esphome-mushroombox/mushroombox.yaml

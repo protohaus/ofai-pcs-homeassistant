@@ -63,15 +63,12 @@ esphome:
   name: ${host_name}
   platform: ESP32
   board: esp32dev
-  #board: nodemcu-32s    
   
 packages:
-  #common_mqtt: !include common/mqtt.yaml
   common_api: !include common/api.yaml
   common_base: !include common/base.yaml
   common_status: !include common/status.yaml
   common_restart: !include common/restart.yaml
   common_i2c_bus_a: !include common/i2c_bus_a.yaml
   common_web_server: !include common/web_server.yaml
-  #common_api_encryption: !include common/api_encryption.yaml
   as_hydroponics_kit_as_ezo: !include as_hydroponics_kit/as_ezo.yaml
