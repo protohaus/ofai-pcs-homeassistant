@@ -1,4 +1,0 @@
-button:
-  - platform: restart
-    name: ${device_name_upper}.restart
-    id: ${device_name}_restart

@@ -1,4 +1,0 @@
-dallas:
-  - pin: ${sensor_dallas_hub_1_pin}
-    id: ${sensor_dallas_hub_1_name}
-    update_interval: ${sensor_dallas_hub_1_update_interval}

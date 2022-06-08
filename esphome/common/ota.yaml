@@ -1,3 +1,0 @@
-# enable ota updates
-ota:
-  password: !secret esphome_ota_pw

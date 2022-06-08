@@ -1,3 +1,0 @@
-esp32_camera_web_server:
-  - port: 8080
-    mode: stream

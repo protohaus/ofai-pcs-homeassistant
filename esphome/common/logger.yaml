@@ -1,3 +1,0 @@
-# Enable logging
-logger:
-  level: ${settings_log_level}

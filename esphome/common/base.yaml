@@ -1,6 +1,0 @@
-packages:
-  common_ota: !include ota.yaml
-  common_time_sntp: !include time_sntp.yaml
-  common_logger: !include logger.yaml
-  common_preferences: !include preferences.yaml
-  common_wifi: !include wifi.yaml

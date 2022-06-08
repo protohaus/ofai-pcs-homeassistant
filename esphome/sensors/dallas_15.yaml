@@ -1,7 +1,0 @@
-sensor:
-  - platform: dallas
-    address: ${dallas_15_adress}
-    name: "${device_name_upper}.${sensor_dallas_15_name}.temperature"
-    id: ${device_name}_${sensor_dallas_15_name}_temperature
-    dallas_id : ${sensor_dallas_15_hub_id}
-    force_update: ${sensor_dallas_15_force_update}

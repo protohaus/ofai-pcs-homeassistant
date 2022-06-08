@@ -1,3 +1,0 @@
-api:
-  encryption: 
-    key: !secret esphome_api_encryption_key

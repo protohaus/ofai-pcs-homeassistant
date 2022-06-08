@@ -1,6 +1,0 @@
-web_server:
-  port: !secret web_server_port
-  auth:
-    username: !secret web_server_user
-    password: !secret web_server_password
-  ota: ${web_server_ota_active}
