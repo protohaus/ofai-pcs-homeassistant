@@ -83,13 +83,13 @@ esphome:
   board: esp32dev
   
 packages:
-  common_api: !include common/api.yaml
-  common_base: !include common/base.yaml
-  common_status: !include common/status.yaml
-  common_restart: !include common/restart.yaml
-  sensor_current_hall_1: !include sensors/current_hall_1.yaml
-  pwm_led_gpio_config: !include pwm/led_cc_gpio_config.yaml
-  pwm_led_1: !include pwm/led_cc_1.yaml
-  pwm_led_2: !include pwm/led_cc_2.yaml
-  pwm_led_3: !include pwm/led_cc_3.yaml
-  pwm_led_4: !include pwm/led_cc_4.yaml
+  common_api: !include /config/esphome/esphome-common/api.yaml
+  common_base: !include /config/esphome/esphome-common/base.yaml
+  common_status: !include /config/esphome/esphome-common/status.yaml
+  common_restart: !include /config/esphome/esphome-common/restart.yaml
+  sensor_current_hall_1: !include /config/esphome/esphome-sensors/current_hall_1.yaml
+  pwm_led_gpio_config: !include /config/esphome/esphome-pwm/led_cc_gpio_config.yaml
+  pwm_led_1: !include /config/esphome/esphome-pwm/led_cc_1.yaml
+  pwm_led_2: !include /config/esphome/esphome-pwm/led_cc_2.yaml
+  pwm_led_3: !include /config/esphome/esphome-pwm/led_cc_3.yaml
+  pwm_led_4: !include /config/esphome/esphome-pwm/led_cc_4.yaml

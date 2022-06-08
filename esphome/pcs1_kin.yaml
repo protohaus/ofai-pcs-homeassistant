@@ -80,27 +80,21 @@ preferences:
   flash_write_interval: 1min
            
 packages:
-  common_api: !include common/api.yaml
-  common_base: !include common/base.yaml
-  common_boot_finished: !include common/boot_finished.yaml
-  common_status: !include common/status.yaml
-  #common_status_led: !include common/status_led.yaml
-  common_restart: !include common/restart.yaml
-  stepper_a4988: !include stepper/a4988.yaml
-  stepper_diag_1: !include stepper/tmc2209_addon.yaml
-  stepper_diag_2: !include stepper/stepper_diag_1.yaml
-  stepper_diag_3: !include stepper/stepper_diag_2.yaml
-  stepper_tmc2209_addon: !include stepper/stepper_diag_3.yaml
-  stepper_sensor: !include stepper/sensor.yaml
-  error_handling: !include stepper/error_handling.yaml
-  error_connection_handling: !include stepper/error_connection_handling.yaml
-  sensor_current: !include sensors/current.yaml
-  sensor_dallas_hub_1: !include sensors/dallas_hub_1.yaml
-  sensor_dallas_1: !include sensors/dallas_4.yaml
-  sensor_dallas_adress_config: !include sensors/dallas_adress_config.yaml
-  
-  
-#interval:
-#  - interval: 10min
-#    then:
-#      - switch.turn_on: ${stepper_motor_id}_start_automation
+  common_api: !include /config/esphome/esphome-common/api.yaml
+  common_base: !include /config/esphome/esphome-common/base.yaml
+  common_boot_finished: !include /config/esphome/esphome-common/boot_finished.yaml
+  common_status: !include /config/esphome/esphome-common/status.yaml
+  #common_status_led: !include /config/esphome/esphome-common/status_led.yaml
+  common_restart: !include /config/esphome/esphome-common/restart.yaml
+  stepper_a4988: !include /config/esphome/esphome-stepper/a4988.yaml
+  stepper_diag_1: !include /config/esphome/esphome-stepper/tmc2209_addon.yaml
+  stepper_diag_2: !include /config/esphome/esphome-stepper/stepper_diag_1.yaml
+  stepper_diag_3: !include /config/esphome/esphome-stepper/stepper_diag_2.yaml
+  stepper_tmc2209_addon: !include /config/esphome/esphome-stepper/stepper_diag_3.yaml
+  stepper_sensor: !include /config/esphome/esphome-stepper/sensor.yaml
+  error_handling: !include /config/esphome/esphome-stepper/error_handling.yaml
+  error_connection_handling: !include /config/esphome/esphome-stepper/error_connection_handling.yaml
+  sensor_current: !include /config/esphome/esphome-sensors/current.yaml
+  sensor_dallas_hub_1: !include /config/esphome/esphome-sensors/dallas_hub_1.yaml
+  sensor_dallas_1: !include /config/esphome/esphome-sensors/dallas_4.yaml
+  sensor_dallas_adress_config: !include /config/esphome/esphome-sensors/dallas_adress_config.yaml

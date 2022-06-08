@@ -65,10 +65,10 @@ esphome:
   board: esp32dev
   
 packages:
-  common_api: !include common/api.yaml
-  common_base: !include common/base.yaml
-  common_status: !include common/status.yaml
-  common_restart: !include common/restart.yaml
-  common_i2c_bus_a: !include common/i2c_bus_a.yaml
-  common_web_server: !include common/web_server.yaml
-  as_hydroponics_kit_as_ezo: !include as_hydroponics_kit/as_ezo.yaml
+  common_api: !include /config/esphome/esphome-common/api.yaml
+  common_base: !include /config/esphome/esphome-common/base.yaml
+  common_status: !include /config/esphome/esphome-common/status.yaml
+  common_restart: !include /config/esphome/esphome-common/restart.yaml
+  common_i2c_bus_a: !include /config/esphome/esphome-common/i2c_bus_a.yaml
+  common_web_server: !include /config/esphome/esphome-common/web_server.yaml
+  as_hydroponics_kit_as_ezo: !include /config/esphome/esphome-ashydroponicskit/as_ezo.yaml

@@ -28,10 +28,9 @@ preferences:
   flash_write_interval: 1min
            
 packages:
-  common_api: !include common/api.yaml
-  common_base: !include common/base.yaml
-  common_boot_finished: !include common/boot_finished.yaml
-  common_status: !include common/status.yaml
-  #common_status_led: !include common/status_led.yaml
-  common_restart: !include common/restart.yaml
-  pumps: !include pump/pumps.yaml
+  common_api: !include /config/esphome/esphome-common/api.yaml
+  common_base: !include /config/esphome/esphome-common/base.yaml
+  common_boot_finished: !include /config/esphome/esphome-common/boot_finished.yaml
+  common_status: !include /config/esphome/esphome-common/status.yaml
+  common_restart: !include /config/esphome/esphome-common/restart.yaml
+  pumps: !include /config/esphome/esphome-pump/pumps.yaml
