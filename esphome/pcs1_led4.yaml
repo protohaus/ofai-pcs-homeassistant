@@ -90,7 +90,7 @@ packages:
   common_base: !include /config/esphome/esphome-common/base.yaml
   common_status: !include /config/esphome/esphome-common/status.yaml
   common_restart: !include /config/esphome/esphome-common/restart.yaml
-  sensor_current_hall_1: !include sensors/current_hall_1.yaml
+  sensor_current_hall_1: !include /config/esphome/esphome-sensors/current_hall_1.yaml
   #sensor_current_hall_2: !include /config/esphome/esphome-sensors/current_hall_2.yaml
   pwm_led_gpio_config: !include /config/esphome/esphome-pwm/led_cc_gpio_config.yaml
   pwm_led_1: !include /config/esphome/esphome-pwm/led_cc_1.yaml

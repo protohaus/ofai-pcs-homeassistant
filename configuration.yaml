@@ -14,7 +14,7 @@ scene: !include scenes.yaml
 homeassistant:
   packages:
     common_device_tracker: !include common/device_tracker.yaml
-
+    
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem

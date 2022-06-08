@@ -224,58 +224,33 @@
                     "badges": [],
                     "cards": [
                         {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam1_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 1"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam4_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 4"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam2_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 2"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam5_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 5"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam3_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 3"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam6_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 6"
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "button.reentrypod_1_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.reentrypod_1_status"
+                                },
+                                {
+                                    "entity": "sensor.reentrypod_1_wifi_signal"
+                                },
+                                {
+                                    "entity": "sensor.reentrypod_1_acceleration"
+                                },
+                                {
+                                    "entity": "sensor.reentrypod_1_acceleration_x"
+                                },
+                                {
+                                    "entity": "sensor.reentrypod_1_acceleration_y"
+                                },
+                                {
+                                    "entity": "sensor.reentrypod_1_acceleration_z"
+                                },
+                                {
+                                    "entity": "binary_sensor.reentrypod_1_button"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -1289,34 +1264,10 @@
                 },
                 {
                     "theme": "Backend-selected",
-                    "title": "Mushroom",
-                    "path": "fabman-api-access",
+                    "title": "Test",
+                    "path": "test",
                     "badges": [],
-                    "cards": [
-                        {
-                            "type": "light",
-                            "entity": "light.esp32_mushroombox_neo_pixel"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.esp32_mushroombox_neo_pixel",
-                                "switch.esp32_mushroombox_neo_pixel_switch"
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.esp32_mushroombox_neo_pixel"
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "number.esp32_mushroombox_set_brightness_red"
-                            ]
-                        }
-                    ]
+                    "cards": []
                 }
             ],
             "title": "Plant Control System"
