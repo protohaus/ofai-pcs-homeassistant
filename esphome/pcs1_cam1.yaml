@@ -9,7 +9,9 @@ substitutions:
   settings_log_level: DEBUG
   settings_flash_write_interval: 1min
   settings_static_ip: ${settings_static_ip_pcs1_cam1}
-    
+  activate_fast_connect: "true"
+  api_reboot_timeout: "2min"
+  
   #i2c settings
   i2c_bus_b_name: bus_b
   i2c_bus_b_sda: GPIO13

@@ -8,6 +8,8 @@ substitutions:
   status_led_interval_booting: 3s
   settings_log_level: VERBOSE
   settings_flash_write_interval: 1min
+  activate_fast_connect: "true"
+  api_reboot_timeout: "2min"
   
   #stepper settings
   stepper_step_pin: GPIO27  # GPIO26

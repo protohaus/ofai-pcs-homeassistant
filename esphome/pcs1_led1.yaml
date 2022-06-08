@@ -8,6 +8,8 @@ substitutions:
   status_led_interval_booting: 3s
   settings_log_level: DEBUG
   settings_flash_write_interval: 1min
+  activate_fast_connect: "true"
+  api_reboot_timeout: "2min"
   
   # Dallas settings
   sensor_dallas_hub_1_pin: GPIO13
