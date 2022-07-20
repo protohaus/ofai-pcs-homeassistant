@@ -4,6 +4,10 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "node-red-contrib-home-assistant-websocket": "~0.39.0"
+        "node-red-contrib-home-assistant-websocket": "~0.39.0",
+        "node-red-contrib-image-output": "~0.6.3",
+        "node-red-contrib-image-tools": "~2.0.4",
+        "node-red-contrib-motioneye": "~0.0.1",
+        "node-red-contrib-telegrambot": "~12.0.0"
     }
 }

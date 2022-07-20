@@ -72,4 +72,4 @@ packages:
   #sensors_bme280_2: !include /config/esphome/esphome-sensors/bme280_2.yaml
   sensors_bh1750_1: !include /config/esphome/esphome-sensors/bh1750_1.yaml
   
-  #camera_webserver: !include /config/esphome/esphome-camera/webserver_snapshot.yaml
+  camera_webserver: !include /config/esphome/esphome-camera/webserver_snapshot.yaml

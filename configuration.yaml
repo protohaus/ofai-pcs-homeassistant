@@ -44,6 +44,7 @@ influxdb:
       - switch
       - input_number
       - button
+      
 switch:
   - platform: momentary
     name: Camera Snapshots

@@ -39,14 +39,14 @@ substitutions:
   pwm_led_cc_7_name: cc_b_3_630nm
   pwm_led_cc_8_name: cc_b_4_630nm
   
-  pwm_led_cc_1_max_value: "1.0"
-  pwm_led_cc_2_max_value: "1.0"
-  pwm_led_cc_3_max_value: "1.0"
-  pwm_led_cc_4_max_value: "1.0"
-  pwm_led_cc_5_max_value: "1.0"
-  pwm_led_cc_6_max_value: "1.0"
-  pwm_led_cc_7_max_value: "1.0"
-  pwm_led_cc_8_max_value: "1.0"
+  pwm_led_cc_1_max_value: "0.1"
+  pwm_led_cc_2_max_value: "0.1"
+  pwm_led_cc_3_max_value: "0.1"
+  pwm_led_cc_4_max_value: "0.1"
+  pwm_led_cc_5_max_value: "0.1"
+  pwm_led_cc_6_max_value: "0.1"
+  pwm_led_cc_7_max_value: "0.1"
+  pwm_led_cc_8_max_value: "0.1"
   
 button:
   - platform: template

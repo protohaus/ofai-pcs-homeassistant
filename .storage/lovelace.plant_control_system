@@ -165,6 +165,24 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_pwm_dallas_24_36v_case_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_max_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_growth_chamber_max_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_max_illuminance"
                                 }
                             ],
                             "title": "Temperature"
@@ -214,43 +232,6 @@
                                 "sensor.pcs1_led4_hall_a_current"
                             ],
                             "title": "Current"
-                        }
-                    ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "CAMERAS",
-                    "path": "test",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "button.reentrypod_1_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.reentrypod_1_status"
-                                },
-                                {
-                                    "entity": "sensor.reentrypod_1_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.reentrypod_1_acceleration"
-                                },
-                                {
-                                    "entity": "sensor.reentrypod_1_acceleration_x"
-                                },
-                                {
-                                    "entity": "sensor.reentrypod_1_acceleration_y"
-                                },
-                                {
-                                    "entity": "sensor.reentrypod_1_acceleration_z"
-                                },
-                                {
-                                    "entity": "binary_sensor.reentrypod_1_button"
-                                }
-                            ]
                         }
                     ]
                 },
@@ -1261,13 +1242,6 @@
                             "aspect_ratio": "100%"
                         }
                     ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "Test",
-                    "path": "test",
-                    "badges": [],
-                    "cards": []
                 }
             ],
             "title": "Plant Control System"
