@@ -65,32 +65,6 @@
           title: kinematics_automation {{now().timestamp()|timestamp_local}}
           message: Kinematics automation has been triggered->making pictures and start
             kinematics
-      #- service: script.lights_off
-      #  data: {}
-      #- service: light.turn_on
-      #  data:
-      #    transition: 0
-      #    brightness_pct: 50
-      #  target:
-      #    entity_id: light.pcs1_pwm_cc_a_1_white
-      #- service: light.turn_on
-      #  data:
-      #    transition: 0
-      #    brightness_pct: 50
-      #  target:
-      #    entity_id: light.pcs1_pwm_cc_a_2_white
-      #- service: script.camera_sequence
-      #  data: {}
-      #- service: light.turn_off
-      #  data:
-      #    transition: 0
-      #  target:
-      #    entity_id: light.pcs1_pwm_cc_a_1_white
-      #- service: light.turn_off
-      #  data:
-      #    transition: 0
-      #  target:
-      #    entity_id: light.pcs1_pwm_cc_a_2_white
       - delay: 00:00:03
       - device_id: f3746047665b62108319ce9c828b6b08
         domain: button
@@ -152,7 +126,21 @@
     data: {}
   - service: script.lights_off
     data: {}
- #- service: homeassistant.turn_off
- #  data: {}
- #  target:
- #    entity_id: fan.pcs1_pwm_cc_a_4_fan
+- id: '1658412367800'
+  alias: Monitoring - LED Panel Temperature
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pcs1_led_panel_average_max_temperature
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: '40'
+  condition: []
+  action:
+  - service: notify.telegram_info
+    data:
+      message: LED Panel Temperature somewhere on the panel is over 40°C
+      title: Warning
+  mode: restart

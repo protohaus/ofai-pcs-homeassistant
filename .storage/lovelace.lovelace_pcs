@@ -109,6 +109,25 @@
                             "title": "Kinematics",
                             "state_color": true,
                             "show_header_toggle": false
+                        },
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        "switch.camera1_motion_detection",
+                                        "switch.camera1_still_images",
+                                        "switch.camera1_movies"
+                                    ]
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.camera1"
+                                }
+                            ]
                         }
                     ]
                 },
