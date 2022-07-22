@@ -126,21 +126,3 @@
     data: {}
   - service: script.lights_off
     data: {}
-- id: '1658412367800'
-  alias: Monitoring - LED Panel Temperature
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.pcs1_led_panel_average_max_temperature
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-    above: '40'
-  condition: []
-  action:
-  - service: notify.telegram_info
-    data:
-      message: LED Panel Temperature somewhere on the panel is over 40°C
-      title: Warning
-  mode: restart

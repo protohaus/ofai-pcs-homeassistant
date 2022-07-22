@@ -12,18 +12,18 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 
 # Example configuration.yaml entry
-telegram_bot:
-  - platform: polling
-    api_key: !secret telegram_bot_api_key
-    allowed_chat_ids: 
-      - !secret telegram_bot_api_chat_id
-      - !secret telegram_bot_info_group_id
-      - !secret telegram_bot_chat_id_1
-      
-notify:
-    - platform: telegram
-      name: telegram_info
-      chat_id: !secret telegram_bot_info_group_id
+#telegram_bot:
+#  - platform: polling
+#    api_key: !secret telegram_bot_api_key
+#    allowed_chat_ids: 
+#      - !secret telegram_bot_api_chat_id
+#      - !secret telegram_bot_info_group_id
+#      - !secret telegram_bot_chat_id_1
+#      
+#notify:
+#    - platform: telegram
+#      name: telegram_info
+#      chat_id: !secret telegram_bot_info_group_id
 
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
