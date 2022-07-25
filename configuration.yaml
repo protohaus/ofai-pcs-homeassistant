@@ -80,9 +80,42 @@ input_boolean:
     
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
+
   
+input_datetime:
+  #both_date_and_time:
+  #  name: Input with both date and time
+  #  has_date: true
+  #  has_time: true
+  #only_date:
+  #  name: Input with only date
+  #  has_date: true
+  #  has_time: false
+  day_length:
+    name: day_length
+    has_date: false
+    has_time: true
+  day_start:
+    name: day_start
+    has_date: false
+    has_time: true
+  day_end:
+    name: day_end
+    has_date: false
+    has_time: true
+    
 # Example configuration.yaml entry
 sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_utc'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
   - platform: average
     name: 'pcs1.led_panel_fan_80mm.average_temperature'
     entities:

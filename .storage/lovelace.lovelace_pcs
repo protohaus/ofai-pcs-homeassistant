@@ -109,6 +109,23 @@
                             "title": "Kinematics",
                             "state_color": true,
                             "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_datetime.day_start"
+                                },
+                                {
+                                    "entity": "input_datetime.day_length"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.time_date"
+                            ]
                         }
                     ]
                 },
