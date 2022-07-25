@@ -15,6 +15,27 @@
                             "type": "entities",
                             "entities": [
                                 {
+                                    "entity": "switch.pcs1_main"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_main_energy"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_main_power"
+                                },
+                                {
+                                    "entity": "button.pcs1_main_reboot"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_main_uptime"
+                                }
+                            ],
+                            "title": "PCS 1 Main"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
                                     "entity": "binary_sensor.pcs1_cam1_status"
                                 },
                                 {
@@ -56,7 +77,8 @@
                                 {
                                     "entity": "button.pcs1_cam7_restart"
                                 }
-                            ]
+                            ],
+                            "title": "PCS 1 Cameras"
                         },
                         {
                             "type": "entities",
@@ -91,7 +113,8 @@
                                 {
                                     "entity": "button.pcs1_pwm_restart"
                                 }
-                            ]
+                            ],
+                            "title": "PCS 1 CC Controller"
                         },
                         {
                             "type": "entities",
@@ -102,7 +125,8 @@
                                 "button.pcs1_pump_restart",
                                 "binary_sensor.pcs1_as_status",
                                 "button.pcs1_as_restart"
-                            ]
+                            ],
+                            "title": "PCS 1 Other"
                         }
                     ]
                 },
