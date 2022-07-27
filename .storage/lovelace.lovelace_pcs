@@ -118,6 +118,12 @@
                                 },
                                 {
                                     "entity": "input_datetime.day_length"
+                                },
+                                {
+                                    "entity": "input_datetime.date_test"
+                                },
+                                {
+                                    "entity": "input_number.time_diff"
                                 }
                             ]
                         },

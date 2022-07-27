@@ -80,7 +80,12 @@ input_boolean:
     
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
-
+  time_diff:
+      name: time_diff
+      initial: 0
+      min: -3
+      max: 3
+      step: 1
   
 input_datetime:
   #both_date_and_time:
@@ -91,12 +96,26 @@ input_datetime:
   #  name: Input with only date
   #  has_date: true
   #  has_time: false
+  date_test:
+    name: date_test
+    has_date: true
+    has_time: true
+  
+  day_length_delay:
+    name: day_length_delay
+    has_date: false
+    has_time: true
+    
   day_length:
     name: day_length
     has_date: false
     has_time: true
   day_start:
     name: day_start
+    has_date: false
+    has_time: true
+  day_middle:
+    name: day_middle
     has_date: false
     has_time: true
   day_end:

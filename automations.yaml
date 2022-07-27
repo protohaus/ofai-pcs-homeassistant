@@ -126,3 +126,25 @@
     data: {}
   - service: script.lights_off
     data: {}
+- id: '1658828353191'
+  alias: Pump_Automation_Adi
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /30
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 5e3df8e0c34f41b44ebed8b09b902609
+    entity_id: switch.pcs1_pump_single_activation
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - type: turn_off
+    device_id: 5e3df8e0c34f41b44ebed8b09b902609
+    entity_id: switch.pcs1_pump_single_activation
+    domain: switch
+  mode: single
