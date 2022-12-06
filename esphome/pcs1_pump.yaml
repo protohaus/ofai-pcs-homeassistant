@@ -14,8 +14,10 @@ substitutions:
   # pump settings
   pump_1_pin: "GPIO32"
   pump_2_pin: "GPIO33" 
-  pump_automation_interval: "30 min"  
-  pump_automation_interval_length: "30 s"  
+  pump_interval_max: "720"  
+  pump_interval_initial: "30"  
+  pump_duration_max: "600"
+  pump_duration_initial: "5"
   
 esphome:
   name: ${host_name}
