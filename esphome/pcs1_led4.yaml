@@ -32,10 +32,17 @@ substitutions:
   pwm_led_cc_3_name: cc_a_3_450nm
   pwm_led_cc_4_name: cc_a_4_450nm
   
+  pwm_led_cc_7_name: cc_b_3_280nm
+  pwm_led_cc_8_name: cc_b_4_280nm
+  
   pwm_led_cc_1_max_value: "0.1"
   pwm_led_cc_2_max_value: "0.1"
   pwm_led_cc_3_max_value: "0.1"
   pwm_led_cc_4_max_value: "0.1"
+  
+  pwm_led_cc_7_max_value: "0.1"
+  pwm_led_cc_8_max_value: "0.1"
+  
   
 button:
   - platform: template
@@ -97,3 +104,5 @@ packages:
   pwm_led_2: !include /config/esphome/esphome-pwm/led_cc_2.yaml
   pwm_led_3: !include /config/esphome/esphome-pwm/led_cc_3.yaml
   pwm_led_4: !include /config/esphome/esphome-pwm/led_cc_4.yaml
+  pwm_led_7: !include /config/esphome/esphome-pwm/led_cc_7.yaml
+  pwm_led_8: !include /config/esphome/esphome-pwm/led_cc_8.yaml
