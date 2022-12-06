@@ -22,8 +22,18 @@ substitutions:
   esp32cam_custom_idle_framerate: "0 fps"
   esp32cam_vertical_flip: "false"
   esp32cam_horizontal_mirror: "false"
-  esp32cam_max_framerate: "1 fps"
+  esp32cam_max_framerate: "10 fps"
   esp32cam_resolution: "1600x1200"
+  esp32cam_jpeg_quality: "10"
+  esp32cam_contrast: "0"
+  esp32cam_brightness: "0"
+  esp32cam_saturation: "0"  
+  esp32cam_aec_mode: "auto"
+  esp32cam_aec_value: "300"
+  esp32cam_ae_level: "2"
+  esp32cam_agc_mode: "auto"
+  esp32cam_agc_value: "0"
+  esp32cam_agc_gain_ceiling: "2X"
   
   #bme280_1 settings
   bme280_1_name: bme280_1
