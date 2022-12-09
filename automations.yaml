@@ -148,3 +148,29 @@
     entity_id: switch.pcs1_pump_single_activation
     domain: switch
   mode: single
+- id: '1670317243362'
+  alias: nodered_restart
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: hassio.addon_restart
+    data:
+      addon: a0d7b954_nodered
+  mode: restart
+- id: '1670317667056'
+  alias: watchdog_notification_example
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: persistent_notification.create
+    data:
+      title: '#Info- #Status'
+      notification_id: watchdog_notification_example
+      message: Daily Life Sign.
+  mode: restart
