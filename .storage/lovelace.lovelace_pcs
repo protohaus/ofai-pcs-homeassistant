@@ -12,6 +12,84 @@
                     "badges": [],
                     "cards": [
                         {
+                            "type": "picture-elements",
+                            "elements": [
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_outside_average_temperature",
+                                    "style": {
+                                        "top": "17%",
+                                        "left": "14%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
+                                    "style": {
+                                        "top": "17%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_led_panel_average_temperature",
+                                    "style": {
+                                        "top": "37%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
+                                    "style": {
+                                        "top": "37%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
+                                    "style": {
+                                        "top": "57%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
+                                    "style": {
+                                        "top": "57%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_ec",
+                                    "style": {
+                                        "top": "77%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_ph",
+                                    "style": {
+                                        "top": "77%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_rtd",
+                                    "style": {
+                                        "top": "90%",
+                                        "left": "50%"
+                                    }
+                                }
+                            ],
+                            "image": "/local/pcs_overview.png"
+                        },
+                        {
                             "type": "custom:plotly-graph",
                             "title": "Temperature and Humidity",
                             "entities": [
