@@ -132,6 +132,34 @@
                 },
                 {
                     "theme": "Backend-selected",
+                    "title": "Automation",
+                    "path": "automation",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.pcs1_automation_main_active"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_kinematics_active"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_pump_active"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_led_active"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_camera_active"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
                     "title": "Sensors",
                     "path": "t",
                     "badges": [],
@@ -687,6 +715,24 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_kin_stepper_number_of_cycles"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam1_plant"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam2_plant"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam3_plant"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam4_plant"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam5_plant"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_cam6_plant"
                                 }
                             ],
                             "title": "Stepper Status",
@@ -769,21 +815,21 @@
                         },
                         {
                             "type": "gauge",
-                            "entity": "sensor.pcs1_kin_stepper_angle",
-                            "min": 0,
-                            "max": 1080,
-                            "needle": true,
-                            "unit": "\u00b0",
-                            "name": "Global Rotation Angle"
-                        },
-                        {
-                            "type": "gauge",
                             "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
                             "min": 0,
                             "max": 360,
                             "name": "Plant gear Rotation Angle",
                             "unit": "\u00b0",
                             "needle": true
+                        },
+                        {
+                            "type": "gauge",
+                            "entity": "sensor.pcs1_kin_stepper_angle",
+                            "min": 0,
+                            "max": 1080,
+                            "needle": true,
+                            "unit": "\u00b0",
+                            "name": "Global Rotation Angle"
                         },
                         {
                             "type": "entities",
@@ -873,6 +919,12 @@
                                     "entity": "sensor.pcs1_pwm_dallas_2_temperature"
                                 },
                                 {
+                                    "entity": "switch.pcs1_pwm_cc_a_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pwm_cc_a_white_switch"
+                                },
+                                {
                                     "entity": "light.pcs1_pwm_cc_a_1_white"
                                 },
                                 {
@@ -882,13 +934,11 @@
                                     "entity": "light.pcs1_pwm_cc_a_3_520nm"
                                 },
                                 {
-                                    "entity": "switch.pcs1_pwm_cc_switch"
-                                },
-                                {
                                     "entity": "fan.pcs1_pwm_cc_a_4_fan"
                                 }
                             ],
-                            "title": "PWM"
+                            "title": "PWM",
+                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -907,6 +957,15 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_led1_hall_b_current"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_a_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led1_cc_b_switch"
                                 },
                                 {
                                     "entity": "light.pcs1_led1_cc_a_1_730nm"
@@ -931,19 +990,10 @@
                                 },
                                 {
                                     "entity": "light.pcs1_led1_cc_b_4_660nm"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_a_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_b_switch"
                                 }
                             ],
                             "title": "LED 1",
-                            "show_header_toggle": true
+                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -962,6 +1012,15 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_led2_hall_b_current"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led2_cc_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led2_cc_a_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led2_cc_b_switch"
                                 },
                                 {
                                     "entity": "light.pcs1_led2_cc_a_1_630nm"
@@ -986,12 +1045,10 @@
                                 },
                                 {
                                     "entity": "light.pcs1_led2_cc_b_4_630nm"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led2_cc_switch"
                                 }
                             ],
-                            "title": "LED 2"
+                            "title": "LED 2",
+                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -1009,6 +1066,9 @@
                                     "entity": "sensor.pcs1_led3_hall_a_current"
                                 },
                                 {
+                                    "entity": "switch.pcs1_led3_cc_a_switch"
+                                },
+                                {
                                     "entity": "light.pcs1_led3_cc_a_1_butterfly"
                                 },
                                 {
@@ -1019,12 +1079,10 @@
                                 },
                                 {
                                     "entity": "light.pcs1_led3_cc_a_4_butterfly"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led3_cc_switch"
                                 }
                             ],
-                            "title": "LED 3"
+                            "title": "LED 3",
+                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -1042,6 +1100,12 @@
                                     "entity": "sensor.pcs1_led4_hall_a_current"
                                 },
                                 {
+                                    "entity": "switch.pcs1_led4_cc_a_switch"
+                                },
+                                {
+                                    "entity": "switch.pcs1_led4_cc_b_switch"
+                                },
+                                {
                                     "entity": "light.pcs1_led4_cc_a_1_450nm"
                                 },
                                 {
@@ -1054,10 +1118,14 @@
                                     "entity": "light.pcs1_led4_cc_a_4_450nm"
                                 },
                                 {
-                                    "entity": "switch.pcs1_led4_cc_switch"
+                                    "entity": "light.pcs1_led4_cc_b_3_280nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_b_4_280nm"
                                 }
                             ],
-                            "title": "LED 4"
+                            "title": "LED 4",
+                            "show_header_toggle": false
                         }
                     ]
                 },
@@ -1086,6 +1154,12 @@
                                 },
                                 {
                                     "entity": "switch.pcs1_pump_automation"
+                                },
+                                {
+                                    "entity": "number.pcs1_pump_interval"
+                                },
+                                {
+                                    "entity": "number.pcs1_pump_duration"
                                 }
                             ]
                         }

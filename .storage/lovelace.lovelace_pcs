@@ -7,6 +7,109 @@
             "views": [
                 {
                     "theme": "Backend-selected",
+                    "title": "Sensor data",
+                    "path": "sensor-data",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "custom:plotly-graph",
+                            "title": "Temperature and Humidity",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_temperature",
+                                    "line": {
+                                        "color": "orange",
+                                        "width": 2
+                                    },
+                                    "name": "led_panel_average_temp",
+                                    "show_value": true,
+                                    "yaxis": "y2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
+                                    "line": {
+                                        "color": "red",
+                                        "width": 2
+                                    },
+                                    "name": "led_panel_max_temp",
+                                    "show_value": true,
+                                    "yaxis": "y2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_outside_average_temperature",
+                                    "line": {
+                                        "color": "blue",
+                                        "width": 2
+                                    },
+                                    "name": "outside_temp",
+                                    "show_value": true,
+                                    "yaxis": "y2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
+                                    "line": {
+                                        "color": "black",
+                                        "width": 2
+                                    },
+                                    "name": "electronics_area_temp",
+                                    "show_value": true,
+                                    "yaxis": "y2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
+                                    "line": {
+                                        "color": "green",
+                                        "width": 2
+                                    },
+                                    "name": "growth_chamber_temp",
+                                    "show_value": true,
+                                    "yaxis": "y2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
+                                    "line": {
+                                        "color": "yellow",
+                                        "width": 2
+                                    },
+                                    "name": "growth_chamber_humidity",
+                                    "show_value": true,
+                                    "yaxis": "y1"
+                                }
+                            ],
+                            "hours_to_show": 3,
+                            "refresh_interval": 10,
+                            "layout": {
+                                "plot_bgcolor": "lightgray",
+                                "height": 700,
+                                "xaxis": {
+                                    "rangeselector": {
+                                        "y": 1.3,
+                                        "buttons": [
+                                            {
+                                                "count": 30,
+                                                "step": "minute"
+                                            },
+                                            {
+                                                "count": 1,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 6,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 24,
+                                                "step": "hour"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "theme": "Backend-selected",
                     "title": "Home",
                     "icon": "",
                     "badges": [],
@@ -26,41 +129,6 @@
                             "title": "Automations",
                             "show_header_toggle": false,
                             "state_color": true
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_led1_cc_switch",
-                                    "name": "Red",
-                                    "icon": "mdi:lightbulb"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led4_cc_switch",
-                                    "name": "Blue",
-                                    "icon": "mdi:lightbulb"
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_3_520nm",
-                                    "name": "Green",
-                                    "icon": ""
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_1_white",
-                                    "name": "White 1"
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_2_white",
-                                    "name": "White 2"
-                                },
-                                {
-                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
-                                    "name": "Fan"
-                                }
-                            ],
-                            "state_color": true,
-                            "title": "LEDs",
-                            "show_header_toggle": false
                         },
                         {
                             "type": "entities",
@@ -113,6 +181,12 @@
                         {
                             "type": "entities",
                             "entities": [
+                                "sensor.time_date"
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
                                 {
                                     "entity": "input_datetime.day_start"
                                 },
@@ -126,109 +200,6 @@
                                     "entity": "input_number.time_diff"
                                 }
                             ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.time_date"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "Sensor data",
-                    "path": "sensor-data",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "custom:plotly-graph",
-                            "title": "Temperature and Humidity",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
-                                    "line": {
-                                        "color": "blue",
-                                        "dash": "dot",
-                                        "width": 2
-                                    },
-                                    "name": "growth_chamber_humidity",
-                                    "show_value": true
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_temperature",
-                                    "line": {
-                                        "color": "orange",
-                                        "width": 2
-                                    },
-                                    "name": "led_panel_average_temp",
-                                    "show_value": true
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
-                                    "line": {
-                                        "color": "red",
-                                        "width": 2
-                                    },
-                                    "name": "led_panel_max_temp",
-                                    "show_value": true
-                                },
-                                {
-                                    "entity": "sensor.pcs1_outside_average_temperature",
-                                    "line": {
-                                        "color": "blue",
-                                        "width": 2
-                                    },
-                                    "name": "outside_temp",
-                                    "show_value": true
-                                },
-                                {
-                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
-                                    "line": {
-                                        "color": "black",
-                                        "width": 2
-                                    },
-                                    "name": "electronics_area_temp",
-                                    "show_value": true
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
-                                    "line": {
-                                        "color": "green",
-                                        "width": 2
-                                    },
-                                    "name": "growth_chamber_temp",
-                                    "show_value": true
-                                }
-                            ],
-                            "hours_to_show": 3,
-                            "refresh_interval": 10,
-                            "layout": {
-                                "height": 500,
-                                "xaxis": {
-                                    "rangeselector": {
-                                        "y": 1.2,
-                                        "buttons": [
-                                            {
-                                                "count": 30,
-                                                "step": "minute"
-                                            },
-                                            {
-                                                "count": 1,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 6,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 24,
-                                                "step": "hour"
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
                         }
                     ]
                 },
@@ -315,6 +286,14 @@
                                 }
                             ],
                             "title": "Fan"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "light.pcs1_led4_cc_b_3_280nm",
+                                "light.pcs1_led4_cc_b_4_280nm"
+                            ],
+                            "title": "Ultra Violette"
                         }
                     ]
                 },
@@ -386,6 +365,27 @@
                             "entity": "camera.pcs1_cam7_camera",
                             "aspect_ratio": "3:2",
                             "name": "Cam 7"
+                        },
+                        {
+                            "type": "grid",
+                            "square": false,
+                            "columns": 1,
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        "switch.njb_espcam1_flashlight",
+                                        "button.njb_espcam1_restart",
+                                        "button.njb_espcam1_snapshot",
+                                        "binary_sensor.njb_espcam1_status",
+                                        "sensor.njb_espcam1_wifi_signal"
+                                    ]
+                                },
+                                {
+                                    "type": "picture-entity",
+                                    "entity": "camera.njb_espcam1_camera"
+                                }
+                            ]
                         }
                     ]
                 }
