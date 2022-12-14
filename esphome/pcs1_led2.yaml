@@ -39,14 +39,14 @@ substitutions:
   pwm_led_cc_7_name: cc_b_3_630nm
   pwm_led_cc_8_name: cc_b_4_630nm
   
-  pwm_led_cc_1_max_value: "0.1"
-  pwm_led_cc_2_max_value: "0.1"
-  pwm_led_cc_3_max_value: "0.1"
-  pwm_led_cc_4_max_value: "0.1"
-  pwm_led_cc_5_max_value: "0.1"
-  pwm_led_cc_6_max_value: "0.1"
-  pwm_led_cc_7_max_value: "0.1"
-  pwm_led_cc_8_max_value: "0.1"
+  pwm_led_cc_1_max_value: "0.2"
+  pwm_led_cc_2_max_value: "0.2"
+  pwm_led_cc_3_max_value: "0.2"
+  pwm_led_cc_4_max_value: "0.2"
+  pwm_led_cc_5_max_value: "0.2"
+  pwm_led_cc_6_max_value: "0.2"
+  pwm_led_cc_7_max_value: "0.2"
+  pwm_led_cc_8_max_value: "0.2"
   
 button:
   - platform: template
@@ -104,20 +104,64 @@ globals:
     type: bool
     restore_value: no
     initial_value: "false"  
+
+  - id: ${device_name}_cc_a_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
     
-switch:        
+  - id: ${device_name}_cc_b_is_on
+    type: bool
+    restore_value: no
+    initial_value: "false"  
+    
+switch:       
+  - platform: template
+    name: ${device_name}.cc_a_switch
+    id: ${device_name}_cc_a_switch
+    lambda: |-
+      return id(${device_name}_cc_a_is_on);
+    turn_on_action:
+      - button.press: ${device_name}_cc_a_on
+      - globals.set:
+          id: ${device_name}_cc_a_is_on
+          value: "true"
+    turn_off_action:
+      - button.press: ${device_name}_cc_a_off
+      - globals.set:
+          id: ${device_name}_cc_a_is_on
+          value: "false"
+  
+  - platform: template
+    name: ${device_name}.cc_b_switch
+    id: ${device_name}_cc_b_switch
+    lambda: |-
+      return id(${device_name}_cc_b_is_on);
+    turn_on_action:
+      - button.press: ${device_name}_cc_b_on
+      - globals.set:
+          id: ${device_name}_cc_b_is_on
+          value: "true"
+    turn_off_action:
+      - button.press: ${device_name}_cc_b_off
+      - globals.set:
+          id: ${device_name}_cc_b_is_on
+          value: "false"
+          
   - platform: template
     name: ${device_name}.cc_switch
     id: ${device_name}_cc_switch
     lambda: |-
       return id(${device_name}_leds_on);
     turn_on_action:
-      - button.press: ${device_name}_cc_on
+      - switch.turn_on: ${device_name}_cc_a_switch
+      - switch.turn_on: ${device_name}_cc_b_switch
       - globals.set:
           id: ${device_name}_leds_on
           value: "true"
     turn_off_action:
-      - button.press: ${device_name}_cc_off
+      - switch.turn_off: ${device_name}_cc_a_switch
+      - switch.turn_off: ${device_name}_cc_b_switch
       - globals.set:
           id: ${device_name}_leds_on
           value: "false"
