@@ -166,6 +166,16 @@
                                     "entity": "input_boolean.pcs1_automation_pump_active",
                                     "name": "Pump",
                                     "icon": "mdi:water-pump"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_daylength_active",
+                                    "name": "Daylength",
+                                    "icon": "mdi:clock-digital"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_daylight_active",
+                                    "icon": "mdi:weather-sunny",
+                                    "name": "Daylight"
                                 }
                             ],
                             "title": "Automations",
@@ -205,6 +215,9 @@
                         {
                             "type": "entities",
                             "entities": [
+                                {
+                                    "entity": "input_select.pcs1_daylight_function"
+                                },
                                 {
                                     "entity": "input_boolean.pcs1_led_white_active",
                                     "name": "White"
@@ -329,10 +342,10 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_boolean.pcs1_daytime_day_active"
+                                    "entity": "input_select.pcs1_daylength_function"
                                 },
                                 {
-                                    "entity": "input_select.pcs1_daytime_day_function"
+                                    "entity": "input_boolean.pcs1_daytime_day_active"
                                 }
                             ],
                             "title": "Daytime control",

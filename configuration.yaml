@@ -82,7 +82,13 @@ input_boolean:
 
   pcs1_automation_led_active:
     name: pcs1.automation_led.active
-
+  
+  pcs1_automation_daylength_active:
+    name: pcs1.automation_daylength.active
+    
+  pcs1_automation_daylight_active:
+    name: pcs1.automation_daylight.active
+    
   pcs1_automation_camera_active:
     name: pcs1.automation_camera.active
 
@@ -206,13 +212,21 @@ input_select:
       - KINEMATICS_AUTOMATION_DELAY_NIGHT_20
     initial: KINEMATICS_AUTOMATION_DELAY_NIGHT_0
 
-  pcs1_daytime_day_function:
-    name: pcs1.daytime_day_function
+  pcs1_daylight_function:
+    name: pcs1.daylight_function
     options:
-      - DAYTIME_DAY_FUNCTION_CONSTANT
-      - DAYTIME_DAY_FUNCTION_LINEAR
-      - DAYTIME_DAY_FUNCTION_SINUS
-    initial: DAYTIME_DAY_FUNCTION_CONSTANT
+      - DAYLIGHT_FUNCTION_CONSTANT
+      - DAYLIGHT_FUNCTION_LINEAR
+      - DAYLIGHT_FUNCTION_SINUS
+    initial: DAYLIGHT_FUNCTION_CONSTANT
+  
+  pcs1_daylength_function:
+    name: pcs1.daylength_function
+    options:
+      - DAYLENGTH_FUNCTION_CONSTANT
+      - DAYLENGTH_FUNCTION_LINEAR
+      - DAYLENGTH_FUNCTION_SINUS
+    initial: DAYLENGTH_FUNCTION_CONSTANT
 
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
