@@ -140,21 +140,211 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_boolean.pcs1_automation_main_active"
+                                    "entity": "switch.pcs1_main"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_automation_kinematics_active"
+                                    "entity": "input_boolean.pcs1_automation_main_active",
+                                    "icon": "mdi:play",
+                                    "name": "Main Automation"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_automation_pump_active"
+                                    "entity": "input_boolean.pcs1_automation_camera_active",
+                                    "name": "Cameras",
+                                    "icon": "mdi:camera"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_automation_led_active"
+                                    "entity": "input_boolean.pcs1_automation_kinematics_active",
+                                    "name": "Kinematics",
+                                    "icon": "mdi:cog-play"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_automation_camera_active"
+                                    "entity": "input_boolean.pcs1_automation_led_active",
+                                    "name": "LEDs",
+                                    "icon": "mdi:led-on"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_pump_active",
+                                    "name": "Pump",
+                                    "icon": "mdi:water-pump"
                                 }
-                            ]
+                            ],
+                            "title": "Automations",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.pcs1_mode_maintenance_active",
+                                    "name": "Maintenance Mode",
+                                    "icon": "mdi:cog"
+                                },
+                                {
+                                    "entity": "switch.pcs1_main",
+                                    "name": "Main Power"
+                                },
+                                {
+                                    "entity": "switch.pcs1_kin_stepper_enable_motor",
+                                    "name": "Enable Kinematics",
+                                    "icon": "mdi:cog-play"
+                                },
+                                {
+                                    "entity": "switch.pcs1_pump_enable",
+                                    "name": "Enable Pump",
+                                    "icon": "mdi:water-pump"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_cameras_enabled",
+                                    "name": "Enable Cameras",
+                                    "icon": "mdi:camera"
+                                }
+                            ],
+                            "title": "Hardware Controlls",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.pcs1_led_white_active",
+                                    "name": "White"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness_min",
+                                    "name": "White brightness min"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness",
+                                    "name": "White brightness"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness_max",
+                                    "name": "White brightness max"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_red_active",
+                                    "name": "Red"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness_min",
+                                    "name": "Red brightness min"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness",
+                                    "name": "Red brightness"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness_max",
+                                    "name": "Red brightness max"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_blue_active",
+                                    "name": "Blue"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness_min",
+                                    "name": "Blue brightness min"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness",
+                                    "name": "Blue brightness "
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness_max",
+                                    "name": "Blue brightness max"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_green_active",
+                                    "name": "Green"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness_min",
+                                    "name": "Green brightness  min"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness",
+                                    "name": "Green brightness "
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness_max",
+                                    "name": "Green brightness  max"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_uv_active",
+                                    "name": "UV"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness_min",
+                                    "name": "UV brightness  min"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness",
+                                    "name": "UV brightness "
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness_max",
+                                    "name": "UV brightness  max"
+                                }
+                            ],
+                            "title": "LED Automation Mode",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "input_number.pcs1_led_white_brightness_camera_mode",
+                                "input_number.pcs1_led_red_brightness_camera_mode",
+                                "input_number.pcs1_led_blue_brightness_camera_mode",
+                                "input_number.pcs1_led_green_brightness_camera_mode",
+                                "input_number.pcs1_led_uv_brightness_camera_mode",
+                                "input_boolean.pcs1_led_white_camera_mode_active",
+                                "input_boolean.pcs1_led_red_camera_mode_active",
+                                "input_boolean.pcs1_led_blue_camera_mode_active",
+                                "input_boolean.pcs1_led_green_camera_mode_active",
+                                "input_boolean.pcs1_led_uv_camera_mode_active"
+                            ],
+                            "title": "LED Camera Mode",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "input_boolean.pcs1_cameras_cam1_enabled",
+                                "input_boolean.pcs1_cameras_cam2_enabled",
+                                "input_boolean.pcs1_cameras_cam3_enabled",
+                                "input_boolean.pcs1_cameras_cam4_enabled",
+                                "input_boolean.pcs1_cameras_cam5_enabled",
+                                "input_boolean.pcs1_cameras_cam6_enabled",
+                                "input_boolean.pcs1_cameras_cam7_enabled",
+                                "input_boolean.pcs1_cameras_plant1_enabled",
+                                "input_boolean.pcs1_cameras_plant2_enabled",
+                                "input_boolean.pcs1_cameras_plant3_enabled",
+                                "input_boolean.pcs1_cameras_plant4_enabled",
+                                "input_boolean.pcs1_cameras_plant5_enabled",
+                                "input_boolean.pcs1_cameras_plant6_enabled"
+                            ],
+                            "title": "Enable Cameras and Plant Positions"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.pcs1_daytime_day_active"
+                                },
+                                {
+                                    "entity": "input_select.pcs1_daytime_day_function"
+                                }
+                            ],
+                            "title": "Daytime control",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "input_select.pcs1_kinematics_automation_delay_day",
+                                "input_select.pcs1_kinematics_automation_delay_night"
+                            ],
+                            "title": "Kinematics Delays"
                         }
                     ]
                 },
@@ -890,6 +1080,17 @@
                                 },
                                 {
                                     "entity": "binary_sensor.pcs1_kin_proximity_pinion_wheel"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "number.pcs1_kin_stepper_set_acceleration"
+                                },
+                                {
+                                    "entity": "number.pcs1_kin_stepper_set_deceleration"
                                 }
                             ]
                         }

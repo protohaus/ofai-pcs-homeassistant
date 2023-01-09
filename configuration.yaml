@@ -11,6 +11,8 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+api:
+
 # Example configuration.yaml entry
 #telegram_bot:
 #  - platform: polling
@@ -68,30 +70,105 @@ input_boolean:
 
   activate_looper:
     name: Activate looper
-  
+
   pcs1_automation_main_active:
-    name: pcs1_automation_main.active
-    
+    name: pcs1.automation_main.active
+
   pcs1_automation_kinematics_active:
     name: pcs1.automation_kinematics.active
-  
+
   pcs1_automation_pump_active:
-    name: pcs1.automation_pump.active
-  
+    name: pcs1.pump_automation.active
+
   pcs1_automation_led_active:
     name: pcs1.automation_led.active
-  
+
   pcs1_automation_camera_active:
     name: pcs1.automation_camera.active
-  
+
   pcs1_mode_maintenance_active:
-    name: pcs1_maintenance_mode.active
+    name: pcs1.maintenance_mode.active
+
+  pcs1_cameras_enabled:
+    name: pcs1.cameras_enabled
+  
+  pcs1_cameras_plant1_enabled:
+    name: pcs1.cameras_plant1_enabled
+  
+  pcs1_cameras_plant2_enabled:
+    name: pcs1.cameras_plant2_enabled
+  
+  pcs1_cameras_plant3_enabled:
+    name: pcs1.cameras_plant3_enabled
+  
+  pcs1_cameras_plant4_enabled:
+    name: pcs1.cameras_plant4_enabled
+  
+  pcs1_cameras_plant5_enabled:
+    name: pcs1.cameras_plant5_enabled
+  
+  pcs1_cameras_plant6_enabled:
+    name: pcs1.cameras_plant6_enabled
+
+  pcs1_cameras_cam1_enabled:
+    name: pcs1.cameras_cam1_enabled
+  
+  pcs1_cameras_cam2_enabled:
+    name: pcs1.cameras_cam2_enabled
+  
+  pcs1_cameras_cam3_enabled:
+    name: pcs1.cameras_cam3_enabled
+  
+  pcs1_cameras_cam4_enabled:
+    name: pcs1.cameras_cam4_enabled
+  
+  pcs1_cameras_cam5_enabled:
+    name: pcs1.cameras_cam5_enabled
+  
+  pcs1_cameras_cam6_enabled:
+    name: pcs1.cameras_cam6_enabled  
+
+  pcs1_cameras_cam7_enabled:
+    name: pcs1.cameras_cam7_enabled  
+  
+  pcs1_led_white_active:
+    name: pcs1.led_white_active
+  
+  pcs1_led_red_active:
+    name: pcs1.led_red_active
+
+  pcs1_led_blue_active:
+    name: pcs1.led_blue_active
+
+  pcs1_led_green_active:
+    name: pcs1.led_green_active
+
+  pcs1_led_uv_active:
+    name: pcs1.led_uv_active
     
-    
+  pcs1_led_white_camera_mode_active:
+    name: pcs1.led_white_camera_mode_active
+  
+  pcs1_led_red_camera_mode_active:
+    name: pcs1.led_red_camera_mode_active
+
+  pcs1_led_blue_camera_mode_active:
+    name: pcs1.led_blue_camera_mode_active
+
+  pcs1_led_green_camera_mode_active:
+    name: pcs1.led_green_camera_mode_active
+
+  pcs1_led_uv_camera_mode_active:
+    name: pcs1.led_uv_camera_mode_active
+  
+  pcs1_daytime_day_active:
+    name: pcs1.daytime_day_active 
+
+  
   ##########################################################
   ## old entities for test automations in home assistant...
   ##########################################################
-  
+
   activate_kinematics_automation:
     name: Activate kinematics automation
 
@@ -100,16 +177,43 @@ input_boolean:
 
   activate_led_automation:
     name: Activate led automation
-   
+
   auto:
     name: automation.main.activate
+
+  ##########################################################
+  ##########################################################
+  ##########################################################
+
+input_select:
+  pcs1_kinematics_automation_delay_day:
+    name: pcs1.kinematics_automation_delay_day
+    options:
+      - KINEMATICS_AUTOMATION_DELAY_DAY_0
+      - KINEMATICS_AUTOMATION_DELAY_DAY_1
+      - KINEMATICS_AUTOMATION_DELAY_DAY_5
+      - KINEMATICS_AUTOMATION_DELAY_DAY_10
+      - KINEMATICS_AUTOMATION_DELAY_DAY_20
+    initial: KINEMATICS_AUTOMATION_DELAY_DAY_0
     
-  ##########################################################
-  ##########################################################
-  ##########################################################
-  
-  
-  
+  pcs1_kinematics_automation_delay_night:
+    name: pcs1.kinematics_automation_delay_night
+    options:
+      - KINEMATICS_AUTOMATION_DELAY_NIGHT_0
+      - KINEMATICS_AUTOMATION_DELAY_NIGHT_1
+      - KINEMATICS_AUTOMATION_DELAY_NIGHT_5
+      - KINEMATICS_AUTOMATION_DELAY_NIGHT_10
+      - KINEMATICS_AUTOMATION_DELAY_NIGHT_20
+    initial: KINEMATICS_AUTOMATION_DELAY_NIGHT_0
+
+  pcs1_daytime_day_function:
+    name: pcs1.daytime_day_function
+    options:
+      - DAYTIME_DAY_FUNCTION_CONSTANT
+      - DAYTIME_DAY_FUNCTION_LINEAR
+      - DAYTIME_DAY_FUNCTION_SINUS
+    initial: DAYTIME_DAY_FUNCTION_CONSTANT
+
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
   time_diff:
@@ -118,6 +222,155 @@ input_number:
     min: -3
     max: 3
     step: 1
+
+  pcs1_fan_power:
+    name: pcs1_fan_power
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+  
+  pcs1_led_white_brightness:
+    name: pcs1_led_white_brightness
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+  
+  pcs1_led_white_brightness_min:
+    name: pcs1_led_white_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+    
+  pcs1_led_white_brightness_max:
+    name: pcs1_led_white_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+    
+  pcs1_led_white_brightness_camera_mode:
+    name: pcs1_led_white_brightness_camera_mode
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+    
+  pcs1_led_red_brightness:
+    name: pcs1_led_red_brightness
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+  pcs1_led_red_brightness_min:
+    name: pcs1_led_red_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+    
+  pcs1_led_red_brightness_max:
+    name: pcs1_led_red_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+  
+  pcs1_led_red_brightness_camera_mode:
+    name: pcs1_led_red_brightness_camera_mode
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+  
+  pcs1_led_blue_brightness:
+    name: pcs1_led_blue_brightness
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+
+  pcs1_led_blue_brightness_min:
+    name: pcs1_led_blue_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+    
+  pcs1_led_blue_brightness_max:
+    name: pcs1_led_blue_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+  
+  pcs1_led_blue_brightness_camera_mode:
+    name: pcs1_led_blue_brightness_camera_mode
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+    
+  pcs1_led_green_brightness:
+    name: pcs1_led_green_brightness
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+
+  pcs1_led_green_brightness_min:
+    name: pcs1_led_green_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+    
+  pcs1_led_green_brightness_max:
+    name: pcs1_led_green_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1      
+  
+  pcs1_led_green_brightness_camera_mode:
+    name: pcs1_led_green_brightness_camera_mode
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+
+  pcs1_led_uv_brightness:
+    name: pcs1_led_uv_brightness
+    initial: 0
+    min: 0
+    max: 100
+    step: 1    
+
+  pcs1_led_uv_brightness_min:
+    name: pcs1_led_uv_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+    
+  pcs1_led_uv_brightness_max:
+    name: pcs1_led_uv_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+    
+  pcs1_led_uv_brightness_camera_mode:
+    name: pcs1_led_uv_brightness_camera_mode
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+
+ 
 
 input_datetime:
   #both_date_and_time:

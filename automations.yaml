@@ -88,9 +88,7 @@
   mode: restart
   initial_state: true
 - id: led_automation
-  alias: LED automation
-  mode: restart
-  initial_state: true
+  alias: LED automation old
   trigger:
   - id: trigger_led_on
     platform: state
@@ -126,6 +124,8 @@
     data: {}
   - service: script.lights_off
     data: {}
+  mode: restart
+  initial_state: true
 - id: '1658828353191'
   alias: Pump_Automation_Adi
   description: ''
@@ -173,4 +173,134 @@
       title: '#Info- #Status'
       notification_id: watchdog_notification_example
       message: Daily Life Sign.
+  mode: restart
+- id: '1672134136129'
+  alias: Watchdogled
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /30
+  condition:
+  - condition: or
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.pcs1_led_panel_max_temperature
+      above: '45'
+    - condition: numeric_state
+      entity_id: sensor.pcs1_growth_chamber_average_temperature
+      above: '26'
+  action:
+  - service: homeassistant.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.activate_led_automation
+  mode: single
+- id: '1672134818369'
+  alias: Light
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /30
+  - platform: state
+    entity_id: input_boolean.activate_led_automation
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        before: '18:00:00'
+        after: 09:00:00
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+      - condition: state
+        entity_id: input_boolean.activate_led_automation
+        state: 'on'
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.pcs1_led1_cc_switch
+          - switch.pcs1_pwm_cc_switch
+          - switch.pcs1_led2_cc_switch
+          - switch.pcs1_led3_cc_switch
+          - switch.pcs1_led4_cc_a_switch
+          - switch.pcs1_pwm_cc_a_4_fan_switch
+    - conditions:
+      - condition: time
+        before: 09:00:00
+        after: '18:00:00'
+      - condition: state
+        entity_id: input_boolean.activate_led_automation
+        state: 'on'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.pcs1_pwm_cc_switch
+          - switch.pcs1_led3_cc_switch
+          - switch.pcs1_led4_cc_switch
+          - switch.pcs1_led1_cc_switch
+          - switch.pcs1_led2_cc_switch
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.activate_led_automation
+        state: 'off'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.pcs1_pwm_cc_switch
+          - switch.pcs1_led3_cc_switch
+          - switch.pcs1_led4_cc_switch
+          - switch.pcs1_led1_cc_switch
+          - switch.pcs1_led2_cc_switch
+    default: []
+  mode: single
+- id: '1672145523675'
+  alias: Pump
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /10
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.pcs1_pump_enable
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.pcs1_pump_automation
+  mode: restart
+- id: '1672146676890'
+  alias: New Automation
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /5
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 5e3df8e0c34f41b44ebed8b09b902609
+    entity_id: switch.pcs1_pump_enable
+    domain: switch
+  - type: turn_on
+    device_id: 5e3df8e0c34f41b44ebed8b09b902609
+    entity_id: switch.pcs1_pump_automation
+    domain: switch
   mode: restart

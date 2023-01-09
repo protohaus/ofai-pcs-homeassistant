@@ -12,84 +12,6 @@
                     "badges": [],
                     "cards": [
                         {
-                            "type": "picture-elements",
-                            "elements": [
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_outside_average_temperature",
-                                    "style": {
-                                        "top": "17%",
-                                        "left": "14%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
-                                    "style": {
-                                        "top": "17%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_led_panel_average_temperature",
-                                    "style": {
-                                        "top": "37%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
-                                    "style": {
-                                        "top": "37%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
-                                    "style": {
-                                        "top": "57%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
-                                    "style": {
-                                        "top": "57%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_ec",
-                                    "style": {
-                                        "top": "77%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_ph",
-                                    "style": {
-                                        "top": "77%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_rtd",
-                                    "style": {
-                                        "top": "90%",
-                                        "left": "50%"
-                                    }
-                                }
-                            ],
-                            "image": "/local/pcs_overview.png"
-                        },
-                        {
                             "type": "custom:plotly-graph",
                             "title": "Temperature and Humidity",
                             "entities": [
@@ -183,6 +105,139 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "type": "picture-elements",
+                            "elements": [
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_outside_average_temperature",
+                                    "style": {
+                                        "top": "17%",
+                                        "left": "14%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
+                                    "style": {
+                                        "top": "17%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_led_panel_average_temperature",
+                                    "style": {
+                                        "top": "37%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
+                                    "style": {
+                                        "top": "37%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
+                                    "style": {
+                                        "top": "57%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
+                                    "style": {
+                                        "top": "57%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_ec",
+                                    "style": {
+                                        "top": "77%",
+                                        "left": "65%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_ph",
+                                    "style": {
+                                        "top": "77%",
+                                        "left": "37%"
+                                    }
+                                },
+                                {
+                                    "type": "state-badge",
+                                    "entity": "sensor.pcs1_as_rtd",
+                                    "style": {
+                                        "top": "90%",
+                                        "left": "50%"
+                                    }
+                                }
+                            ],
+                            "image": "/local/pcs_overview.png"
+                        },
+                        {
+                            "type": "custom:plotly-graph",
+                            "title": "Kinematics",
+                            "entities": [
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
+                                    "line": {
+                                        "color": "orange",
+                                        "width": 2
+                                    },
+                                    "name": "plant_gear_angle",
+                                    "show_value": true,
+                                    "yaxis": "y1"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_kin_stepper_angle",
+                                    "line": {
+                                        "color": "blue",
+                                        "width": 2
+                                    },
+                                    "name": "global_angle",
+                                    "show_value": true,
+                                    "yaxis": "y1"
+                                }
+                            ],
+                            "hours_to_show": 3,
+                            "refresh_interval": 10,
+                            "layout": {
+                                "plot_bgcolor": "lightgray",
+                                "height": 700,
+                                "xaxis": {
+                                    "rangeselector": {
+                                        "y": 1.3,
+                                        "buttons": [
+                                            {
+                                                "count": 30,
+                                                "step": "minute"
+                                            },
+                                            {
+                                                "count": 1,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 6,
+                                                "step": "hour"
+                                            },
+                                            {
+                                                "count": 24,
+                                                "step": "hour"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
                         }
                     ]
                 },
@@ -201,6 +256,10 @@
                                 },
                                 {
                                     "entity": "input_boolean.activate_led_automation",
+                                    "icon": "mdi:lightbulb-group-outline"
+                                },
+                                {
+                                    "entity": "automation.pump",
                                     "icon": "mdi:lightbulb-group-outline"
                                 }
                             ],
@@ -325,6 +384,27 @@
                                 },
                                 {
                                     "entity": "light.pcs1_led2_cc_b_4_630nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_1_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_2_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_3_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led1_cc_a_4_730nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_1_butterfly"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_3_butterfly"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_4_butterfly"
                                 }
                             ],
                             "title": "Red",
@@ -348,10 +428,21 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "light.pcs1_led4_cc_a_1_450nm",
-                                "light.pcs1_led4_cc_a_2_450nm",
-                                "light.pcs1_led4_cc_a_3_450nm",
-                                "light.pcs1_led4_cc_a_4_450nm"
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_1_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_2_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_3_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led4_cc_a_4_450nm"
+                                },
+                                {
+                                    "entity": "light.pcs1_led3_cc_a_2_butterfly"
+                                }
                             ],
                             "title": "Blue"
                         },
