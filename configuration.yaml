@@ -83,11 +83,19 @@ input_boolean:
   pcs1_automation_led_active:
     name: pcs1.automation_led.active
   
+  pcs1_automation_daynight_active:
+    name: pcs1.automation_daynight.active
+    
   pcs1_automation_daylength_active:
     name: pcs1.automation_daylength.active
     
   pcs1_automation_daylight_active:
     name: pcs1.automation_daylight.active
+  
+  pcs1_automation_seasonlight_active:
+    name: pcs1.automation_seasonlight.active
+
+  
     
   pcs1_automation_camera_active:
     name: pcs1.automation_camera.active
@@ -217,7 +225,7 @@ input_select:
     options:
       - DAYLIGHT_FUNCTION_CONSTANT
       - DAYLIGHT_FUNCTION_LINEAR
-      - DAYLIGHT_FUNCTION_SINUS
+      - DAYLIGHT_FUNCTION_SINUS (not implemented)
     initial: DAYLIGHT_FUNCTION_CONSTANT
   
   pcs1_daylength_function:
@@ -225,7 +233,7 @@ input_select:
     options:
       - DAYLENGTH_FUNCTION_CONSTANT
       - DAYLENGTH_FUNCTION_LINEAR
-      - DAYLENGTH_FUNCTION_SINUS
+      - DAYLENGTH_FUNCTION_SINUS (not implemented)
     initial: DAYLENGTH_FUNCTION_CONSTANT
 
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
@@ -238,153 +246,242 @@ input_number:
     step: 1
 
   pcs1_fan_power:
-    name: pcs1_fan_power
+    name: pcs1.fan_power
     initial: 0
     min: 0
     max: 100
     step: 1 
   
   pcs1_led_white_brightness:
-    name: pcs1_led_white_brightness
+    name: pcs1.led_white_brightness
     initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_white_brightness_min:
-    name: pcs1_led_white_brightness_max
+    name: pcs1.led_white_brightness_min
     initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_white_brightness_max:
-    name: pcs1_led_white_brightness_max
+    name: pcs1.led_white_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+  
+  pcs1_led_white_brightness_max_winter:
+    name: pcs1.led_white_brightness_max_winter
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+  
+  pcs1_led_white_brightness_max_summer:
+    name: pcs1.led_white_brightness_max_summer
     initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_white_brightness_camera_mode:
-    name: pcs1_led_white_brightness_camera_mode
+    name: pcs1.led_white_brightness_camera_mode
     initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_red_brightness:
-    name: pcs1_led_red_brightness
+    name: pcs1.led_red_brightness
     initial: 0
     min: 0
     max: 100
     step: 1
 
   pcs1_led_red_brightness_min:
-    name: pcs1_led_red_brightness_max
+    name: pcs1.led_red_brightness_min
     initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_red_brightness_max:
-    name: pcs1_led_red_brightness_max
+    name: pcs1.led_red_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+  pcs1_led_red_brightness_max_winter:
+    name: pcs1.led_red_brightness_max_winter
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+  pcs1_led_red_brightness_max_summer:
+    name: pcs1.led_red_brightness_max_summer
     initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_red_brightness_camera_mode:
-    name: pcs1_led_red_brightness_camera_mode
+    name: pcs1.led_red_brightness_camera_mode
     initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_blue_brightness:
-    name: pcs1_led_blue_brightness
+    name: pcs1.led_blue_brightness
     initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_blue_brightness_min:
-    name: pcs1_led_blue_brightness_max
+    name: pcs1.led_blue_brightness_min
     initial: 0
     min: 0
     max: 100
     step: 1 
     
   pcs1_led_blue_brightness_max:
-    name: pcs1_led_blue_brightness_max
+    name: pcs1.led_blue_brightness_max
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+
+    
+  pcs1_led_blue_brightness_max_winter:
+    name: pcs1.led_blue_brightness_max_winter
+    initial: 0
+    min: 0
+    max: 100
+    step: 1 
+
+  pcs1_led_blue_brightness_max_summer:
+    name: pcs1.led_blue_brightness_max_summer
     initial: 0
     min: 0
     max: 100
     step: 1 
   
   pcs1_led_blue_brightness_camera_mode:
-    name: pcs1_led_blue_brightness_camera_mode
+    name: pcs1.led_blue_brightness_camera_mode
     initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_green_brightness:
-    name: pcs1_led_green_brightness
+    name: pcs1.led_green_brightness
     initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_green_brightness_min:
-    name: pcs1_led_green_brightness_max
+    name: pcs1.led_green_brightness_min
     initial: 0
     min: 0
     max: 100
     step: 1  
     
   pcs1_led_green_brightness_max:
-    name: pcs1_led_green_brightness_max
+    name: pcs1.led_green_brightness_max
     initial: 0
     min: 0
     max: 100
-    step: 1      
-  
+    step: 1  
+    
+  pcs1_led_green_brightness_max_winter:
+    name: pcs1.led_green_brightness_max_winter
+    initial: 0
+    min: 0
+    max: 100
+    step: 1     
+
+  pcs1_led_green_brightness_max_summer:
+    name: pcs1.led_green_brightness_max_summer
+    initial: 0
+    min: 0
+    max: 100
+    step: 1  
+    
   pcs1_led_green_brightness_camera_mode:
-    name: pcs1_led_green_brightness_camera_mode
+    name: pcs1.led_green_brightness_camera_mode
     initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_uv_brightness:
-    name: pcs1_led_uv_brightness
+    name: pcs1.led_uv_brightness
     initial: 0
     min: 0
     max: 100
     step: 1    
 
   pcs1_led_uv_brightness_min:
-    name: pcs1_led_uv_brightness_max
+    name: pcs1.led_uv_brightness_min
     initial: 0
     min: 0
     max: 100
     step: 1 
     
   pcs1_led_uv_brightness_max:
-    name: pcs1_led_uv_brightness_max
+    name: pcs1.led_uv_brightness_max
     initial: 0
     min: 0
     max: 100
     step: 1  
+
+  pcs1_led_uv_brightness_max_winter:
+    name: pcs1.led_uv_brightness_max_winter
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+  pcs1_led_uv_brightness_max_summer:
+    name: pcs1.led_uv_brightness_max_summer
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
     
   pcs1_led_uv_brightness_camera_mode:
-    name: pcs1_led_uv_brightness_camera_mode
+    name: pcs1.led_uv_brightness_camera_mode
     initial: 0
     min: 0
     max: 100
     step: 1 
 
- 
+input_text:
+  pcs1_plant1_name:
+    name: pcs1.plant1_name
+    initial: empty_plantgear
+  pcs1_plant2_name:
+    name: pcs1.plant2_name
+    initial: empty_plantgear
+  pcs1_plant3_name:
+    name: pcs1.plant3_name
+    initial: empty_plantgear
+  pcs1_plant4_name:
+    name: pcs1.plant4_name
+    initial: empty_plantgear
+  pcs1_plant5_name:
+    name: pcs1.plant5_name
+    initial: empty_plantgear
+  pcs1_plant6_name:
+    name: pcs1.plant6_name
+    initial: empty_plantgear    
 
 input_datetime:
   #both_date_and_time:
@@ -395,6 +492,26 @@ input_datetime:
   #  name: Input with only date
   #  has_date: true
   #  has_time: false
+  
+  
+  pcs1_daytime_day_start:
+    name: pcs1.daytime_day_start
+    has_date: false
+    has_time: true
+  
+  pcs1_daytime_day_end:
+    name: pcs1.daytime_day_end
+    has_date: false
+    has_time: true
+  
+  pcs1_daytime_day_length:
+    name: pcs1.daytime_day_length
+    has_date: false
+    has_time: true
+  
+  
+  
+  ## old entities for testing purposes
   date_test:
     name: date_test
     has_date: true

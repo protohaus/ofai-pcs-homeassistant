@@ -168,6 +168,11 @@
                                     "icon": "mdi:water-pump"
                                 },
                                 {
+                                    "entity": "input_boolean.pcs1_automation_daynight_active",
+                                    "name": "Day/Night",
+                                    "icon": "mdi:moon-waxing-crescent"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_automation_daylength_active",
                                     "name": "Daylength",
                                     "icon": "mdi:clock-digital"
@@ -176,6 +181,11 @@
                                     "entity": "input_boolean.pcs1_automation_daylight_active",
                                     "icon": "mdi:weather-sunny",
                                     "name": "Daylight"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_seasonlight_active",
+                                    "name": "Season Light",
+                                    "icon": "mdi:weather-sunset-up"
                                 }
                             ],
                             "title": "Automations",
@@ -216,7 +226,8 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_daylight_function"
+                                    "entity": "input_select.pcs1_daylight_function",
+                                    "name": "Daylight Function"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_white_active",
@@ -224,15 +235,23 @@
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_white_brightness_min",
-                                    "name": "White brightness min"
+                                    "name": "White min"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_white_brightness",
-                                    "name": "White brightness"
+                                    "name": "White"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_white_brightness_max",
-                                    "name": "White brightness max"
+                                    "name": "White max"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness_max_winter",
+                                    "name": "White max winter"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness_max_summer",
+                                    "name": "White max summer"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_red_active",
@@ -240,15 +259,23 @@
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_red_brightness_min",
-                                    "name": "Red brightness min"
+                                    "name": "Red min"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_red_brightness",
-                                    "name": "Red brightness"
+                                    "name": "Red"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_red_brightness_max",
-                                    "name": "Red brightness max"
+                                    "name": "Red max"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness_max_winter",
+                                    "name": "Red max winter"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness_max_summer",
+                                    "name": "Red max summer"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_blue_active",
@@ -256,15 +283,23 @@
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_blue_brightness_min",
-                                    "name": "Blue brightness min"
+                                    "name": "Blue min"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_blue_brightness",
-                                    "name": "Blue brightness "
+                                    "name": "Blue "
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_blue_brightness_max",
-                                    "name": "Blue brightness max"
+                                    "name": "Blue max"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness_max_winter",
+                                    "name": "Blue max winter"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness_max_summer",
+                                    "name": "Blue max summer"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_green_active",
@@ -272,15 +307,23 @@
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_green_brightness_min",
-                                    "name": "Green brightness  min"
+                                    "name": "Green min"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_green_brightness",
-                                    "name": "Green brightness "
+                                    "name": "Green "
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_green_brightness_max",
-                                    "name": "Green brightness  max"
+                                    "name": "Green max"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness_max_winter",
+                                    "name": "Green max winter"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness_max_summer",
+                                    "name": "Green max summer"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_uv_active",
@@ -288,15 +331,23 @@
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_uv_brightness_min",
-                                    "name": "UV brightness  min"
+                                    "name": "UV min"
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_uv_brightness",
-                                    "name": "UV brightness "
+                                    "name": "UV "
                                 },
                                 {
                                     "entity": "input_number.pcs1_led_uv_brightness_max",
-                                    "name": "UV brightness  max"
+                                    "name": "UV max"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness_max_winter",
+                                    "name": "UV max winter"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness_max_summer",
+                                    "name": "UV max summer"
                                 }
                             ],
                             "title": "LED Automation Mode",
@@ -305,16 +356,16 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "input_number.pcs1_led_white_brightness_camera_mode",
-                                "input_number.pcs1_led_red_brightness_camera_mode",
-                                "input_number.pcs1_led_blue_brightness_camera_mode",
-                                "input_number.pcs1_led_green_brightness_camera_mode",
-                                "input_number.pcs1_led_uv_brightness_camera_mode",
                                 "input_boolean.pcs1_led_white_camera_mode_active",
+                                "input_number.pcs1_led_white_brightness_camera_mode",
                                 "input_boolean.pcs1_led_red_camera_mode_active",
+                                "input_number.pcs1_led_red_brightness_camera_mode",
                                 "input_boolean.pcs1_led_blue_camera_mode_active",
+                                "input_number.pcs1_led_blue_brightness_camera_mode",
                                 "input_boolean.pcs1_led_green_camera_mode_active",
-                                "input_boolean.pcs1_led_uv_camera_mode_active"
+                                "input_number.pcs1_led_green_brightness_camera_mode",
+                                "input_boolean.pcs1_led_uv_camera_mode_active",
+                                "input_number.pcs1_led_uv_brightness_camera_mode"
                             ],
                             "title": "LED Camera Mode",
                             "show_header_toggle": false
@@ -342,10 +393,30 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_daylength_function"
+                                    "entity": "input_select.pcs1_daylength_function",
+                                    "name": "Daylength Function"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_daytime_day_active"
+                                    "entity": "input_boolean.pcs1_daytime_day_active",
+                                    "name": "Day"
+                                },
+                                {
+                                    "entity": "sensor.time"
+                                },
+                                {
+                                    "entity": "sensor.date"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_day_start",
+                                    "name": "Day start"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_day_end",
+                                    "name": "Day end"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_day_length",
+                                    "name": "Day length"
                                 }
                             ],
                             "title": "Daytime control",
@@ -354,10 +425,38 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "input_select.pcs1_kinematics_automation_delay_day",
-                                "input_select.pcs1_kinematics_automation_delay_night"
+                                {
+                                    "entity": "input_select.pcs1_kinematics_automation_delay_day"
+                                },
+                                {
+                                    "entity": "input_select.pcs1_kinematics_automation_delay_night"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant1_name",
+                                    "name": "Plant 1"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant2_name",
+                                    "name": "Plant 2"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant3_name",
+                                    "name": "Plant 3"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant4_name",
+                                    "name": "Plant 4"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant5_name",
+                                    "name": "Plant 5"
+                                },
+                                {
+                                    "entity": "input_text.pcs1_plant6_name",
+                                    "name": "Plant 6"
+                                }
                             ],
-                            "title": "Kinematics Delays"
+                            "title": "Kinematics Settings"
                         }
                     ]
                 },

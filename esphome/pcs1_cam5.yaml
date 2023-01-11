@@ -18,7 +18,7 @@ substitutions:
   
   # ESP32cam settings
   esp32cam_flashlight_pin: GPIO04
-  esp32cam_custom_idle_framerate: "0 fps"
+  esp32cam_custom_idle_framerate: "1 fps"
   esp32cam_vertical_flip: "false"
   esp32cam_horizontal_mirror: "false"
   esp32cam_max_framerate: "10 fps"
