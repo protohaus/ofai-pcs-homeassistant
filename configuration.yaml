@@ -82,7 +82,13 @@ input_boolean:
 
   pcs1_automation_led_active:
     name: pcs1.automation_led.active
-  
+ 
+  pcs1_automation_led_safety_active:
+    name: pcs1.automation_led_safety.active
+    
+  pcs1_automation_fan_active:
+    name: pcs1.automation_fan.active
+    
   pcs1_automation_daynight_active:
     name: pcs1.automation_daynight.active
     
@@ -174,10 +180,13 @@ input_boolean:
 
   pcs1_led_uv_camera_mode_active:
     name: pcs1.led_uv_camera_mode_active
+    
+  pcs1_led_uv_enabled:
+    name: pcs1.led_uv_enabled
   
   pcs1_daytime_day_active:
     name: pcs1.daytime_day_active 
-
+  
   
   ##########################################################
   ## old entities for test automations in home assistant...
@@ -203,37 +212,130 @@ input_select:
   pcs1_kinematics_automation_delay_day:
     name: pcs1.kinematics_automation_delay_day
     options:
-      - KINEMATICS_AUTOMATION_DELAY_DAY_0
-      - KINEMATICS_AUTOMATION_DELAY_DAY_1
-      - KINEMATICS_AUTOMATION_DELAY_DAY_5
-      - KINEMATICS_AUTOMATION_DELAY_DAY_10
-      - KINEMATICS_AUTOMATION_DELAY_DAY_20
-    initial: KINEMATICS_AUTOMATION_DELAY_DAY_0
+      - DELAY_DAY_0
+      - DELAY_DAY_1
+      - DELAY_DAY_5
+      - DELAY_DAY_10
+      - DELAY_DAY_20
+    initial: DELAY_DAY_0
     
   pcs1_kinematics_automation_delay_night:
     name: pcs1.kinematics_automation_delay_night
     options:
-      - KINEMATICS_AUTOMATION_DELAY_NIGHT_0
-      - KINEMATICS_AUTOMATION_DELAY_NIGHT_1
-      - KINEMATICS_AUTOMATION_DELAY_NIGHT_5
-      - KINEMATICS_AUTOMATION_DELAY_NIGHT_10
-      - KINEMATICS_AUTOMATION_DELAY_NIGHT_20
-    initial: KINEMATICS_AUTOMATION_DELAY_NIGHT_0
+      - DELAY_NIGHT_0
+      - DELAY_NIGHT_1
+      - DELAY_NIGHT_5
+      - DELAY_NIGHT_10
+      - DELAY_NIGHT_20
+    initial: DELAY_NIGHT_0
 
-  pcs1_daylight_function:
-    name: pcs1.daylight_function
+  pcs1_led_white_daylight_function:
+    name: pcs1.led_white_daylight_function
     options:
-      - DAYLIGHT_FUNCTION_CONSTANT
-      - DAYLIGHT_FUNCTION_LINEAR
-      - DAYLIGHT_FUNCTION_SINUS (not implemented)
-    initial: DAYLIGHT_FUNCTION_CONSTANT
-  
+      - USER_VALUES
+      - CONSTANT
+      - PYRAMIDAL
+      - INVERSE_PYRAMIDAL
+      - SINE
+      - COSINE
+      - VALLEY
+      - VALLEY_NARROW
+      - PLATEAU
+      - PLATEAU_LEFT
+      - PLATEAU_MIDDLE
+      - PLATEAU_RIGHT
+      - PEAK_LEFT
+      - PEAK_MIDDLE
+      - PEAK_RIGHT
+    initial: PLATEAU
+    
+  pcs1_led_red_daylight_function:
+    name: pcs1.led_red_daylight_function
+    options:
+      - USER_VALUES
+      - CONSTANT
+      - PYRAMIDAL
+      - INVERSE_PYRAMIDAL
+      - SINE
+      - COSINE
+      - VALLEY
+      - VALLEY_NARROW
+      - PLATEAU
+      - PLATEAU_LEFT
+      - PLATEAU_MIDDLE
+      - PLATEAU_RIGHT
+      - PEAK_LEFT
+      - PEAK_MIDDLE
+      - PEAK_RIGHT
+    initial: PLATEAU
+
+  pcs1_led_blue_daylight_function:
+    name: pcs1.led_blue_daylight_function
+    options:
+      - USER_VALUES
+      - CONSTANT
+      - PYRAMIDAL
+      - INVERSE_PYRAMIDAL
+      - SINE
+      - COSINE
+      - VALLEY
+      - VALLEY_NARROW
+      - PLATEAU
+      - PLATEAU_LEFT
+      - PLATEAU_MIDDLE
+      - PLATEAU_RIGHT
+      - PEAK_LEFT
+      - PEAK_MIDDLE
+      - PEAK_RIGHT
+    initial: PLATEAU
+
+  pcs1_led_green_daylight_function:
+    name: pcs1.led_green_daylight_function
+    options:
+      - USER_VALUES
+      - CONSTANT
+      - PYRAMIDAL
+      - INVERSE_PYRAMIDAL
+      - SINE
+      - COSINE
+      - VALLEY
+      - VALLEY_NARROW
+      - PLATEAU
+      - PLATEAU_LEFT
+      - PLATEAU_MIDDLE
+      - PLATEAU_RIGHT
+      - PEAK_LEFT
+      - PEAK_MIDDLE
+      - PEAK_RIGHT
+    initial: PLATEAU
+
+  pcs1_led_uv_daylight_function:
+    name: pcs1.led_uv_daylight_function
+    options:
+      - USER_VALUES
+      - CONSTANT
+      - PYRAMIDAL
+      - INVERSE_PYRAMIDAL
+      - SINE
+      - COSINE
+      - VALLEY
+      - VALLEY_NARROW
+      - PLATEAU
+      - PLATEAU_LEFT
+      - PLATEAU_MIDDLE
+      - PLATEAU_RIGHT
+      - PEAK_LEFT
+      - PEAK_MIDDLE
+      - PEAK_RIGHT
+    initial: PLATEAU
+    
   pcs1_daylength_function:
     name: pcs1.daylength_function
     options:
       - DAYLENGTH_FUNCTION_CONSTANT
       - DAYLENGTH_FUNCTION_LINEAR
-      - DAYLENGTH_FUNCTION_SINUS (not implemented)
+      - DAYLENGTH_FUNCTION_SINE
+      - DAYLENGTH_FUNCTION_SPLINE
     initial: DAYLENGTH_FUNCTION_CONSTANT
 
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
@@ -244,13 +346,27 @@ input_number:
     min: -3
     max: 3
     step: 1
-
+  
+  pcs1_kinematics_pinionwheel_count_difference_error:
+    name: pcs1.kinematics_pinionwheel_count_difference_error
+    initial: 5
+    min: 0
+    max: 10
+    step: 1 
+    
   pcs1_fan_power:
     name: pcs1.fan_power
     initial: 0
     min: 0
     max: 100
     step: 1 
+  
+  pcs1_led_power_safety_factor:
+    name: pcs1.led_power_safety_factor
+    initial: 1.0
+    min: 0
+    max: 1
+    step: 0.01
   
   pcs1_led_white_brightness:
     name: pcs1.led_white_brightness

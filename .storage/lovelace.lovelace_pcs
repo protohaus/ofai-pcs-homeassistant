@@ -135,7 +135,7 @@
                                 },
                                 {
                                     "type": "state-badge",
-                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
+                                    "entity": "sensor.pcs1_led_panel_max_temperature",
                                     "style": {
                                         "top": "37%",
                                         "left": "65%"
@@ -238,6 +238,13 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "sensor.pcs1_led_panel_average_max_temperature",
+                                "sensor.pcs1_led_panel_max_temperature"
+                            ]
                         }
                     ]
                 },

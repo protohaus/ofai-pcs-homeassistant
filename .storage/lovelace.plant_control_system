@@ -163,6 +163,11 @@
                                     "icon": "mdi:led-on"
                                 },
                                 {
+                                    "entity": "input_boolean.pcs1_automation_fan_active",
+                                    "name": "Fan",
+                                    "icon": "mdi:fan"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_automation_pump_active",
                                     "name": "Pump",
                                     "icon": "mdi:water-pump"
@@ -173,14 +178,14 @@
                                     "icon": "mdi:moon-waxing-crescent"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_automation_daylength_active",
-                                    "name": "Daylength",
-                                    "icon": "mdi:clock-digital"
-                                },
-                                {
                                     "entity": "input_boolean.pcs1_automation_daylight_active",
                                     "icon": "mdi:weather-sunny",
                                     "name": "Daylight"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_daylength_active",
+                                    "name": "Daylength",
+                                    "icon": "mdi:clock-digital"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_automation_seasonlight_active",
@@ -217,6 +222,20 @@
                                     "entity": "input_boolean.pcs1_cameras_enabled",
                                     "name": "Enable Cameras",
                                     "icon": "mdi:camera"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_uv_enabled",
+                                    "name": "Enable UV Light"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_power_safety_factor",
+                                    "name": "LED Safety Factor",
+                                    "icon": "mdi:seatbelt"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_led_safety_active",
+                                    "icon": "mdi:seatbelt",
+                                    "name": "LED Safety Automation Mode"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -226,8 +245,8 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_daylight_function",
-                                    "name": "Daylight Function"
+                                    "entity": "input_select.pcs1_led_white_daylight_function",
+                                    "name": "White Daylight Function"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_white_active",
@@ -254,6 +273,10 @@
                                     "name": "White max summer"
                                 },
                                 {
+                                    "entity": "input_select.pcs1_led_red_daylight_function",
+                                    "name": "Red Daylight Function"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_led_red_active",
                                     "name": "Red"
                                 },
@@ -276,6 +299,10 @@
                                 {
                                     "entity": "input_number.pcs1_led_red_brightness_max_summer",
                                     "name": "Red max summer"
+                                },
+                                {
+                                    "entity": "input_select.pcs1_led_blue_daylight_function",
+                                    "name": "Blue Daylight Function"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_blue_active",
@@ -302,6 +329,10 @@
                                     "name": "Blue max summer"
                                 },
                                 {
+                                    "entity": "input_select.pcs1_led_green_daylight_function",
+                                    "name": "Green Daylight Function"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_led_green_active",
                                     "name": "Green"
                                 },
@@ -324,6 +355,10 @@
                                 {
                                     "entity": "input_number.pcs1_led_green_brightness_max_summer",
                                     "name": "Green max summer"
+                                },
+                                {
+                                    "entity": "input_select.pcs1_led_uv_daylight_function",
+                                    "name": "UV Daylight Function"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_led_uv_active",
@@ -1111,6 +1146,9 @@
                                 },
                                 {
                                     "entity": "button.pcs1_kin_stepper_set_homing_valid"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_kinematics_pinionwheel_count_difference_error"
                                 }
                             ],
                             "title": "Homing"
