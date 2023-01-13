@@ -236,6 +236,16 @@
                                     "entity": "input_boolean.pcs1_automation_led_safety_active",
                                     "icon": "mdi:seatbelt",
                                     "name": "LED Safety Automation Mode"
+                                },
+                                {
+                                    "entity": "input_button.pcs1_led_all_off",
+                                    "name": "LEDs off",
+                                    "icon": "mdi:stop-circle-outline"
+                                },
+                                {
+                                    "entity": "input_button.pcs1_led_current_state",
+                                    "name": "LEDs set current state",
+                                    "icon": "mdi:alarm-light"
                                 }
                             ],
                             "title": "Hardware Controlls",

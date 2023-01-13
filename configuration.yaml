@@ -57,6 +57,13 @@ influxdb:
       - input_number
       - button
 
+input_button:
+  pcs1_led_all_off:
+    name: pcs1.led_all_off
+  
+  pcs1_led_current_state:
+    name: pcs1.led_current_state
+    
 switch:
   - platform: momentary
     name: Camera Snapshots
@@ -150,7 +157,7 @@ input_boolean:
 
   pcs1_cameras_cam7_enabled:
     name: pcs1.cameras_cam7_enabled  
-  
+    
   pcs1_led_white_active:
     name: pcs1.led_white_active
   
