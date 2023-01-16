@@ -37,4 +37,5 @@ packages:
   common_boot_finished: !include /config/esphome/esphome-common/boot_finished.yaml
   common_status: !include /config/esphome/esphome-common/status.yaml
   common_restart: !include /config/esphome/esphome-common/restart.yaml
+  #common_api_connection_watchdog: !include /config/esphome/esphome-common/api_connection_watchdog.yaml
   pumps: !include /config/esphome/esphome-pump/pumps.yaml

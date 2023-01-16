@@ -61,7 +61,7 @@
     conditions:
     - condition: numeric_state
       entity_id: sensor.pcs1_led_panel_max_temperature
-      above: '45'
+      above: '50'
     - condition: numeric_state
       entity_id: sensor.pcs1_growth_chamber_average_temperature
       above: '26'
@@ -69,5 +69,6 @@
   - service: homeassistant.turn_off
     data: {}
     target:
-      entity_id: input_boolean.activate_led_automation
+      entity_id:
+      - sensor.pcs1_main_power
   mode: single

@@ -56,14 +56,7 @@ influxdb:
       - switch
       - input_number
       - button
-
-input_button:
-  pcs1_led_all_off:
-    name: pcs1.led_all_off
-  
-  pcs1_led_current_state:
-    name: pcs1.led_current_state
-    
+   
 switch:
   - platform: momentary
     name: Camera Snapshots
@@ -90,14 +83,17 @@ input_boolean:
   pcs1_automation_led_active:
     name: pcs1.automation_led.active
  
-  pcs1_automation_led_safety_active:
-    name: pcs1.automation_led_safety.active
+  pcs1_led_safety_disabled:
+    name: pcs1.led_safety_disabled
     
   pcs1_automation_fan_active:
     name: pcs1.automation_fan.active
     
   pcs1_automation_daynight_active:
     name: pcs1.automation_daynight.active
+  
+  pcs1_automation_daystartend_active:
+    name: pcs1.automation_daystartend_active.active
     
   pcs1_automation_daylength_active:
     name: pcs1.automation_daylength.active
@@ -157,6 +153,9 @@ input_boolean:
 
   pcs1_cameras_cam7_enabled:
     name: pcs1.cameras_cam7_enabled  
+  
+  pcs1_led_enabled:
+    name: pcs1.led_enabled
     
   pcs1_led_white_active:
     name: pcs1.led_white_active
@@ -335,15 +334,48 @@ input_select:
       - PEAK_MIDDLE
       - PEAK_RIGHT
     initial: PLATEAU
-    
-  pcs1_daylength_function:
-    name: pcs1.daylength_function
+
+  pcs1_daylength_function_1:
+    name: pcs1.daylength_function_1
     options:
-      - DAYLENGTH_FUNCTION_CONSTANT
-      - DAYLENGTH_FUNCTION_LINEAR
-      - DAYLENGTH_FUNCTION_SINE
-      - DAYLENGTH_FUNCTION_SPLINE
-    initial: DAYLENGTH_FUNCTION_CONSTANT
+      - CONSTANT_LOW
+      - CONSTANT_HIGH
+      - DISCRETE_PEAK_FALLING
+      - DISCRETE_PEAK_RISING
+      - LINEAR_FALLING
+      - LINEAR_RISING
+      - S_CURVE_FALLING
+      - S_CURVE_RISING
+      - SPLINE_FALLING
+      - SPLINE_RISING
+      - PLATEAU_BIG_FALLING
+      - PLATEAU_BIG_RISING
+      - PLATEAU_MID_FALLING
+      - PLATEAU_MID_RISING
+      - PLATEAU_SMALL_FALLING
+      - PLATEAU_SMALL_RISING
+    initial: CONSTANT_LOW
+    
+  pcs1_daylength_function_2:
+    name: pcs1.daylength_function_2
+    options:
+      - CONSTANT_LOW
+      - CONSTANT_HIGH
+      - DISCRETE_PEAK_FALLING
+      - DISCRETE_PEAK_RISING
+      - LINEAR_FALLING
+      - LINEAR_RISING
+      - S_CURVE_FALLING
+      - S_CURVE_RISING
+      - SPLINE_FALLING
+      - SPLINE_RISING
+      - PLATEAU_BIG_FALLING
+      - PLATEAU_BIG_RISING
+      - PLATEAU_MID_FALLING
+      - PLATEAU_MID_RISING
+      - PLATEAU_SMALL_FALLING
+      - PLATEAU_SMALL_RISING
+    initial: CONSTANT_HIGH
 
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
@@ -631,6 +663,31 @@ input_datetime:
     name: pcs1.daytime_day_length
     has_date: false
     has_time: true
+  
+  pcs1_daytime_day_length_min:
+    name: pcs1.daytime_day_length_min
+    has_date: false
+    has_time: true
+  
+  pcs1_daytime_day_length_max:
+    name: pcs1.daytime_day_length_max
+    has_date: false
+    has_time: true
+    
+  pcs1_daytime_growth_period_start:
+    name: pcs1.daytime_growth_period_start
+    has_date: true
+    has_time: false
+  
+  pcs1_daytime_growth_period_solstice:
+    name: pcs1.daytime_growth_period_solstice
+    has_date: true
+    has_time: false
+    
+  pcs1_daytime_growth_period_end:
+    name: pcs1.daytime_growth_period_end
+    has_date: true
+    has_time: false
   
   
   

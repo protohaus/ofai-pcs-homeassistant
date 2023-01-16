@@ -95,7 +95,7 @@ packages:
   stepper_tmc2209_addon: !include /config/esphome/esphome-stepper/stepper_diag_3.yaml
   stepper_sensor: !include /config/esphome/esphome-stepper/sensor.yaml
   error_handling: !include /config/esphome/esphome-stepper/error_handling.yaml
-  error_connection_handling: !include /config/esphome/esphome-stepper/error_connection_handling.yaml
+  #error_connection_handling: !include /config/esphome/esphome-stepper/error_connection_handling.yaml
   sensor_current: !include /config/esphome/esphome-sensors/current.yaml
   sensor_dallas_hub_1: !include /config/esphome/esphome-sensors/dallas_hub_1.yaml
   sensor_dallas_1: !include /config/esphome/esphome-sensors/dallas_4.yaml

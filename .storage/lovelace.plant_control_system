@@ -183,6 +183,10 @@
                                     "name": "Daylight"
                                 },
                                 {
+                                    "entity": "input_boolean.pcs1_automation_daystartend_active",
+                                    "name": "Day Start/End"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_automation_daylength_active",
                                     "name": "Daylength",
                                     "icon": "mdi:clock-digital"
@@ -228,24 +232,18 @@
                                     "name": "Enable UV Light"
                                 },
                                 {
-                                    "entity": "input_number.pcs1_led_power_safety_factor",
-                                    "name": "LED Safety Factor",
-                                    "icon": "mdi:seatbelt"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_led_safety_active",
-                                    "icon": "mdi:seatbelt",
-                                    "name": "LED Safety Automation Mode"
-                                },
-                                {
-                                    "entity": "input_button.pcs1_led_all_off",
-                                    "name": "LEDs off",
+                                    "entity": "input_boolean.pcs1_led_enabled",
+                                    "name": "Enable LEDs",
                                     "icon": "mdi:stop-circle-outline"
                                 },
                                 {
-                                    "entity": "input_button.pcs1_led_current_state",
-                                    "name": "LEDs set current state",
-                                    "icon": "mdi:alarm-light"
+                                    "entity": "input_boolean.pcs1_led_safety_disabled",
+                                    "name": "Disable LED safety"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_power_safety_factor",
+                                    "name": "LED Safety Factor",
+                                    "icon": "mdi:seatbelt"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -438,8 +436,10 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_daylength_function",
-                                    "name": "Daylength Function"
+                                    "entity": "input_select.pcs1_daylength_function_1"
+                                },
+                                {
+                                    "entity": "input_select.pcs1_daylength_function_2"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_daytime_day_active",
@@ -460,8 +460,28 @@
                                     "name": "Day end"
                                 },
                                 {
+                                    "entity": "input_datetime.pcs1_daytime_day_length_min",
+                                    "name": "Day length min"
+                                },
+                                {
                                     "entity": "input_datetime.pcs1_daytime_day_length",
                                     "name": "Day length"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_day_length_max",
+                                    "name": "Day length max"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_growth_period_start",
+                                    "name": "Start Date"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_growth_period_solstice",
+                                    "name": "Solstice Date"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_daytime_growth_period_end",
+                                    "name": "End Date"
                                 }
                             ],
                             "title": "Daytime control",
