@@ -244,6 +244,11 @@
                                     "entity": "input_number.pcs1_led_power_safety_factor",
                                     "name": "LED Safety Factor",
                                     "icon": "mdi:seatbelt"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_daytime_day_active",
+                                    "name": "Day active",
+                                    "icon": "mdi:weather-sunny"
                                 }
                             ],
                             "title": "Hardware Controlls",
