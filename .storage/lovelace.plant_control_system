@@ -246,9 +246,13 @@
                                     "icon": "mdi:seatbelt"
                                 },
                                 {
-                                    "entity": "input_boolean.pcs1_daytime_day_active",
-                                    "name": "Day active",
-                                    "icon": "mdi:weather-sunny"
+                                    "entity": "input_boolean.pcs1_led_camera_mode_active",
+                                    "name": "LED Camera mode"
+                                },
+                                {
+                                    "entity": "input_button.pcs1_camera_manual_snapshot",
+                                    "name": "Camera Snapshot",
+                                    "icon": "mdi:camera"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -257,6 +261,9 @@
                         {
                             "type": "entities",
                             "entities": [
+                                {
+                                    "entity": "input_select.pcs1_seasonlight_settings"
+                                },
                                 {
                                     "entity": "input_select.pcs1_led_white_daylight_function",
                                     "name": "White Daylight Function"
@@ -404,16 +411,39 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "input_boolean.pcs1_led_white_camera_mode_active",
-                                "input_number.pcs1_led_white_brightness_camera_mode",
-                                "input_boolean.pcs1_led_red_camera_mode_active",
-                                "input_number.pcs1_led_red_brightness_camera_mode",
-                                "input_boolean.pcs1_led_blue_camera_mode_active",
-                                "input_number.pcs1_led_blue_brightness_camera_mode",
-                                "input_boolean.pcs1_led_green_camera_mode_active",
-                                "input_number.pcs1_led_green_brightness_camera_mode",
-                                "input_boolean.pcs1_led_uv_camera_mode_active",
-                                "input_number.pcs1_led_uv_brightness_camera_mode"
+                                {
+                                    "entity": "input_boolean.pcs1_camera_sequence"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_white_camera_mode_active"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_white_brightness_camera_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_red_camera_mode_active"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_red_brightness_camera_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_blue_camera_mode_active"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_blue_brightness_camera_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_green_camera_mode_active"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_green_brightness_camera_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_led_uv_camera_mode_active"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_led_uv_brightness_camera_mode"
+                                }
                             ],
                             "title": "LED Camera Mode",
                             "show_header_toggle": false
@@ -477,15 +507,15 @@
                                     "name": "Day length max"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_daytime_growth_period_start",
+                                    "entity": "input_datetime.pcs1_date_growth_period_start",
                                     "name": "Start Date"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_daytime_growth_period_solstice",
+                                    "entity": "input_datetime.pcs1_date_growth_period_solstice",
                                     "name": "Solstice Date"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_daytime_growth_period_end",
+                                    "entity": "input_datetime.pcs1_date_growth_period_end",
                                     "name": "End Date"
                                 }
                             ],
