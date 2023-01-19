@@ -119,12 +119,27 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "binary_sensor.pcs1_kin_status",
-                                "button.pcs1_kin_restart",
-                                "binary_sensor.pcs1_pump_status",
-                                "button.pcs1_pump_restart",
-                                "binary_sensor.pcs1_as_status",
-                                "button.pcs1_as_restart"
+                                {
+                                    "entity": "binary_sensor.pcs1_kin_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_kin_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_pump_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_pump_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_as_status"
+                                },
+                                {
+                                    "entity": "button.pcs1_as_restart"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_shellyflood1_flood"
+                                }
                             ],
                             "title": "PCS 1 Other"
                         }
@@ -244,15 +259,6 @@
                                     "entity": "input_number.pcs1_led_power_safety_factor",
                                     "name": "LED Safety Factor",
                                     "icon": "mdi:seatbelt"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_camera_mode_active",
-                                    "name": "LED Camera mode"
-                                },
-                                {
-                                    "entity": "input_button.pcs1_camera_manual_snapshot",
-                                    "name": "Camera Snapshot",
-                                    "icon": "mdi:camera"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -415,6 +421,9 @@
                                     "entity": "input_boolean.pcs1_camera_sequence"
                                 },
                                 {
+                                    "entity": "input_boolean.pcs1_led_camera_mode_active"
+                                },
+                                {
                                     "entity": "input_boolean.pcs1_led_white_camera_mode_active"
                                 },
                                 {
@@ -471,10 +480,10 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_daylength_function_1"
+                                    "entity": "input_select.pcs1_daylength_function_12"
                                 },
                                 {
-                                    "entity": "input_select.pcs1_daylength_function_2"
+                                    "entity": "input_select.pcs1_daylength_function_23"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_daytime_day_active",
@@ -482,9 +491,6 @@
                                 },
                                 {
                                     "entity": "sensor.time"
-                                },
-                                {
-                                    "entity": "sensor.date"
                                 },
                                 {
                                     "entity": "input_datetime.pcs1_daytime_day_start",
@@ -495,32 +501,81 @@
                                     "name": "Day end"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_daytime_day_length_min",
-                                    "name": "Day length min"
-                                },
-                                {
                                     "entity": "input_datetime.pcs1_daytime_day_length",
                                     "name": "Day length"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_daytime_day_length_max",
-                                    "name": "Day length max"
+                                    "entity": "input_datetime.pcs1_daytime_day_length_1",
+                                    "name": "Day Length 1"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_date_growth_period_start",
-                                    "name": "Start Date"
+                                    "entity": "input_datetime.pcs1_daytime_day_length_2",
+                                    "name": "Day length 2"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_date_growth_period_solstice",
-                                    "name": "Solstice Date"
+                                    "entity": "input_datetime.pcs1_daytime_day_length_3",
+                                    "name": "Day length 3"
                                 },
                                 {
-                                    "entity": "input_datetime.pcs1_date_growth_period_end",
-                                    "name": "End Date"
+                                    "entity": "sensor.date"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_date_growth_period_1",
+                                    "name": "Date 1"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_date_growth_period_2",
+                                    "name": "Date 2"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_date_growth_period_3",
+                                    "name": "Date 3"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_daytime_growth_period_2_set_percentage",
+                                    "name": "Set Percentage 2",
+                                    "icon": "mdi:format-align-middle"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_date_growth_period_2_percentage",
+                                    "name": "Percentage 2"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_daytime_growth_period_3_set_period",
+                                    "name": "Set Growth Period"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_date_growth_period_3_days",
+                                    "name": "Growth Period"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_period_progress",
+                                    "name": "Progress"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_days",
+                                    "name": "Days 2"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_period_length_23",
+                                    "name": "Days 3"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_12",
+                                    "name": "Minutes / Day 12"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_23",
+                                    "name": "Minutes / Day 23"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_23_2",
+                                    "name": "Section"
                                 }
                             ],
                             "title": "Daytime control",
-                            "show_header_toggle": false
+                            "show_header_toggle": false,
+                            "state_color": false
                         },
                         {
                             "type": "entities",
@@ -637,6 +692,12 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_growth_chamber_average_max_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_shellyflood1_temperature"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_shellyflood1_temperature"
                                 }
                             ],
                             "title": "Temperature"
@@ -1577,7 +1638,27 @@
                                 {
                                     "entity": "number.pcs1_pump_duration"
                                 }
-                            ]
+                            ],
+                            "title": "Pump Settings",
+                            "show_header_toggle": false
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.pcs1_shellyflood1_flood"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_shellyflood1_battery"
+                                },
+                                {
+                                    "entity": "binary_sensor.pcs1_shellyflood2_flood"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_shellyflood2_battery"
+                                }
+                            ],
+                            "title": "Shelly Flood Sensors"
                         }
                     ]
                 },

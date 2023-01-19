@@ -202,6 +202,11 @@ input_boolean:
   pcs1_daytime_day_active:
     name: pcs1.daytime_day_active 
   
+  pcs1_daytime_growth_period_2_set_percentage:
+    name: pcs1.daytime_growth_period_2_set_percentage
+
+  pcs1_daytime_growth_period_3_set_period:
+    name: pcs1.daytime_growth_period_3_set_period
   
   ##########################################################
   ## old entities for test automations in home assistant...
@@ -252,7 +257,8 @@ input_select:
     name: pcs1.led_white_daylight_function
     options:
       - USER_VALUES
-      - CONSTANT
+      - CONSTANT_MIN
+      - CONSTANT_MAX
       - PYRAMIDAL
       - INVERSE_PYRAMIDAL
       - SINE
@@ -272,7 +278,8 @@ input_select:
     name: pcs1.led_red_daylight_function
     options:
       - USER_VALUES
-      - CONSTANT
+      - CONSTANT_MIN
+      - CONSTANT_MAX
       - PYRAMIDAL
       - INVERSE_PYRAMIDAL
       - SINE
@@ -292,7 +299,8 @@ input_select:
     name: pcs1.led_blue_daylight_function
     options:
       - USER_VALUES
-      - CONSTANT
+      - CONSTANT_MIN
+      - CONSTANT_MAX
       - PYRAMIDAL
       - INVERSE_PYRAMIDAL
       - SINE
@@ -312,7 +320,8 @@ input_select:
     name: pcs1.led_green_daylight_function
     options:
       - USER_VALUES
-      - CONSTANT
+      - CONSTANT_MIN
+      - CONSTANT_MAX
       - PYRAMIDAL
       - INVERSE_PYRAMIDAL
       - SINE
@@ -332,7 +341,8 @@ input_select:
     name: pcs1.led_uv_daylight_function
     options:
       - USER_VALUES
-      - CONSTANT
+      - CONSTANT_MIN
+      - CONSTANT_MAX
       - PYRAMIDAL
       - INVERSE_PYRAMIDAL
       - SINE
@@ -348,47 +358,33 @@ input_select:
       - PEAK_RIGHT
     initial: PLATEAU
 
-  pcs1_daylength_function_1:
-    name: pcs1.daylength_function_1
+  pcs1_daylength_function_12:
+    name: pcs1.daylength_function_12
     options:
+      - USER_VALUES
       - CONSTANT_LOW
       - CONSTANT_HIGH
-      - DISCRETE_PEAK_FALLING
-      - DISCRETE_PEAK_RISING
-      - LINEAR_FALLING
-      - LINEAR_RISING
-      - S_CURVE_FALLING
-      - S_CURVE_RISING
-      - SPLINE_FALLING
-      - SPLINE_RISING
-      - PLATEAU_BIG_FALLING
-      - PLATEAU_BIG_RISING
-      - PLATEAU_MID_FALLING
-      - PLATEAU_MID_RISING
-      - PLATEAU_SMALL_FALLING
-      - PLATEAU_SMALL_RISING
-    initial: CONSTANT_LOW
+      - LINEAR
+      - S_CURVE
+      - SPLINE
+      - PLATEAU_BIG
+      - PLATEAU_MID
+      - PLATEAU_SMALL
+    initial: SPLINE
     
-  pcs1_daylength_function_2:
-    name: pcs1.daylength_function_2
+  pcs1_daylength_function_23:
+    name: pcs1.daylength_function_23
     options:
+      - USER_VALUES
       - CONSTANT_LOW
       - CONSTANT_HIGH
-      - DISCRETE_PEAK_FALLING
-      - DISCRETE_PEAK_RISING
-      - LINEAR_FALLING
-      - LINEAR_RISING
-      - S_CURVE_FALLING
-      - S_CURVE_RISING
-      - SPLINE_FALLING
-      - SPLINE_RISING
-      - PLATEAU_BIG_FALLING
-      - PLATEAU_BIG_RISING
-      - PLATEAU_MID_FALLING
-      - PLATEAU_MID_RISING
-      - PLATEAU_SMALL_FALLING
-      - PLATEAU_SMALL_RISING
-    initial: CONSTANT_HIGH
+      - LINEAR
+      - S_CURVE
+      - SPLINE
+      - PLATEAU_BIG
+      - PLATEAU_MID
+      - PLATEAU_SMALL
+    initial: SPLINE
 
   pcs1_seasonlight_settings:
     name: pcs1.seasonlight_settings
@@ -637,6 +633,20 @@ input_number:
     min: 0
     max: 100
     step: 1 
+  
+  pcs1_date_growth_period_2_percentage:
+    name: pcs1.date_growth_period_2_percentage
+    initial: 0.5
+    min: 0
+    max: 1
+    step: 0.05
+  
+  pcs1_date_growth_period_3_days:
+    name: pcs1.date_growth_period_3_days
+    initial: 0
+    min: 0
+    max: 365
+    step: 1
 
 input_text:
   pcs1_plant1_name:
@@ -678,34 +688,39 @@ input_datetime:
     name: pcs1.daytime_day_end
     has_date: false
     has_time: true
-  
+
   pcs1_daytime_day_length:
     name: pcs1.daytime_day_length
     has_date: false
     has_time: true
-  
-  pcs1_daytime_day_length_min:
-    name: pcs1.daytime_day_length_min
-    has_date: false
-    has_time: true
-  
-  pcs1_daytime_day_length_max:
-    name: pcs1.daytime_day_length_max
+    
+  pcs1_daytime_day_length_1:
+    name: pcs1.daytime_day_length_1
     has_date: false
     has_time: true
     
-  pcs1_date_growth_period_start:
-    name: pcs1.daytime_growth_period_start
+  pcs1_daytime_day_length_2:
+    name: pcs1.daytime_day_length_2
+    has_date: false
+    has_time: true
+
+  pcs1_daytime_day_length_3:
+    name: pcs1.daytime_day_length_3
+    has_date: false
+    has_time: true
+    
+  pcs1_date_growth_period_1:
+    name: pcs1.daytime_growth_period_1
     has_date: true
     has_time: false
   
-  pcs1_date_growth_period_solstice:
-    name: pcs1.daytime_growth_period_solstice
+  pcs1_date_growth_period_2:
+    name: pcs1.daytime_growth_period_2
     has_date: true
     has_time: false
     
-  pcs1_date_growth_period_end:
-    name: pcs1.daytime_growth_period_end
+  pcs1_date_growth_period_3:
+    name: pcs1.daytime_growth_period_3
     has_date: true
     has_time: false
   
