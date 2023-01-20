@@ -268,9 +268,6 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "input_select.pcs1_seasonlight_settings"
-                                },
-                                {
                                     "entity": "input_select.pcs1_led_white_daylight_function",
                                     "name": "White Daylight Function"
                                 },
@@ -562,15 +559,21 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_day_length_minutes_per_day_average_12",
-                                    "name": "Minutes / Day 12"
+                                    "name": "Average change rate 12"
                                 },
                                 {
                                     "entity": "sensor.pcs1_day_length_minutes_per_day_average_23",
-                                    "name": "Minutes / Day 23"
+                                    "name": "Average change rate 23"
                                 },
                                 {
                                     "entity": "sensor.pcs1_day_length_minutes_per_day_average_23_2",
                                     "name": "Section"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_daytime_day_length_min"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_daytime_day_length_max"
                                 }
                             ],
                             "title": "Daytime control",

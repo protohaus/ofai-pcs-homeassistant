@@ -103,8 +103,9 @@ input_boolean:
   
   pcs1_automation_seasonlight_active:
     name: pcs1.automation_seasonlight.active
-
   
+  pcs1_seasonlight_invert_seasons:
+    name: pcs1seasonlight_invert_seasons
     
   pcs1_automation_camera_active:
     name: pcs1.automation_camera.active
