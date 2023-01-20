@@ -209,6 +209,9 @@ input_boolean:
   pcs1_daytime_growth_period_3_set_period:
     name: pcs1.daytime_growth_period_3_set_period
   
+  node_red_heartbeat:
+    name: node_red_heartbeat
+    
   ##########################################################
   ## old entities for test automations in home assistant...
   ##########################################################

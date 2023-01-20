@@ -615,6 +615,12 @@
                                 }
                             ],
                             "title": "Kinematics Settings"
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                "input_boolean.node_red_heartbeat"
+                            ]
                         }
                     ]
                 },

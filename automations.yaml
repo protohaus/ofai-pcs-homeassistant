@@ -51,7 +51,7 @@
       message: Daily Life Sign.
   mode: restart
 - id: '1672134136129'
-  alias: Watchdogled
+  alias: watchdog_led_temperature
   description: ''
   trigger:
   - platform: time_pattern
@@ -72,3 +72,37 @@
       entity_id:
       - sensor.pcs1_main_power
   mode: single
+- id: '1674218687970'
+  alias: watchdog_node_red_heartbeat
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /10
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.node_red_heartbeat
+        state: 'off'
+      sequence:
+      - service: persistent_notification.create
+        data:
+          message: Node Red Offline
+          title: Node Red Offline - turned off PCS Main Switch
+          notification_id: nodered_offline
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.node_red_heartbeat
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.node_red_heartbeat
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.pcs1_main
+    default: []
+  mode: restart
