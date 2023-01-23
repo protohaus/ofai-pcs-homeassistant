@@ -259,6 +259,25 @@
                                     "entity": "input_number.pcs1_led_power_safety_factor",
                                     "name": "LED Safety Factor",
                                     "icon": "mdi:seatbelt"
+                                },
+                                {
+                                    "entity": "number.pcs1_pump_interval",
+                                    "icon": "mdi:timer",
+                                    "name": "Pump Interval"
+                                },
+                                {
+                                    "entity": "number.pcs1_pump_duration",
+                                    "name": "Pump Duration",
+                                    "icon": "mdi:water-pump"
+                                },
+                                {
+                                    "entity": "input_number.pcs1_pump_duration_percent",
+                                    "name": "Cycle Percent"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_pump_duration_percent_activate",
+                                    "icon": "mdi:water-percent",
+                                    "name": "Use Cycle Percentage"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -619,7 +638,10 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "input_boolean.node_red_heartbeat"
+                                {
+                                    "entity": "input_boolean.node_red_heartbeat",
+                                    "secondary_info": "last-updated"
+                                }
                             ]
                         }
                     ]
@@ -736,11 +758,27 @@
                         {
                             "type": "entities",
                             "entities": [
-                                "sensor.pcs1_cam1_bh1750_1_illuminance",
-                                "sensor.pcs1_cam3_bh1750_1_illuminance",
-                                "sensor.pcs1_cam4_bh1750_1_illuminance",
-                                "sensor.pcs1_cam5_bh1750_1_illuminance",
-                                "sensor.pcs1_cam6_bh1750_1_illuminance"
+                                {
+                                    "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_growth_chamber_average_illuminance"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_led1_growth_chamber_max_illuminance"
+                                }
                             ],
                             "title": "Illuminance"
                         },
@@ -1698,19 +1736,13 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "switch.pcs1_as_ec_enable"
+                                    "entity": "switch.pcs1_as_ec_enable_reading_values"
                                 },
                                 {
-                                    "entity": "switch.pcs1_as_ph_enable"
+                                    "entity": "switch.pcs1_as_ph_enable_reading_values"
                                 },
                                 {
-                                    "entity": "switch.pcs1_as_rtd_enable"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_all_enable"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_all_disable"
+                                    "entity": "switch.pcs1_as_rtd_enable_reading_values"
                                 }
                             ],
                             "title": "Enable Sensors",
@@ -1742,16 +1774,6 @@
                                 }
                             ],
                             "title": "Temperature compensation",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "switch.pcs1_as_ec_enable_sending_values",
-                                "switch.pcs1_as_ph_enable_sending_values",
-                                "switch.pcs1_as_rtd_enable_sending_values"
-                            ],
-                            "title": "Sending Values",
                             "show_header_toggle": false
                         },
                         {

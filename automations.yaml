@@ -65,6 +65,9 @@
     - condition: numeric_state
       entity_id: sensor.pcs1_growth_chamber_average_temperature
       above: '26'
+    - condition: numeric_state
+      entity_id: sensor.pcs1_kin_dallas_4_temperature
+      above: '45'
   action:
   - service: homeassistant.turn_off
     data: {}
@@ -91,6 +94,19 @@
           message: Node Red Offline
           title: Node Red Offline - turned off PCS Main Switch
           notification_id: nodered_offline
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.pcs1_kin_stepper_start_automation
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.pcs1_main
     - conditions:
       - condition: state
         entity_id: input_boolean.node_red_heartbeat
@@ -100,9 +116,5 @@
         data: {}
         target:
           entity_id: input_boolean.node_red_heartbeat
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.pcs1_main
     default: []
-  mode: restart
+  mode: single

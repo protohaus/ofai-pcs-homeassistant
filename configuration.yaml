@@ -212,6 +212,9 @@ input_boolean:
   node_red_heartbeat:
     name: node_red_heartbeat
     
+  pcs1_pump_duration_percent_activate:
+    name: pcs1.pump_duration_percent_activate
+    
   ##########################################################
   ## old entities for test automations in home assistant...
   ##########################################################
@@ -651,6 +654,15 @@ input_number:
     min: 0
     max: 365
     step: 1
+    
+  pcs1_pump_duration_percent:
+    name: pcs1.pump_duration_percent
+    initial: 5
+    min: 0
+    max: 100
+    step: 0.01
+    mode: box
+    
 
 input_text:
   pcs1_plant1_name:
@@ -866,7 +878,7 @@ sensor:
 
   - platform: min_max
     type: max
-    name: "pcs1.led1.growth_chamber.max_illuminance"
+    name: "pcs1.growth_chamber.max_illuminance"
     entity_ids:
       - sensor.pcs1_cam1_bh1750_1_illuminance
       - sensor.pcs1_cam3_bh1750_1_illuminance
@@ -878,4 +890,4 @@ sensor:
     name: "pcs1.growth_chamber.average_max_illuminance"
     duration: 00:00:5
     entities:
-      - sensor.pcs1_led1_growth_chamber_max_illuminance
+      - sensor.pcs1_growth_chamber_max_illuminance
