@@ -113,8 +113,8 @@ input_boolean:
   pcs1_mode_maintenance_active:
     name: pcs1.maintenance_mode.active
   
-  pcs1_pump_synchronized:
-    name: pcs1.pump_synchronized
+  pcs1_pump_kinematics_sync:
+    name: pcs1.pump_kinematics_sync
     
   pcs1_cameras_enabled:
     name: pcs1.cameras_enabled

@@ -278,6 +278,11 @@
                                     "entity": "input_boolean.pcs1_pump_duration_percent_activate",
                                     "icon": "mdi:water-percent",
                                     "name": "Use Cycle Percentage"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_pump_kinematics_sync",
+                                    "name": "Pump-Kin Sync",
+                                    "icon": "mdi:equal"
                                 }
                             ],
                             "title": "Hardware Controlls",
@@ -593,6 +598,9 @@
                                 },
                                 {
                                     "entity": "sensor.pcs1_daytime_day_length_max"
+                                },
+                                {
+                                    "entity": "sensor.pcs1_daytime_day_length_max_2"
                                 }
                             ],
                             "title": "Daytime control",
