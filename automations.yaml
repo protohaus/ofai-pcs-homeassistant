@@ -118,3 +118,44 @@
           entity_id: input_boolean.node_red_heartbeat
     default: []
   mode: single
+- id: '1674833598388'
+  alias: automation_power_supply_control
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /10
+  condition:
+  - condition: state
+    entity_id: input_boolean.pcs1_automation_power_supply_active
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: input_datetime.pcs1_power_supply_end
+        before: input_datetime.pcs1_power_supply_start
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.pcs1_main
+    - conditions:
+      - condition: time
+        weekday:
+        - sun
+        - sat
+        after: 00:00:00
+        before: '23:59:59'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.pcs1_main
+    default: []
+  mode: restart

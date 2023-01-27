@@ -1,3 +1,6 @@
+#homeassistant:
+#  packages: !include packages/drop-in/persistence.yaml
+
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
@@ -70,7 +73,10 @@ input_boolean:
 
   activate_looper:
     name: Activate looper
-
+  
+  pcs1_automation_power_supply_active:
+    name: pcs1.automation_power_supply.active
+    
   pcs1_automation_main_active:
     name: pcs1.automation_main.active
 
@@ -693,7 +699,15 @@ input_datetime:
   #  name: Input with only date
   #  has_date: true
   #  has_time: false
-  
+  pcs1_power_supply_start:
+    name: pcs1.power_supply_start
+    has_date: false
+    has_time: true
+    
+  pcs1_power_supply_end:
+    name: pcs1.power_supply_end
+    has_date: false
+    has_time: true
   
   pcs1_daytime_day_start:
     name: pcs1.daytime_day_start

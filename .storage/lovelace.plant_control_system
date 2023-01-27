@@ -149,13 +149,28 @@
                     "theme": "Backend-selected",
                     "title": "Automation",
                     "path": "automation",
+                    "type": "sidebar",
                     "badges": [],
                     "cards": [
                         {
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "switch.pcs1_main"
+                                    "entity": "input_datetime.pcs1_power_supply_start",
+                                    "name": "Main Power Time Start"
+                                },
+                                {
+                                    "entity": "input_datetime.pcs1_power_supply_end",
+                                    "name": "Main Power Time End"
+                                },
+                                {
+                                    "entity": "input_boolean.pcs1_automation_power_supply_active",
+                                    "name": "Automatically turn off Main Power"
+                                },
+                                {
+                                    "entity": "switch.pcs1_main",
+                                    "name": "Main Power Supply",
+                                    "icon": "mdi:power"
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_automation_main_active",
@@ -508,7 +523,8 @@
                                 },
                                 {
                                     "entity": "input_boolean.pcs1_daytime_day_active",
-                                    "name": "Day"
+                                    "name": "Day",
+                                    "secondary_info": "last-changed"
                                 },
                                 {
                                     "entity": "sensor.time"
@@ -1682,7 +1698,8 @@
                                     "entity": "switch.pcs1_pump_enable"
                                 },
                                 {
-                                    "entity": "switch.pcs1_pump_single_activation"
+                                    "entity": "switch.pcs1_pump_single_activation",
+                                    "secondary_info": "last-changed"
                                 },
                                 {
                                     "entity": "switch.pcs1_pump_automation"
