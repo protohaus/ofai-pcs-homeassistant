@@ -68,6 +68,9 @@
     - condition: numeric_state
       entity_id: sensor.pcs1_kin_dallas_4_temperature
       above: '45'
+    - condition: state
+      entity_id: sensor.pcs1_max_temperature
+      state: '50'
   action:
   - service: homeassistant.turn_off
     data: {}
@@ -76,47 +79,27 @@
       - sensor.pcs1_main_power
   mode: single
 - id: '1674218687970'
-  alias: watchdog_node_red_heartbeat
+  alias: watchdog_nodered_heartbeat_restart
   description: ''
   trigger:
   - platform: time_pattern
-    minutes: /10
-  condition: []
+    seconds: /10
+  condition:
+  - condition: state
+    entity_id: input_boolean.node_red_heartbeat
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
   action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.node_red_heartbeat
-        state: 'off'
-      sequence:
-      - service: persistent_notification.create
-        data:
-          message: Node Red Offline
-          title: Node Red Offline - turned off PCS Main Switch
-          notification_id: nodered_offline
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.pcs1_kin_stepper_start_automation
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 10
-          milliseconds: 0
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.pcs1_main
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.node_red_heartbeat
-        state: 'on'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.node_red_heartbeat
-    default: []
+  - service: hassio.addon_restart
+    data:
+      addon: a0d7b954_nodered
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.node_red_heartbeat
   mode: single
 - id: '1674833598388'
   alias: automation_power_supply_control
@@ -131,27 +114,9 @@
   action:
   - choose:
     - conditions:
-      - condition: time
-        after: input_datetime.pcs1_power_supply_end
-        before: input_datetime.pcs1_power_supply_start
-        weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-      sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.pcs1_main
-    - conditions:
-      - condition: time
-        weekday:
-        - sun
-        - sat
-        after: 00:00:00
-        before: '23:59:59'
+      - condition: state
+        entity_id: schedule.pcs1_main_power_schedule
+        state: 'off'
       sequence:
       - service: switch.turn_off
         data: {}
@@ -159,3 +124,47 @@
           entity_id: switch.pcs1_main
     default: []
   mode: restart
+- id: '1685090732927'
+  alias: watchdog_nodered_heartbeat_shutdown
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /10
+  condition:
+  - condition: state
+    entity_id: input_boolean.node_red_heartbeat
+    state: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.pcs1_kin_stepper_enable_motor
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.pcs1_main
+  mode: single
+- id: '1685090902166'
+  alias: watchdog_nodered_heartbeat
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /10
+  condition:
+  - condition: state
+    entity_id: input_boolean.node_red_heartbeat
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.node_red_heartbeat
+  mode: single

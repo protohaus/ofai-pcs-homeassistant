@@ -1,572 +1,305 @@
 {
-    "version": 1,
-    "minor_version": 1,
-    "key": "lovelace.lovelace_pcs",
-    "data": {
-        "config": {
-            "views": [
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.lovelace_pcs",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "theme": "Backend-selected",
+          "title": "Automation",
+          "path": "automation",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
                 {
-                    "theme": "Backend-selected",
-                    "title": "Sensor data",
-                    "path": "sensor-data",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "custom:plotly-graph",
-                            "title": "Temperature and Humidity",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_temperature",
-                                    "line": {
-                                        "color": "orange",
-                                        "width": 2
-                                    },
-                                    "name": "led_panel_average_temp",
-                                    "show_value": true,
-                                    "yaxis": "y2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_max_temperature",
-                                    "line": {
-                                        "color": "red",
-                                        "width": 2
-                                    },
-                                    "name": "led_panel_max_temp",
-                                    "show_value": true,
-                                    "yaxis": "y2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_outside_average_temperature",
-                                    "line": {
-                                        "color": "blue",
-                                        "width": 2
-                                    },
-                                    "name": "outside_temp",
-                                    "show_value": true,
-                                    "yaxis": "y2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
-                                    "line": {
-                                        "color": "black",
-                                        "width": 2
-                                    },
-                                    "name": "electronics_area_temp",
-                                    "show_value": true,
-                                    "yaxis": "y2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
-                                    "line": {
-                                        "color": "green",
-                                        "width": 2
-                                    },
-                                    "name": "growth_chamber_temp",
-                                    "show_value": true,
-                                    "yaxis": "y2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
-                                    "line": {
-                                        "color": "yellow",
-                                        "width": 2
-                                    },
-                                    "name": "growth_chamber_humidity",
-                                    "show_value": true,
-                                    "yaxis": "y1"
-                                }
-                            ],
-                            "hours_to_show": 3,
-                            "refresh_interval": 10,
-                            "layout": {
-                                "plot_bgcolor": "lightgray",
-                                "height": 700,
-                                "xaxis": {
-                                    "rangeselector": {
-                                        "y": 1.3,
-                                        "buttons": [
-                                            {
-                                                "count": 30,
-                                                "step": "minute"
-                                            },
-                                            {
-                                                "count": 1,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 6,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 24,
-                                                "step": "hour"
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "type": "picture-elements",
-                            "elements": [
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_outside_average_temperature",
-                                    "style": {
-                                        "top": "17%",
-                                        "left": "14%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_electronics_area_average_temperature",
-                                    "style": {
-                                        "top": "17%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_led_panel_average_temperature",
-                                    "style": {
-                                        "top": "37%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_led_panel_max_temperature",
-                                    "style": {
-                                        "top": "37%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_growth_chamber_average_temperature",
-                                    "style": {
-                                        "top": "57%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_growth_chamber_average_humidity",
-                                    "style": {
-                                        "top": "57%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_ec",
-                                    "style": {
-                                        "top": "77%",
-                                        "left": "65%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_ph",
-                                    "style": {
-                                        "top": "77%",
-                                        "left": "37%"
-                                    }
-                                },
-                                {
-                                    "type": "state-badge",
-                                    "entity": "sensor.pcs1_as_rtd",
-                                    "style": {
-                                        "top": "90%",
-                                        "left": "50%"
-                                    }
-                                }
-                            ],
-                            "image": "/local/pcs_overview.png"
-                        },
-                        {
-                            "type": "custom:plotly-graph",
-                            "title": "Kinematics",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
-                                    "line": {
-                                        "color": "orange",
-                                        "width": 2
-                                    },
-                                    "name": "plant_gear_angle",
-                                    "show_value": true,
-                                    "yaxis": "y1"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_angle",
-                                    "line": {
-                                        "color": "blue",
-                                        "width": 2
-                                    },
-                                    "name": "global_angle",
-                                    "show_value": true,
-                                    "yaxis": "y1"
-                                }
-                            ],
-                            "hours_to_show": 3,
-                            "refresh_interval": 10,
-                            "layout": {
-                                "plot_bgcolor": "lightgray",
-                                "height": 700,
-                                "xaxis": {
-                                    "rangeselector": {
-                                        "y": 1.3,
-                                        "buttons": [
-                                            {
-                                                "count": 30,
-                                                "step": "minute"
-                                            },
-                                            {
-                                                "count": 1,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 6,
-                                                "step": "hour"
-                                            },
-                                            {
-                                                "count": 24,
-                                                "step": "hour"
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.pcs1_led_panel_average_max_temperature",
-                                "sensor.pcs1_led_panel_max_temperature"
-                            ]
-                        }
-                    ]
+                  "entity": "switch.pcs1_main",
+                  "name": "Main Power Supply",
+                  "icon": "mdi:power"
                 },
                 {
-                    "theme": "Backend-selected",
-                    "title": "Home",
-                    "icon": "",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_boolean.activate_kinematics_automation",
-                                    "icon": "mdi:cog-play"
-                                },
-                                {
-                                    "entity": "input_boolean.activate_led_automation",
-                                    "icon": "mdi:lightbulb-group-outline"
-                                },
-                                {
-                                    "entity": "automation.pump",
-                                    "icon": "mdi:lightbulb-group-outline"
-                                }
-                            ],
-                            "title": "Automations",
-                            "show_header_toggle": false,
-                            "state_color": true
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_kin_stepper_enable_motor",
-                                    "name": "Enable kinematics controller",
-                                    "icon": "mdi:cog"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_start_global_homing",
-                                    "name": "Global homing",
-                                    "icon": "mdi:home"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_find_next_home",
-                                    "name": "Go to next home",
-                                    "icon": "mdi:walk"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_drive_fw",
-                                    "name": "Drive forward",
-                                    "icon": "mdi:skip-forward"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_drive_bw",
-                                    "name": "Drive backward",
-                                    "icon": "mdi:skip-backward"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_stop",
-                                    "icon": "mdi:stop-circle-outline",
-                                    "name": "Stop"
-                                },
-                                {
-                                    "entity": "switch.pcs1_kin_stepper_start_automation",
-                                    "name": "Start 10 min. Automation",
-                                    "icon": "mdi:cog"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_set_homing_valid",
-                                    "name": "Set Homing valid",
-                                    "icon": "mdi:alert-circle-check-outline"
-                                }
-                            ],
-                            "title": "Kinematics",
-                            "state_color": true,
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.time_date"
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_datetime.day_start"
-                                },
-                                {
-                                    "entity": "input_datetime.day_length"
-                                },
-                                {
-                                    "entity": "input_datetime.date_test"
-                                },
-                                {
-                                    "entity": "input_number.time_diff"
-                                }
-                            ]
-                        }
-                    ]
+                  "entity": "input_boolean.pcs1_automation_main_active",
+                  "icon": "mdi:play",
+                  "name": "Main Automation"
                 },
                 {
-                    "theme": "Backend-selected",
-                    "title": "LEDs",
-                    "path": "leds",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_1_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_2_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_3_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_4_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_1_butterfly"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_3_butterfly"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_4_butterfly"
-                                }
-                            ],
-                            "title": "Red",
-                            "state_color": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_pwm_cc_a_3_520nm"
-                            ],
-                            "title": "Green"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_pwm_cc_a_1_white",
-                                "light.pcs1_pwm_cc_a_2_white"
-                            ],
-                            "title": "White"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_1_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_2_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_3_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_4_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_2_butterfly"
-                                }
-                            ],
-                            "title": "Blue"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "fan.pcs1_pwm_cc_a_4_fan",
-                                    "name": "Fan"
-                                }
-                            ],
-                            "title": "Fan"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "light.pcs1_led4_cc_b_3_280nm",
-                                "light.pcs1_led4_cc_b_4_280nm"
-                            ],
-                            "title": "Ultra Violette"
-                        }
-                    ]
+                  "entity": "input_boolean.pcs1_automation_camera_active",
+                  "name": "Cameras",
+                  "icon": "mdi:camera"
                 },
                 {
-                    "theme": "Backend-selected",
-                    "title": "Cameras",
-                    "path": "cameras",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam1_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 1"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam2_camera",
-                            "name": "Cam 2",
-                            "aspect_ratio": "3:2"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam3_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 3"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam4_camera",
-                            "name": "Cam 4",
-                            "aspect_ratio": "3:2"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam5_camera",
-                            "name": "Cam 5",
-                            "aspect_ratio": "3:2"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam6_camera",
-                            "name": "Cam 6",
-                            "aspect_ratio": "3:2"
-                        },
-                        {
-                            "show_state": true,
-                            "show_name": true,
-                            "camera_view": "auto",
-                            "type": "picture-entity",
-                            "entity": "camera.pcs1_cam7_camera",
-                            "aspect_ratio": "3:2",
-                            "name": "Cam 7"
-                        },
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        "switch.njb_espcam1_flashlight",
-                                        "button.njb_espcam1_restart",
-                                        "button.njb_espcam1_snapshot",
-                                        "binary_sensor.njb_espcam1_status",
-                                        "sensor.njb_espcam1_wifi_signal"
-                                    ]
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.njb_espcam1_camera"
-                                }
-                            ]
-                        }
-                    ]
+                  "entity": "input_boolean.pcs1_automation_kinematics_active",
+                  "name": "Kinematics",
+                  "icon": "mdi:cog-play"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_led_active",
+                  "name": "LEDs",
+                  "icon": "mdi:led-on"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_fan_active",
+                  "name": "Fan",
+                  "icon": "mdi:fan"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_pump_active",
+                  "name": "Pump",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "schedule.pcs1_main_power_schedule",
+                  "name": "Power Supply Schedule",
+                  "icon": "mdi:power"
                 }
-            ],
-            "title": "Plant Control System"
+              ],
+              "title": "Automations",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.pcs1_mode_maintenance_active",
+                  "name": "Maintenance Mode",
+                  "icon": "mdi:cog"
+                },
+                {
+                  "entity": "switch.pcs1_kin_stepper_enable_motor",
+                  "name": "Enable Kinematics",
+                  "icon": "mdi:cog-play"
+                },
+                {
+                  "entity": "switch.pcs1_pump_enable",
+                  "name": "Enable Pump",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "input_boolean.pcs1_cameras_enabled",
+                  "name": "Enable Cameras",
+                  "icon": "mdi:camera"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_uv_enabled",
+                  "name": "Enable UV Light"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_enabled",
+                  "name": "Enable LEDs",
+                  "icon": "mdi:stop-circle-outline"
+                },
+                {
+                  "entity": "number.pcs1_pump_duration",
+                  "name": "Pump Duration",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "input_number.pcs1_pump_duration_percent",
+                  "name": "Cycle Percent"
+                }
+              ],
+              "title": "Hardware Controlls",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.pcs1_led_white_active",
+                  "name": "White"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_red_active",
+                  "name": "Red"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_blue_active",
+                  "name": "Blue"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_green_active",
+                  "name": "Green"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_uv_active",
+                  "name": "UV"
+                }
+              ],
+              "title": "LED Automation Mode",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.time"
+                },
+                {
+                  "entity": "sensor.date"
+                },
+                {
+                  "entity": "sensor.pcs1_daytime_day_length_max_2",
+                  "name": "Current Daylength"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_start",
+                  "name": "Day start"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_end",
+                  "name": "Day end"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_period_progress",
+                  "name": "Days since start"
+                },
+                {
+                  "entity": "sensor.pcs1_days",
+                  "name": "Days until solstice"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_period_length_23",
+                  "name": "Days until end"
+                }
+              ],
+              "show_header_toggle": false,
+              "state_color": false,
+              "title": "Growth Period"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.pcs1_led_white_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_flashlight_mode_enabled",
+                  "name": "Use Camera Flashlights"
+                },
+                {
+                  "entity": "input_button.pcs1_camera_manual_snapshot"
+                }
+              ],
+              "title": "LED Camera Mode",
+              "show_header_toggle": false,
+              "state_color": true
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Sensor Data",
+          "path": "grafana",
+          "type": "panel",
+          "badges": [],
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "http://ofai-pcs-homeassistant:3000/api/hassio_ingress/eX-WjN8zk23ey-ZVWPkLFSKnlNE1ju0si5XhHJlwKgQ/d/hrrn5gJ4z/plant-control-system-1-sensor-data?orgId=1&refresh=5s&from=now-6h&to=now",
+              "aspect_ratio": "50%"
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Power Consumption",
+          "path": "power-consumption",
+          "type": "panel",
+          "badges": [],
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "http://ofai-pcs-homeassistant:3000/api/hassio_ingress/eX-WjN8zk23ey-ZVWPkLFSKnlNE1ju0si5XhHJlwKgQ/d/U2Qrog1Vz/plant-control-system-1-power-consumption?orgId=1&refresh=5s",
+              "aspect_ratio": "100%"
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Kinematics Data",
+          "path": "kinematics-data",
+          "type": "panel",
+          "badges": [],
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "http://ofai-pcs-homeassistant:3000/api/hassio_ingress/eX-WjN8zk23ey-ZVWPkLFSKnlNE1ju0si5XhHJlwKgQ/d/TX191g14z/plant-control-system-1-kinematics?orgId=1&refresh=5s",
+              "aspect_ratio": "100%"
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Plants",
+          "path": "plants",
+          "badges": [],
+          "cards": [
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant1_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 1"
+            },
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant2_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 2"
+            },
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant3_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 3"
+            },
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant4_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 4"
+            },
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant5_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 5"
+            },
+            {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "auto",
+              "type": "picture-entity",
+              "entity": "camera.pcs1_plant6_latest",
+              "aspect_ratio": "3:2",
+              "name": "Plant 6"
+            }
+          ]
         }
+      ],
+      "title": "Plant Control System"
     }
+  }
 }

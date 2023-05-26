@@ -1,1901 +1,2140 @@
 {
-    "version": 1,
-    "minor_version": 1,
-    "key": "lovelace.plant_control_system",
-    "data": {
-        "config": {
-            "views": [
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.plant_control_system",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "theme": "Backend-selected",
+          "title": "PCS-1",
+          "path": "pcs-1",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
                 {
-                    "theme": "Backend-selected",
-                    "title": "PCS-1",
-                    "path": "pcs-1",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_main"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_main_energy"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_main_power"
-                                },
-                                {
-                                    "entity": "button.pcs1_main_reboot"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_main_uptime"
-                                }
-                            ],
-                            "title": "PCS 1 Main"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_cam1_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam1_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam2_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam2_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam3_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam3_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam4_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam4_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam5_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam5_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam6_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam6_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_cam7_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_cam7_restart"
-                                }
-                            ],
-                            "title": "PCS 1 Cameras"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_led1_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led1_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_led2_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led2_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_led3_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led3_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_led4_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led4_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_pwm_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_pwm_restart"
-                                }
-                            ],
-                            "title": "PCS 1 CC Controller"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_pump_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_pump_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_as_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_shellyflood1_flood"
-                                }
-                            ],
-                            "title": "PCS 1 Other"
-                        }
-                    ]
+                  "entity": "switch.pcs1_main"
                 },
                 {
-                    "theme": "Backend-selected",
-                    "title": "Automation",
-                    "path": "automation",
-                    "type": "sidebar",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_datetime.pcs1_power_supply_start",
-                                    "name": "Main Power Time Start"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_power_supply_end",
-                                    "name": "Main Power Time End"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_power_supply_active",
-                                    "name": "Automatically turn off Main Power"
-                                },
-                                {
-                                    "entity": "switch.pcs1_main",
-                                    "name": "Main Power Supply",
-                                    "icon": "mdi:power"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_main_active",
-                                    "icon": "mdi:play",
-                                    "name": "Main Automation"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_camera_active",
-                                    "name": "Cameras",
-                                    "icon": "mdi:camera"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_kinematics_active",
-                                    "name": "Kinematics",
-                                    "icon": "mdi:cog-play"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_led_active",
-                                    "name": "LEDs",
-                                    "icon": "mdi:led-on"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_fan_active",
-                                    "name": "Fan",
-                                    "icon": "mdi:fan"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_pump_active",
-                                    "name": "Pump",
-                                    "icon": "mdi:water-pump"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_daynight_active",
-                                    "name": "Day/Night",
-                                    "icon": "mdi:moon-waxing-crescent"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_daylight_active",
-                                    "icon": "mdi:weather-sunny",
-                                    "name": "Daylight"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_daystartend_active",
-                                    "name": "Day Start/End"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_daylength_active",
-                                    "name": "Daylength",
-                                    "icon": "mdi:clock-digital"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_automation_seasonlight_active",
-                                    "name": "Season Light",
-                                    "icon": "mdi:weather-sunset-up"
-                                }
-                            ],
-                            "title": "Automations",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_boolean.pcs1_mode_maintenance_active",
-                                    "name": "Maintenance Mode",
-                                    "icon": "mdi:cog"
-                                },
-                                {
-                                    "entity": "switch.pcs1_main",
-                                    "name": "Main Power"
-                                },
-                                {
-                                    "entity": "switch.pcs1_kin_stepper_enable_motor",
-                                    "name": "Enable Kinematics",
-                                    "icon": "mdi:cog-play"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pump_enable",
-                                    "name": "Enable Pump",
-                                    "icon": "mdi:water-pump"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_cameras_enabled",
-                                    "name": "Enable Cameras",
-                                    "icon": "mdi:camera"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_uv_enabled",
-                                    "name": "Enable UV Light"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_enabled",
-                                    "name": "Enable LEDs",
-                                    "icon": "mdi:stop-circle-outline"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_safety_disabled",
-                                    "name": "Disable LED safety"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_power_safety_factor",
-                                    "name": "LED Safety Factor",
-                                    "icon": "mdi:seatbelt"
-                                },
-                                {
-                                    "entity": "number.pcs1_pump_interval",
-                                    "icon": "mdi:timer",
-                                    "name": "Pump Interval"
-                                },
-                                {
-                                    "entity": "number.pcs1_pump_duration",
-                                    "name": "Pump Duration",
-                                    "icon": "mdi:water-pump"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_pump_duration_percent",
-                                    "name": "Cycle Percent"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_pump_duration_percent_activate",
-                                    "icon": "mdi:water-percent",
-                                    "name": "Use Cycle Percentage"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_pump_kinematics_sync",
-                                    "name": "Pump-Kin Sync",
-                                    "icon": "mdi:equal"
-                                }
-                            ],
-                            "title": "Hardware Controlls",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_select.pcs1_led_white_daylight_function",
-                                    "name": "White Daylight Function"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_white_active",
-                                    "name": "White"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness_min",
-                                    "name": "White min"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness",
-                                    "name": "White"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness_max",
-                                    "name": "White max"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness_max_winter",
-                                    "name": "White max winter"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness_max_summer",
-                                    "name": "White max summer"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_led_red_daylight_function",
-                                    "name": "Red Daylight Function"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_red_active",
-                                    "name": "Red"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness_min",
-                                    "name": "Red min"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness",
-                                    "name": "Red"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness_max",
-                                    "name": "Red max"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness_max_winter",
-                                    "name": "Red max winter"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness_max_summer",
-                                    "name": "Red max summer"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_led_blue_daylight_function",
-                                    "name": "Blue Daylight Function"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_blue_active",
-                                    "name": "Blue"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness_min",
-                                    "name": "Blue min"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness",
-                                    "name": "Blue "
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness_max",
-                                    "name": "Blue max"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness_max_winter",
-                                    "name": "Blue max winter"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness_max_summer",
-                                    "name": "Blue max summer"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_led_green_daylight_function",
-                                    "name": "Green Daylight Function"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_green_active",
-                                    "name": "Green"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness_min",
-                                    "name": "Green min"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness",
-                                    "name": "Green "
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness_max",
-                                    "name": "Green max"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness_max_winter",
-                                    "name": "Green max winter"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness_max_summer",
-                                    "name": "Green max summer"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_led_uv_daylight_function",
-                                    "name": "UV Daylight Function"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_uv_active",
-                                    "name": "UV"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness_min",
-                                    "name": "UV min"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness",
-                                    "name": "UV "
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness_max",
-                                    "name": "UV max"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness_max_winter",
-                                    "name": "UV max winter"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness_max_summer",
-                                    "name": "UV max summer"
-                                }
-                            ],
-                            "title": "LED Automation Mode",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_boolean.pcs1_camera_sequence"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_white_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_white_brightness_camera_mode"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_red_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_red_brightness_camera_mode"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_blue_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_blue_brightness_camera_mode"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_green_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_green_brightness_camera_mode"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_led_uv_camera_mode_active"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_led_uv_brightness_camera_mode"
-                                }
-                            ],
-                            "title": "LED Camera Mode",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "input_boolean.pcs1_cameras_cam1_enabled",
-                                "input_boolean.pcs1_cameras_cam2_enabled",
-                                "input_boolean.pcs1_cameras_cam3_enabled",
-                                "input_boolean.pcs1_cameras_cam4_enabled",
-                                "input_boolean.pcs1_cameras_cam5_enabled",
-                                "input_boolean.pcs1_cameras_cam6_enabled",
-                                "input_boolean.pcs1_cameras_cam7_enabled",
-                                "input_boolean.pcs1_cameras_plant1_enabled",
-                                "input_boolean.pcs1_cameras_plant2_enabled",
-                                "input_boolean.pcs1_cameras_plant3_enabled",
-                                "input_boolean.pcs1_cameras_plant4_enabled",
-                                "input_boolean.pcs1_cameras_plant5_enabled",
-                                "input_boolean.pcs1_cameras_plant6_enabled"
-                            ],
-                            "title": "Enable Cameras and Plant Positions"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_select.pcs1_daylength_function_12"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_daylength_function_23"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_daytime_day_active",
-                                    "name": "Day",
-                                    "secondary_info": "last-changed"
-                                },
-                                {
-                                    "entity": "sensor.time"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_start",
-                                    "name": "Day start"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_end",
-                                    "name": "Day end"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_length",
-                                    "name": "Day length"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_length_1",
-                                    "name": "Day Length 1"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_length_2",
-                                    "name": "Day length 2"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_daytime_day_length_3",
-                                    "name": "Day length 3"
-                                },
-                                {
-                                    "entity": "sensor.date"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_date_growth_period_1",
-                                    "name": "Date 1"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_date_growth_period_2",
-                                    "name": "Date 2"
-                                },
-                                {
-                                    "entity": "input_datetime.pcs1_date_growth_period_3",
-                                    "name": "Date 3"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_daytime_growth_period_2_set_percentage",
-                                    "name": "Set Percentage 2",
-                                    "icon": "mdi:format-align-middle"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_date_growth_period_2_percentage",
-                                    "name": "Percentage 2"
-                                },
-                                {
-                                    "entity": "input_boolean.pcs1_daytime_growth_period_3_set_period",
-                                    "name": "Set Growth Period"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_date_growth_period_3_days",
-                                    "name": "Growth Period"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_period_progress",
-                                    "name": "Progress"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_days",
-                                    "name": "Days 2"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_period_length_23",
-                                    "name": "Days 3"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_12",
-                                    "name": "Average change rate 12"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_23",
-                                    "name": "Average change rate 23"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_day_length_minutes_per_day_average_23_2",
-                                    "name": "Section"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_daytime_day_length_min"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_daytime_day_length_max"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_daytime_day_length_max_2"
-                                }
-                            ],
-                            "title": "Daytime control",
-                            "show_header_toggle": false,
-                            "state_color": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_select.pcs1_kinematics_automation_delay_day"
-                                },
-                                {
-                                    "entity": "input_select.pcs1_kinematics_automation_delay_night"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant1_name",
-                                    "name": "Plant 1"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant2_name",
-                                    "name": "Plant 2"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant3_name",
-                                    "name": "Plant 3"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant4_name",
-                                    "name": "Plant 4"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant5_name",
-                                    "name": "Plant 5"
-                                },
-                                {
-                                    "entity": "input_text.pcs1_plant6_name",
-                                    "name": "Plant 6"
-                                }
-                            ],
-                            "title": "Kinematics Settings"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "input_boolean.node_red_heartbeat",
-                                    "secondary_info": "last-updated"
-                                }
-                            ]
-                        }
-                    ]
+                  "entity": "sensor.pcs1_main_energy"
                 },
                 {
-                    "theme": "Backend-selected",
-                    "title": "Sensors",
-                    "path": "t",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam1_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam3_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam4_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam5_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam6_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_dallas_4_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_2_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_3_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_140mm_4_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_2_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_3_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_dallas_fan_80mm_4_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_dallas_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_dallas_2_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_dallas_24_36v_case_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_max_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led_panel_average_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_growth_chamber_max_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_max_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_shellyflood1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_shellyflood1_temperature"
-                                }
-                            ],
-                            "title": "Temperature"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.pcs1_cam1_bme280_1_humidity",
-                                "sensor.pcs1_cam3_bme280_1_humidity",
-                                "sensor.pcs1_cam4_bme280_1_humidity",
-                                "sensor.pcs1_cam5_bme280_1_humidity",
-                                "sensor.pcs1_cam6_bme280_1_humidity"
-                            ],
-                            "title": "Humidity"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.pcs1_cam1_bme280_1_pressure",
-                                "sensor.pcs1_cam3_bme280_1_pressure",
-                                "sensor.pcs1_cam4_bme280_1_pressure",
-                                "sensor.pcs1_cam5_bme280_1_pressure",
-                                "sensor.pcs1_cam6_bme280_1_pressure"
-                            ],
-                            "title": "Pressure"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_growth_chamber_average_illuminance"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_growth_chamber_max_illuminance"
-                                }
-                            ],
-                            "title": "Illuminance"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.pcs1_kin_current",
-                                "sensor.pcs1_led1_hall_a_current",
-                                "sensor.pcs1_led1_hall_b_current",
-                                "sensor.pcs1_led2_hall_a_current",
-                                "sensor.pcs1_led2_hall_b_current",
-                                "sensor.pcs1_led3_hall_a_current",
-                                "sensor.pcs1_led4_hall_a_current"
-                            ],
-                            "title": "Current"
-                        }
-                    ]
+                  "entity": "sensor.pcs1_main_power"
                 },
                 {
-                    "title": "CAM-1",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam1_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam1_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam1_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam1_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam1_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-1"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam1_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam1_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam1_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam1_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-1 Data"
-                        }
-                    ]
+                  "entity": "button.pcs1_main_reboot"
                 },
                 {
-                    "title": "CAM-2",
-                    "path": "cam-2",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam2_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam2_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam2_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam2_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam2_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-2"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam2_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam2_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam2_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam2_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam2_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-2 Data"
-                        }
-                    ]
-                },
-                {
-                    "title": "CAM-3",
-                    "path": "cam-3",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam3_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam3_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam3_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam3_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam3_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-3"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam3_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam3_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam3_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam3_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-3 Data"
-                        }
-                    ]
-                },
-                {
-                    "title": "CAM-4",
-                    "path": "cam-4",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam4_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam4_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam4_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam4_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam4_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-4"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam4_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam4_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam4_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam4_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-4 Data"
-                        }
-                    ]
-                },
-                {
-                    "title": "CAM-5",
-                    "path": "cam-5",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam5_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam5_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam5_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam5_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam5_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-5"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam5_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam5_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam5_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam5_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-5 Data"
-                        }
-                    ]
-                },
-                {
-                    "title": "CAM-6",
-                    "path": "cam-6",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        {
-                                            "entity": "binary_sensor.pcs1_cam6_status"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam6_restart"
-                                        },
-                                        {
-                                            "entity": "sensor.pcs1_cam6_wifi_signal"
-                                        },
-                                        {
-                                            "entity": "switch.pcs1_cam6_flashlight"
-                                        },
-                                        {
-                                            "entity": "button.pcs1_cam6_snapshot"
-                                        }
-                                    ],
-                                    "title": "CAM-6"
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam6_camera",
-                                    "aspect_ratio": "3:1"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_cam6_bme280_1_humidity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam6_bme280_1_pressure"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam6_bme280_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
-                                }
-                            ],
-                            "title": "CAM-6 Data"
-                        }
-                    ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "CAM-7",
-                    "path": "cam-7",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "grid",
-                            "square": false,
-                            "columns": 1,
-                            "cards": [
-                                {
-                                    "type": "entities",
-                                    "entities": [
-                                        "binary_sensor.pcs1_cam7_status",
-                                        "button.pcs1_cam7_restart",
-                                        "sensor.pcs1_cam7_wifi_signal",
-                                        "switch.pcs1_cam7_flashlight",
-                                        "button.pcs1_cam7_snapshot"
-                                    ]
-                                },
-                                {
-                                    "type": "picture-entity",
-                                    "entity": "camera.pcs1_cam7_camera"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "theme": "Backend-selected",
-                    "title": "Kinematics",
-                    "path": "controller",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "button.pcs1_kin_restart"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_status"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_wifi_signal"
-                                }
-                            ],
-                            "title": "Basic Information",
-                            "state_color": true,
-                            "show_header_toggle": true
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_active"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_mode"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_automation_mode"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_speed"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_step_angle"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_position"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_angular_velocity"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_turns_per_hour"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_number_of_cycles"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam1_plant"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam2_plant"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam3_plant"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam4_plant"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam5_plant"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_cam6_plant"
-                                }
-                            ],
-                            "title": "Stepper Status",
-                            "state_color": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "number.pcs1_kin_stepper_set_requested_target_angle"
-                                },
-                                {
-                                    "entity": "number.pcs1_kin_stepper_set_speed"
-                                },
-                                {
-                                    "entity": "number.pcs1_kin_stepper_set_step_angle"
-                                },
-                                {
-                                    "entity": "switch.pcs1_kin_stepper_enable_motor"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_stop"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_goto_home"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_goto_requested_target_position"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_step_fw"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_step_bw"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_drive_fw"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_drive_bw"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_find_next_home"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_find_next_global_home"
-                                }
-                            ],
-                            "title": "Development Controll"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_kin_proximity_switch_pinion_wheel_count"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_proximity_switch_expected_pinion_wheel_count"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_homing_is_valid"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_homing_difference"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_start_global_homing"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_start_local_homing"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_set_zero_position"
-                                },
-                                {
-                                    "entity": "button.pcs1_kin_stepper_set_homing_valid"
-                                },
-                                {
-                                    "entity": "input_number.pcs1_kinematics_pinionwheel_count_difference_error"
-                                }
-                            ],
-                            "title": "Homing"
-                        },
-                        {
-                            "type": "gauge",
-                            "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
-                            "min": 0,
-                            "max": 360,
-                            "name": "Plant gear Rotation Angle",
-                            "unit": "\u00b0",
-                            "needle": true
-                        },
-                        {
-                            "type": "gauge",
-                            "entity": "sensor.pcs1_kin_stepper_angle",
-                            "min": 0,
-                            "max": 1080,
-                            "needle": true,
-                            "unit": "\u00b0",
-                            "name": "Global Rotation Angle"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "button.pcs1_kin_stepper_error_reset_errors"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_stepper_error_code"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_1"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_2"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_3"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_error_pinionwheel_check"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_stepper_error_homing_difference_check"
-                                }
-                            ],
-                            "title": "Error handling"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "sensor.pcs1_kin_current"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_kin_dallas_4_temperature"
-                                }
-                            ],
-                            "title": "Measurements"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_kin_stepper_start_automation"
-                                }
-                            ],
-                            "title": "Automation Controll"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_proximity_global_home"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_proximity_home"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_kin_proximity_pinion_wheel"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "number.pcs1_kin_stepper_set_acceleration"
-                                },
-                                {
-                                    "entity": "number.pcs1_kin_stepper_set_deceleration"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "title": "LED",
-                    "path": "led-1",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_pwm_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_pwm_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_dallas_1_temperature"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pwm_dallas_2_temperature"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pwm_cc_a_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pwm_cc_a_white_switch"
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_1_white"
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_2_white"
-                                },
-                                {
-                                    "entity": "light.pcs1_pwm_cc_a_3_520nm"
-                                },
-                                {
-                                    "entity": "fan.pcs1_pwm_cc_a_4_fan"
-                                }
-                            ],
-                            "title": "PWM",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_led1_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led1_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_hall_a_current"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led1_hall_b_current"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_a_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led1_cc_b_switch"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_1_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_2_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_3_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_a_4_730nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_1_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_2_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_3_660nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led1_cc_b_4_660nm"
-                                }
-                            ],
-                            "title": "LED 1",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_led2_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led2_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led2_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led2_hall_a_current"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led2_hall_b_current"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led2_cc_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led2_cc_a_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led2_cc_b_switch"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_a_4_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_1_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_2_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_3_630nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led2_cc_b_4_630nm"
-                                }
-                            ],
-                            "title": "LED 2",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_led3_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led3_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led3_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led3_hall_a_current"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led3_cc_a_switch"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_1_butterfly"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_2_butterfly"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_3_butterfly"
-                                },
-                                {
-                                    "entity": "light.pcs1_led3_cc_a_4_butterfly"
-                                }
-                            ],
-                            "title": "LED 3",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_led4_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_led4_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led4_wifi_signal"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_led4_hall_a_current"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led4_cc_a_switch"
-                                },
-                                {
-                                    "entity": "switch.pcs1_led4_cc_b_switch"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_1_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_2_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_3_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_a_4_450nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_b_3_280nm"
-                                },
-                                {
-                                    "entity": "light.pcs1_led4_cc_b_4_280nm"
-                                }
-                            ],
-                            "title": "LED 4",
-                            "show_header_toggle": false
-                        }
-                    ]
-                },
-                {
-                    "title": "Pump",
-                    "path": "pump",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_pump_status"
-                                },
-                                {
-                                    "entity": "button.pcs1_pump_restart"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_pump_wifi_signal"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pump_enable"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pump_single_activation",
-                                    "secondary_info": "last-changed"
-                                },
-                                {
-                                    "entity": "switch.pcs1_pump_automation"
-                                },
-                                {
-                                    "entity": "number.pcs1_pump_interval"
-                                },
-                                {
-                                    "entity": "number.pcs1_pump_duration"
-                                }
-                            ],
-                            "title": "Pump Settings",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "binary_sensor.pcs1_shellyflood1_flood"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_shellyflood1_battery"
-                                },
-                                {
-                                    "entity": "binary_sensor.pcs1_shellyflood2_flood"
-                                },
-                                {
-                                    "entity": "sensor.pcs1_shellyflood2_battery"
-                                }
-                            ],
-                            "title": "Shelly Flood Sensors"
-                        }
-                    ]
-                },
-                {
-                    "title": "Atlas Scientific",
-                    "path": "atlas-scientific",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "binary_sensor.pcs1_as_status",
-                                "button.pcs1_as_restart",
-                                "sensor.pcs1_as_wifi_signal"
-                            ],
-                            "title": "Basic Information"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "sensor.pcs1_as_ec",
-                                "sensor.pcs1_as_ph",
-                                "sensor.pcs1_as_rtd"
-                            ],
-                            "title": "Sensor values"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_as_ec_enable_reading_values"
-                                },
-                                {
-                                    "entity": "switch.pcs1_as_ph_enable_reading_values"
-                                },
-                                {
-                                    "entity": "switch.pcs1_as_rtd_enable_reading_values"
-                                }
-                            ],
-                            "title": "Enable Sensors",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "number.pcs1_as_ec_sample_interval",
-                                "number.pcs1_as_ph_sample_interval",
-                                "number.pcs1_as_rtd_sample_interval"
-                            ],
-                            "title": "Sample times"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_as_ec_tempcomp"
-                                },
-                                {
-                                    "entity": "switch.pcs1_as_ph_tempcomp"
-                                },
-                                {
-                                    "entity": "number.pcs1_as_ec_tempcomp_sample_interval"
-                                },
-                                {
-                                    "entity": "number.pcs1_as_ph_tempcomp_sample_interval"
-                                }
-                            ],
-                            "title": "Temperature compensation",
-                            "show_header_toggle": false
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                {
-                                    "entity": "switch.pcs1_as_ph_cal_activate"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_ph_cal_check"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_ph_cal_clear"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_ph_cal_mid"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_ph_cal_high"
-                                },
-                                {
-                                    "entity": "button.pcs1_as_ph_cal_low"
-                                },
-                                {
-                                    "entity": "number.pcs1_as_ph_cal_mid_value"
-                                },
-                                {
-                                    "entity": "number.pcs1_as_ph_cal_high_value"
-                                },
-                                {
-                                    "entity": "number.pcs1_as_ph_cal_low_value"
-                                }
-                            ],
-                            "title": "PH Calibration"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "switch.pcs1_as_ec_cal_activate",
-                                "button.pcs1_as_ec_cal_check",
-                                "button.pcs1_as_ec_cal_clear",
-                                "button.pcs1_as_ec_cal_dry",
-                                "button.pcs1_as_ec_cal_high",
-                                "button.pcs1_as_ec_cal_low",
-                                "button.pcs1_as_ec_cal_single_point",
-                                "number.pcs1_as_ec_cal_high_value",
-                                "number.pcs1_as_ec_cal_low_value",
-                                "number.pcs1_as_ec_cal_single_value",
-                                "button.pcs1_as_ec_k_value_check",
-                                "button.pcs1_as_ec_k_value_send",
-                                "number.pcs1_as_ec_k_value"
-                            ],
-                            "title": "EC Calibration"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "switch.pcs1_as_rtd_cal_activate",
-                                "button.pcs1_as_rtd_cal_check",
-                                "button.pcs1_as_rtd_cal_clear",
-                                "button.pcs1_as_rtd_cal",
-                                "number.pcs1_as_rtd_cal_cal_value"
-                            ],
-                            "title": "RTD Calibration"
-                        },
-                        {
-                            "type": "entities",
-                            "entities": [
-                                "button.pcs1_as_ec_factory_reset",
-                                "button.pcs1_as_ph_factory_reset",
-                                "button.pcs1_as_rtd_factory_reset"
-                            ],
-                            "title": "Factory Reset",
-                            "show_header_toggle": false
-                        }
-                    ]
-                },
-                {
-                    "title": "Node-RED",
-                    "path": "node-red",
-                    "icon": "",
-                    "badges": [],
-                    "cards": [
-                        {
-                            "type": "iframe",
-                            "url": "http://ofai-pcs-homeassistant.local:1880/endpoint/ui",
-                            "aspect_ratio": "100%"
-                        },
-                        {
-                            "type": "iframe",
-                            "url": "http://ofai-pcs-homeassistant.local:3000",
-                            "aspect_ratio": "100%"
-                        }
-                    ]
+                  "entity": "sensor.pcs1_main_uptime"
                 }
-            ],
-            "title": "Plant Control System"
+              ],
+              "title": "PCS 1 Main"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_cam1_status"
+                },
+                {
+                  "entity": "button.pcs1_cam1_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam2_status"
+                },
+                {
+                  "entity": "button.pcs1_cam2_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam3_status"
+                },
+                {
+                  "entity": "button.pcs1_cam3_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam4_status"
+                },
+                {
+                  "entity": "button.pcs1_cam4_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam5_status"
+                },
+                {
+                  "entity": "button.pcs1_cam5_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam6_status"
+                },
+                {
+                  "entity": "button.pcs1_cam6_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_cam7_status"
+                },
+                {
+                  "entity": "button.pcs1_cam7_restart"
+                }
+              ],
+              "title": "PCS 1 Cameras"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_led1_status"
+                },
+                {
+                  "entity": "button.pcs1_led1_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_led2_status"
+                },
+                {
+                  "entity": "button.pcs1_led2_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_led3_status"
+                },
+                {
+                  "entity": "button.pcs1_led3_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_led4_status"
+                },
+                {
+                  "entity": "button.pcs1_led4_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_pwm_status"
+                },
+                {
+                  "entity": "button.pcs1_pwm_restart"
+                }
+              ],
+              "title": "PCS 1 CC Controller"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_kin_status"
+                },
+                {
+                  "entity": "button.pcs1_kin_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_pump_status"
+                },
+                {
+                  "entity": "button.pcs1_pump_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_as_status"
+                },
+                {
+                  "entity": "button.pcs1_as_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_shellyflood1_flood"
+                }
+              ],
+              "title": "PCS 1 Other"
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Automation",
+          "path": "automation",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "schedule.pcs1_main_power_schedule",
+                  "name": "Main Power Weekly Schedule"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_power_supply_active",
+                  "name": "Automatically turn off Main Power"
+                },
+                {
+                  "entity": "switch.pcs1_main",
+                  "name": "Main Power Supply",
+                  "icon": "mdi:power"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_main_active",
+                  "icon": "mdi:play",
+                  "name": "Main Automation"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_camera_active",
+                  "name": "Cameras",
+                  "icon": "mdi:camera"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_kinematics_active",
+                  "name": "Kinematics",
+                  "icon": "mdi:cog-play"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_led_active",
+                  "name": "LEDs",
+                  "icon": "mdi:led-on"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_fan_active",
+                  "name": "Fan",
+                  "icon": "mdi:fan"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_pump_active",
+                  "name": "Pump",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_daynight_active",
+                  "name": "Day/Night",
+                  "icon": "mdi:moon-waxing-crescent"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_daylight_active",
+                  "icon": "mdi:weather-sunny",
+                  "name": "Daylight"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_daystartend_active",
+                  "name": "Day Start/End"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_daylength_active",
+                  "name": "Daylength",
+                  "icon": "mdi:clock-digital"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_seasonlight_active",
+                  "name": "Season Light",
+                  "icon": "mdi:weather-sunset-up"
+                }
+              ],
+              "title": "Automations",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.pcs1_mode_maintenance_active",
+                  "name": "Maintenance Mode",
+                  "icon": "mdi:cog"
+                },
+                {
+                  "entity": "switch.pcs1_main",
+                  "name": "Main Power"
+                },
+                {
+                  "entity": "switch.pcs1_kin_stepper_enable_motor",
+                  "name": "Enable Kinematics",
+                  "icon": "mdi:cog-play"
+                },
+                {
+                  "entity": "switch.pcs1_pump_enable",
+                  "name": "Enable Pump",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "input_boolean.pcs1_cameras_enabled",
+                  "name": "Enable Cameras",
+                  "icon": "mdi:camera"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_uv_enabled",
+                  "name": "Enable UV Light"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_enabled",
+                  "name": "Enable LEDs",
+                  "icon": "mdi:stop-circle-outline"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_safety_disabled",
+                  "name": "Disable LED safety"
+                },
+                {
+                  "entity": "input_number.pcs1_led_power_safety_factor",
+                  "name": "LED Safety Factor",
+                  "icon": "mdi:seatbelt"
+                },
+                {
+                  "entity": "number.pcs1_pump_interval",
+                  "icon": "mdi:timer",
+                  "name": "Pump Interval"
+                },
+                {
+                  "entity": "number.pcs1_pump_duration",
+                  "name": "Pump Duration",
+                  "icon": "mdi:water-pump"
+                },
+                {
+                  "entity": "input_number.pcs1_pump_duration_percent",
+                  "name": "Cycle Percent"
+                },
+                {
+                  "entity": "input_boolean.pcs1_pump_duration_percent_activate",
+                  "icon": "mdi:water-percent",
+                  "name": "Use Cycle Percentage"
+                },
+                {
+                  "entity": "input_boolean.pcs1_pump_kinematics_sync",
+                  "name": "Pump-Kin Sync",
+                  "icon": "mdi:equal"
+                },
+                {
+                  "entity": "input_boolean.pcs1_automation_fan_camera_pause"
+                }
+              ],
+              "title": "Hardware Controlls",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_select.pcs1_led_white_daylight_function",
+                  "name": "White Daylight Function"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_white_active",
+                  "name": "White"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_min",
+                  "name": "White min"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness",
+                  "name": "White"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_max",
+                  "name": "White max"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_max_winter",
+                  "name": "White max winter"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_max_summer",
+                  "name": "White max summer"
+                },
+                {
+                  "entity": "input_select.pcs1_led_red_daylight_function",
+                  "name": "Red Daylight Function"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_red_active",
+                  "name": "Red"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness_min",
+                  "name": "Red min"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness",
+                  "name": "Red"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness_max",
+                  "name": "Red max"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness_max_winter",
+                  "name": "Red max winter"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness_max_summer",
+                  "name": "Red max summer"
+                },
+                {
+                  "entity": "input_select.pcs1_led_blue_daylight_function",
+                  "name": "Blue Daylight Function"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_blue_active",
+                  "name": "Blue"
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness_min",
+                  "name": "Blue min"
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness",
+                  "name": "Blue "
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness_max",
+                  "name": "Blue max"
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness_max_winter",
+                  "name": "Blue max winter"
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness_max_summer",
+                  "name": "Blue max summer"
+                },
+                {
+                  "entity": "input_select.pcs1_led_green_daylight_function",
+                  "name": "Green Daylight Function"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_green_active",
+                  "name": "Green"
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness_min",
+                  "name": "Green min"
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness",
+                  "name": "Green "
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness_max",
+                  "name": "Green max"
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness_max_winter",
+                  "name": "Green max winter"
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness_max_summer",
+                  "name": "Green max summer"
+                },
+                {
+                  "entity": "input_select.pcs1_led_uv_daylight_function",
+                  "name": "UV Daylight Function"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_uv_active",
+                  "name": "UV"
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness_min",
+                  "name": "UV min"
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness",
+                  "name": "UV "
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness_max",
+                  "name": "UV max"
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness_max_winter",
+                  "name": "UV max winter"
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness_max_summer",
+                  "name": "UV max summer"
+                }
+              ],
+              "title": "LED Automation Mode",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.pcs1_led_flashlight_mode_enabled"
+                },
+                {
+                  "entity": "input_boolean.pcs1_camera_sequence"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_camera_mode_active"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_white_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_white_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_red_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_red_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_blue_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_blue_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_green_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_green_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_boolean.pcs1_led_uv_camera_mode_active"
+                },
+                {
+                  "entity": "input_number.pcs1_led_uv_brightness_camera_mode"
+                },
+                {
+                  "entity": "input_button.pcs1_camera_manual_snapshot"
+                }
+              ],
+              "title": "LED Camera Mode",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "input_boolean.pcs1_cameras_cam1_enabled",
+                "input_boolean.pcs1_cameras_cam2_enabled",
+                "input_boolean.pcs1_cameras_cam3_enabled",
+                "input_boolean.pcs1_cameras_cam4_enabled",
+                "input_boolean.pcs1_cameras_cam5_enabled",
+                "input_boolean.pcs1_cameras_cam6_enabled",
+                "input_boolean.pcs1_cameras_cam7_enabled",
+                "input_boolean.pcs1_cameras_plant1_enabled",
+                "input_boolean.pcs1_cameras_plant2_enabled",
+                "input_boolean.pcs1_cameras_plant3_enabled",
+                "input_boolean.pcs1_cameras_plant4_enabled",
+                "input_boolean.pcs1_cameras_plant5_enabled",
+                "input_boolean.pcs1_cameras_plant6_enabled"
+              ],
+              "title": "Enable Cameras and Plant Positions",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_select.pcs1_daylength_function_12"
+                },
+                {
+                  "entity": "input_select.pcs1_daylength_function_23"
+                },
+                {
+                  "entity": "input_boolean.pcs1_daytime_day_active",
+                  "name": "Day",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "sensor.time"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_start",
+                  "name": "Day start"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_end",
+                  "name": "Day end"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_length",
+                  "name": "Day length"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_length_1",
+                  "name": "Day Length 1"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_length_2",
+                  "name": "Day length 2"
+                },
+                {
+                  "entity": "input_datetime.pcs1_daytime_day_length_3",
+                  "name": "Day length 3"
+                },
+                {
+                  "entity": "sensor.date"
+                },
+                {
+                  "entity": "input_datetime.pcs1_date_growth_period_1",
+                  "name": "Date 1"
+                },
+                {
+                  "entity": "input_datetime.pcs1_date_growth_period_2",
+                  "name": "Date 2"
+                },
+                {
+                  "entity": "input_datetime.pcs1_date_growth_period_3",
+                  "name": "Date 3"
+                },
+                {
+                  "entity": "input_boolean.pcs1_daytime_growth_period_2_set_percentage",
+                  "name": "Set Percentage 2",
+                  "icon": "mdi:format-align-middle"
+                },
+                {
+                  "entity": "input_number.pcs1_date_growth_period_2_percentage",
+                  "name": "Percentage 2"
+                },
+                {
+                  "entity": "input_boolean.pcs1_daytime_growth_period_3_set_period",
+                  "name": "Set Growth Period"
+                },
+                {
+                  "entity": "input_number.pcs1_date_growth_period_3_days",
+                  "name": "Growth Period"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_period_progress",
+                  "name": "Progress"
+                },
+                {
+                  "entity": "sensor.pcs1_days",
+                  "name": "Days 2"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_period_length_23",
+                  "name": "Days 3"
+                },
+                {
+                  "entity": "sensor.pcs1_day_length_minutes_per_day_average_12",
+                  "name": "Average change rate 12"
+                },
+                {
+                  "entity": "sensor.pcs1_day_length_minutes_per_day_average_23",
+                  "name": "Average change rate 23"
+                },
+                {
+                  "entity": "sensor.pcs1_day_length_minutes_per_day_average_23_2",
+                  "name": "Section"
+                },
+                {
+                  "entity": "sensor.pcs1_daytime_day_length_min"
+                },
+                {
+                  "entity": "sensor.pcs1_daytime_day_length_max"
+                },
+                {
+                  "entity": "sensor.pcs1_daytime_day_length_max_2"
+                }
+              ],
+              "title": "Daytime control",
+              "show_header_toggle": false,
+              "state_color": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_select.pcs1_kinematics_automation_delay_day"
+                },
+                {
+                  "entity": "input_select.pcs1_kinematics_automation_delay_night"
+                },
+                {
+                  "entity": "input_text.pcs1_plant1_name",
+                  "name": "Plant 1"
+                },
+                {
+                  "entity": "input_text.pcs1_plant2_name",
+                  "name": "Plant 2"
+                },
+                {
+                  "entity": "input_text.pcs1_plant3_name",
+                  "name": "Plant 3"
+                },
+                {
+                  "entity": "input_text.pcs1_plant4_name",
+                  "name": "Plant 4"
+                },
+                {
+                  "entity": "input_text.pcs1_plant5_name",
+                  "name": "Plant 5"
+                },
+                {
+                  "entity": "input_text.pcs1_plant6_name",
+                  "name": "Plant 6"
+                }
+              ],
+              "title": "Kinematics Settings"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.node_red_heartbeat",
+                  "secondary_info": "last-updated"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Sensors",
+          "path": "t",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_dallas_4_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_140mm_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_140mm_2_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_140mm_3_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_140mm_4_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_80mm_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_80mm_2_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_80mm_3_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_dallas_fan_80mm_4_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_dallas_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_dallas_2_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_dallas_24_36v_case_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_shellyflood1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_shellyflood1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led_panel_average_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led_panel_max_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_max_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_max_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_average_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_led_panel_average_temperature"
+                }
+              ],
+              "title": "Temperature"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_average_humidity"
+                }
+              ],
+              "title": "Humidity"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_average_pressure"
+                }
+              ],
+              "title": "Pressure"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_average_illuminance"
+                },
+                {
+                  "entity": "sensor.pcs1_growth_chamber_max_illuminance"
+                }
+              ],
+              "title": "Illuminance"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "sensor.pcs1_kin_current",
+                "sensor.pcs1_led1_hall_a_current",
+                "sensor.pcs1_led1_hall_b_current",
+                "sensor.pcs1_led2_hall_a_current",
+                "sensor.pcs1_led2_hall_b_current",
+                "sensor.pcs1_led3_hall_a_current",
+                "sensor.pcs1_led4_hall_a_current"
+              ],
+              "title": "Current"
+            }
+          ]
+        },
+        {
+          "title": "CAM-1",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam1_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam1_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam1_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam1_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam1_snapshot"
+                    }
+                  ],
+                  "title": "CAM-1 live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam1_camera",
+                  "aspect_ratio": "3:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam1_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam1_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam1_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-1 Data"
+            }
+          ]
+        },
+        {
+          "title": "CAM-2",
+          "path": "cam-2",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam2_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam2_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam2_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam2_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam2_snapshot"
+                    }
+                  ],
+                  "title": "CAM-2"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam2_camera",
+                  "aspect_ratio": "3:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam2_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam2_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam2_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam2_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam2_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-2 Data",
+              "state_color": false
+            }
+          ]
+        },
+        {
+          "title": "CAM-3",
+          "path": "cam-3",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam3_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam3_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam3_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam3_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam3_snapshot"
+                    }
+                  ],
+                  "title": "CAM-3"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam3_camera",
+                  "aspect_ratio": "1:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam3_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam3_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-3 Data"
+            }
+          ]
+        },
+        {
+          "title": "CAM-4",
+          "path": "cam-4",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam4_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam4_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam4_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam4_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam4_snapshot"
+                    }
+                  ],
+                  "title": "CAM-4"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam4_camera",
+                  "aspect_ratio": "3:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam4_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam4_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-4 Data"
+            }
+          ]
+        },
+        {
+          "title": "CAM-5",
+          "path": "cam-5",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam5_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam5_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam5_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam5_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam5_snapshot"
+                    }
+                  ],
+                  "title": "CAM-5"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam5_camera",
+                  "aspect_ratio": "3:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam5_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam5_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-5 Data"
+            }
+          ]
+        },
+        {
+          "title": "CAM-6",
+          "path": "cam-6",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.pcs1_cam6_status"
+                    },
+                    {
+                      "entity": "button.pcs1_cam6_restart"
+                    },
+                    {
+                      "entity": "sensor.pcs1_cam6_wifi_signal"
+                    },
+                    {
+                      "entity": "switch.pcs1_cam6_flashlight"
+                    },
+                    {
+                      "entity": "button.pcs1_cam6_snapshot"
+                    }
+                  ],
+                  "title": "CAM-6"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam6_camera",
+                  "aspect_ratio": "3:1",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam6_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_humidity"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_pressure"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bme280_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_cam6_bh1750_1_illuminance"
+                }
+              ],
+              "title": "CAM-6 Data"
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "CAM-7",
+          "path": "cam-7",
+          "badges": [],
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    "binary_sensor.pcs1_cam7_status",
+                    "button.pcs1_cam7_restart",
+                    "sensor.pcs1_cam7_wifi_signal",
+                    "switch.pcs1_cam7_flashlight",
+                    "button.pcs1_cam7_snapshot"
+                  ]
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam7_camera",
+                  "name": "live"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "camera.pcs1_cam7_latest",
+                  "aspect_ratio": "3:1",
+                  "name": "latest image"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "Kinematics",
+          "path": "controller",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "button.pcs1_kin_restart"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_status"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_wifi_signal"
+                }
+              ],
+              "title": "Basic Information",
+              "state_color": true,
+              "show_header_toggle": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_active"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_mode",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_automation_mode"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_speed"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_step_angle"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_position"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_angular_velocity"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_turns_per_hour"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_number_of_cycles"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam1_plant"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam2_plant"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam3_plant"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam4_plant"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam5_plant"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_cam6_plant"
+                }
+              ],
+              "title": "Stepper Status",
+              "state_color": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "number.pcs1_kin_stepper_set_requested_target_angle"
+                },
+                {
+                  "entity": "number.pcs1_kin_stepper_set_speed"
+                },
+                {
+                  "entity": "number.pcs1_kin_stepper_set_step_angle"
+                },
+                {
+                  "entity": "switch.pcs1_kin_stepper_enable_motor"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_stop"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_goto_home"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_goto_requested_target_position"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_step_fw"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_step_bw"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_drive_fw"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_drive_bw"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_find_next_home"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_find_next_global_home"
+                }
+              ],
+              "title": "Development Controll"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_kin_proximity_switch_pinion_wheel_count"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_proximity_switch_expected_pinion_wheel_count"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_homing_is_valid"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_homing_difference"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_start_global_homing"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_start_local_homing"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_set_zero_position"
+                },
+                {
+                  "entity": "button.pcs1_kin_stepper_set_homing_valid"
+                },
+                {
+                  "entity": "input_number.pcs1_kinematics_pinionwheel_count_difference_error"
+                }
+              ],
+              "title": "Homing"
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.pcs1_kin_stepper_plant_gear_rotation_angle",
+              "min": 0,
+              "max": 360,
+              "name": "Plant gear Rotation Angle",
+              "unit": "°",
+              "needle": true
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.pcs1_kin_stepper_angle",
+              "min": 0,
+              "max": 1080,
+              "needle": true,
+              "unit": "°",
+              "name": "Global Rotation Angle"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "button.pcs1_kin_stepper_error_reset_errors"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_stepper_error_code"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_1"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_2"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_error_diag_pin_3"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_error_pinionwheel_check"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_stepper_error_homing_difference_check"
+                }
+              ],
+              "title": "Error handling"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.pcs1_kin_current"
+                },
+                {
+                  "entity": "sensor.pcs1_kin_dallas_4_temperature"
+                }
+              ],
+              "title": "Measurements"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.pcs1_kin_stepper_start_automation"
+                }
+              ],
+              "title": "Automation Controll"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_kin_proximity_global_home",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_proximity_home",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "binary_sensor.pcs1_kin_proximity_pinion_wheel",
+                  "secondary_info": "last-changed"
+                }
+              ]
+            },
+            {
+              "type": "picture",
+              "image": "/local/stepper_modes.png",
+              "tap_action": {
+                "action": "none"
+              },
+              "hold_action": {
+                "action": "none"
+              }
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "number.pcs1_kin_stepper_set_acceleration"
+                },
+                {
+                  "entity": "number.pcs1_kin_stepper_set_deceleration"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "LED",
+          "path": "led-1",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_pwm_status"
+                },
+                {
+                  "entity": "button.pcs1_pwm_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_wifi_signal"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_dallas_1_temperature"
+                },
+                {
+                  "entity": "sensor.pcs1_pwm_dallas_2_temperature"
+                },
+                {
+                  "entity": "switch.pcs1_pwm_cc_a_switch"
+                },
+                {
+                  "entity": "switch.pcs1_pwm_cc_a_white_switch"
+                },
+                {
+                  "entity": "light.pcs1_pwm_cc_a_1_white"
+                },
+                {
+                  "entity": "light.pcs1_pwm_cc_a_2_white"
+                },
+                {
+                  "entity": "light.pcs1_pwm_cc_a_3_520nm"
+                },
+                {
+                  "entity": "fan.pcs1_pwm_cc_a_4_fan"
+                }
+              ],
+              "title": "PWM",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_led1_status"
+                },
+                {
+                  "entity": "button.pcs1_led1_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_wifi_signal"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_hall_a_current"
+                },
+                {
+                  "entity": "sensor.pcs1_led1_hall_b_current"
+                },
+                {
+                  "entity": "switch.pcs1_led1_cc_switch"
+                },
+                {
+                  "entity": "switch.pcs1_led1_cc_a_switch"
+                },
+                {
+                  "entity": "switch.pcs1_led1_cc_b_switch"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_1_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_2_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_3_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_4_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_1_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_2_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_3_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_4_660nm"
+                }
+              ],
+              "title": "LED 1",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_led2_status"
+                },
+                {
+                  "entity": "button.pcs1_led2_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_led2_wifi_signal"
+                },
+                {
+                  "entity": "sensor.pcs1_led2_hall_a_current"
+                },
+                {
+                  "entity": "sensor.pcs1_led2_hall_b_current"
+                },
+                {
+                  "entity": "switch.pcs1_led2_cc_switch"
+                },
+                {
+                  "entity": "switch.pcs1_led2_cc_a_switch"
+                },
+                {
+                  "entity": "switch.pcs1_led2_cc_b_switch"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_1_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_2_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_3_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_4_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_1_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_2_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_3_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_4_630nm"
+                }
+              ],
+              "title": "LED 2",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_led3_status"
+                },
+                {
+                  "entity": "button.pcs1_led3_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_led3_wifi_signal"
+                },
+                {
+                  "entity": "sensor.pcs1_led3_hall_a_current"
+                },
+                {
+                  "entity": "switch.pcs1_led3_cc_a_switch"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_1_butterfly"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_2_butterfly"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_3_butterfly"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_4_butterfly"
+                }
+              ],
+              "title": "LED 3",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_led4_status"
+                },
+                {
+                  "entity": "button.pcs1_led4_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_led4_wifi_signal"
+                },
+                {
+                  "entity": "sensor.pcs1_led4_hall_a_current"
+                },
+                {
+                  "entity": "switch.pcs1_led4_cc_a_switch"
+                },
+                {
+                  "entity": "switch.pcs1_led4_cc_b_switch"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_1_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_2_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_3_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_4_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_b_3_280nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_b_4_280nm"
+                }
+              ],
+              "title": "LED 4",
+              "show_header_toggle": false
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "LED Colors",
+          "path": "led-colors",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "light.pcs1_led1_cc_b_1_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_2_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_3_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_b_4_660nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_1_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_2_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_3_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_a_4_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_1_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_2_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_3_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led2_cc_b_4_630nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_1_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_2_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_3_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led1_cc_a_4_730nm"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_1_butterfly"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_3_butterfly"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_4_butterfly"
+                }
+              ],
+              "title": "Red",
+              "state_color": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "light.pcs1_pwm_cc_a_3_520nm"
+              ],
+              "title": "Green"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "light.pcs1_pwm_cc_a_1_white",
+                "light.pcs1_pwm_cc_a_2_white"
+              ],
+              "title": "White"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "light.pcs1_led4_cc_a_1_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_2_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_3_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led4_cc_a_4_450nm"
+                },
+                {
+                  "entity": "light.pcs1_led3_cc_a_2_butterfly"
+                }
+              ],
+              "title": "Blue"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "light.pcs1_led4_cc_b_3_280nm",
+                "light.pcs1_led4_cc_b_4_280nm"
+              ],
+              "title": "Ultra Violette"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "fan.pcs1_pwm_cc_a_4_fan",
+                  "name": "Fan"
+                }
+              ],
+              "title": "Fan"
+            }
+          ]
+        },
+        {
+          "title": "Pump",
+          "path": "pump",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_pump_status"
+                },
+                {
+                  "entity": "button.pcs1_pump_restart"
+                },
+                {
+                  "entity": "sensor.pcs1_pump_wifi_signal"
+                },
+                {
+                  "entity": "switch.pcs1_pump_enable"
+                },
+                {
+                  "entity": "switch.pcs1_pump_single_activation",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "switch.pcs1_pump_automation"
+                },
+                {
+                  "entity": "number.pcs1_pump_interval"
+                },
+                {
+                  "entity": "number.pcs1_pump_duration"
+                }
+              ],
+              "title": "Pump Settings",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.pcs1_shellyflood1_flood"
+                },
+                {
+                  "entity": "sensor.pcs1_shellyflood1_battery"
+                }
+              ],
+              "title": "Shelly Flood Sensors"
+            }
+          ]
+        },
+        {
+          "title": "Atlas Scientific",
+          "path": "atlas-scientific",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                "binary_sensor.pcs1_as_status",
+                "button.pcs1_as_restart",
+                "sensor.pcs1_as_wifi_signal"
+              ],
+              "title": "Basic Information"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "sensor.pcs1_as_ec",
+                "sensor.pcs1_as_ph",
+                "sensor.pcs1_as_rtd"
+              ],
+              "title": "Sensor values"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.pcs1_as_ec_enable_reading_values"
+                },
+                {
+                  "entity": "switch.pcs1_as_ph_enable_reading_values"
+                },
+                {
+                  "entity": "switch.pcs1_as_rtd_enable_reading_values"
+                }
+              ],
+              "title": "Enable Sensors",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "number.pcs1_as_ec_sample_interval",
+                "number.pcs1_as_ph_sample_interval",
+                "number.pcs1_as_rtd_sample_interval"
+              ],
+              "title": "Sample times"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.pcs1_as_ec_tempcomp"
+                },
+                {
+                  "entity": "switch.pcs1_as_ph_tempcomp"
+                },
+                {
+                  "entity": "number.pcs1_as_ec_tempcomp_sample_interval"
+                },
+                {
+                  "entity": "number.pcs1_as_ph_tempcomp_sample_interval"
+                }
+              ],
+              "title": "Temperature compensation",
+              "show_header_toggle": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.pcs1_as_ph_cal_activate"
+                },
+                {
+                  "entity": "button.pcs1_as_ph_cal_check"
+                },
+                {
+                  "entity": "button.pcs1_as_ph_cal_clear"
+                },
+                {
+                  "entity": "button.pcs1_as_ph_cal_mid"
+                },
+                {
+                  "entity": "button.pcs1_as_ph_cal_high"
+                },
+                {
+                  "entity": "button.pcs1_as_ph_cal_low"
+                },
+                {
+                  "entity": "number.pcs1_as_ph_cal_mid_value"
+                },
+                {
+                  "entity": "number.pcs1_as_ph_cal_high_value"
+                },
+                {
+                  "entity": "number.pcs1_as_ph_cal_low_value"
+                }
+              ],
+              "title": "PH Calibration"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "switch.pcs1_as_ec_cal_activate",
+                "button.pcs1_as_ec_cal_check",
+                "button.pcs1_as_ec_cal_clear",
+                "button.pcs1_as_ec_cal_dry",
+                "button.pcs1_as_ec_cal_high",
+                "button.pcs1_as_ec_cal_low",
+                "button.pcs1_as_ec_cal_single_point",
+                "number.pcs1_as_ec_cal_high_value",
+                "number.pcs1_as_ec_cal_low_value",
+                "number.pcs1_as_ec_cal_single_value",
+                "button.pcs1_as_ec_k_value_check",
+                "button.pcs1_as_ec_k_value_send",
+                "number.pcs1_as_ec_k_value"
+              ],
+              "title": "EC Calibration"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "switch.pcs1_as_rtd_cal_activate",
+                "button.pcs1_as_rtd_cal_check",
+                "button.pcs1_as_rtd_cal_clear",
+                "button.pcs1_as_rtd_cal",
+                "number.pcs1_as_rtd_cal_cal_value"
+              ],
+              "title": "RTD Calibration"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "button.pcs1_as_ec_factory_reset",
+                "button.pcs1_as_ph_factory_reset",
+                "button.pcs1_as_rtd_factory_reset"
+              ],
+              "title": "Factory Reset",
+              "show_header_toggle": false
+            }
+          ]
         }
+      ],
+      "title": "Plant Control System"
     }
+  }
 }

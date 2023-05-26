@@ -31,9 +31,9 @@ substitutions:
   pwm_led_cc_10_name: cc_a_2_white
   pwm_led_cc_11_name: cc_a_3_520nm
   
-  pwm_led_cc_9_max_value: "0.3"
-  pwm_led_cc_10_max_value: "0.3"
-  pwm_led_cc_11_max_value: "0.3"
+  pwm_led_cc_9_max_value: "0.4"
+  pwm_led_cc_10_max_value: "0.4"
+  pwm_led_cc_11_max_value: "0.4"
   
   
   # PWM settings

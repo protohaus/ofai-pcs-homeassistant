@@ -36,7 +36,7 @@ api:
 
 recorder:
   db_url: !secret mariadb_url
-  purge_keep_days: 60
+  purge_keep_days: 14
   purge_interval: 1
   commit_interval: 30
 
@@ -59,7 +59,12 @@ influxdb:
       - switch
       - input_number
       - button
-   
+      - input_boolean
+      
+binary_sensor:
+  - platform: ping
+    host: 192.168.188.26
+    
 switch:
   - platform: momentary
     name: Camera Snapshots
@@ -94,6 +99,9 @@ input_boolean:
     
   pcs1_automation_fan_active:
     name: pcs1.automation_fan.active
+  
+  pcs1_automation_fan_camera_pause:
+    name: pcs1.automation_fan.camera_pause
     
   pcs1_automation_daynight_active:
     name: pcs1.automation_daynight.active
@@ -169,6 +177,9 @@ input_boolean:
   
   pcs1_led_camera_mode_active:
     name: pcs1.led_camera_mode_active
+  
+  pcs1_led_flashlight_mode_enabled:
+    name: pcs1.led_flashlight_mode_enabled
     
   pcs1_led_enabled:
     name: pcs1.led_enabled
@@ -225,17 +236,17 @@ input_boolean:
   ## old entities for test automations in home assistant...
   ##########################################################
 
-  activate_kinematics_automation:
-    name: Activate kinematics automation
-
-  camera_sequence_taking_photos:
-    name: Camera sequence taking photos
-
-  activate_led_automation:
-    name: Activate led automation
-
-  auto:
-    name: automation.main.activate
+  #activate_kinematics_automation:
+  #  name: Activate kinematics automation
+  #
+  #camera_sequence_taking_photos:
+  #  name: Camera sequence taking photos
+  #
+  #activate_led_automation:
+  #  name: Activate led automation
+  #
+  #auto:
+  #  name: automation.main.activate
 
   ##########################################################
   ##########################################################
@@ -254,7 +265,6 @@ input_select:
       - DELAY_DAY_5
       - DELAY_DAY_10
       - DELAY_DAY_20
-    initial: DELAY_DAY_0
     
   pcs1_kinematics_automation_delay_night:
     name: pcs1.kinematics_automation_delay_night
@@ -264,7 +274,6 @@ input_select:
       - DELAY_NIGHT_5
       - DELAY_NIGHT_10
       - DELAY_NIGHT_20
-    initial: DELAY_NIGHT_0
 
   pcs1_led_white_daylight_function:
     name: pcs1.led_white_daylight_function
@@ -285,7 +294,6 @@ input_select:
       - PEAK_LEFT
       - PEAK_MIDDLE
       - PEAK_RIGHT
-    initial: PLATEAU
     
   pcs1_led_red_daylight_function:
     name: pcs1.led_red_daylight_function
@@ -306,7 +314,6 @@ input_select:
       - PEAK_LEFT
       - PEAK_MIDDLE
       - PEAK_RIGHT
-    initial: PLATEAU
 
   pcs1_led_blue_daylight_function:
     name: pcs1.led_blue_daylight_function
@@ -327,7 +334,6 @@ input_select:
       - PEAK_LEFT
       - PEAK_MIDDLE
       - PEAK_RIGHT
-    initial: PLATEAU
 
   pcs1_led_green_daylight_function:
     name: pcs1.led_green_daylight_function
@@ -348,7 +354,6 @@ input_select:
       - PEAK_LEFT
       - PEAK_MIDDLE
       - PEAK_RIGHT
-    initial: PLATEAU
 
   pcs1_led_uv_daylight_function:
     name: pcs1.led_uv_daylight_function
@@ -369,7 +374,6 @@ input_select:
       - PEAK_LEFT
       - PEAK_MIDDLE
       - PEAK_RIGHT
-    initial: PLATEAU
 
   pcs1_daylength_function_12:
     name: pcs1.daylength_function_12
@@ -383,7 +387,6 @@ input_select:
       - PLATEAU_BIG
       - PLATEAU_MID
       - PLATEAU_SMALL
-    initial: SPLINE
     
   pcs1_daylength_function_23:
     name: pcs1.daylength_function_23
@@ -397,146 +400,185 @@ input_select:
       - PLATEAU_BIG
       - PLATEAU_MID
       - PLATEAU_SMALL
-    initial: SPLINE
 
   pcs1_seasonlight_settings:
     name: pcs1.seasonlight_settings
     options:
       - WINTER_FIRST
       - SUMMER_FIRST
-    initial: WINTER_FIRST
+
+camera:
+- platform: local_file
+  name: pcs1_plant1_latest
+  file_path: /config/www/pcs1_plant1.jpg
+
+- platform: local_file
+  name: pcs1_plant2_latest
+  file_path: /config/www/pcs1_plant2.jpg
+
+- platform: local_file
+  name: pcs1_plant3_latest
+  file_path: /config/www/pcs1_plant3.jpg
+
+- platform: local_file
+  name: pcs1_plant4_latest
+  file_path: /config/www/pcs1_plant4.jpg
+
+- platform: local_file
+  name: pcs1_plant5_latest
+  file_path: /config/www/pcs1_plant5.jpg
+
+- platform: local_file
+  name: pcs1_plant6_latest
+  file_path: /config/www/pcs1_plant6.jpg
+
+- platform: local_file
+  name: pcs1_plant_all_latest
+  file_path: /config/www/pcs1_plant_all.jpg
+
+- platform: local_file
+  name: pcs1_cam1_latest
+  file_path: /config/www/pcs1_cam1.jpg
+
+- platform: local_file
+  name: pcs1_cam2_latest
+  file_path: /config/www/pcs1_cam2.jpg
+
+- platform: local_file
+  name: pcs1_cam3_latest
+  file_path: /config/www/pcs1_cam3.jpg
+
+- platform: local_file
+  name: pcs1_cam4_latest
+  file_path: /config/www/pcs1_cam4.jpg
+
+- platform: local_file
+  name: pcs1_cam5_latest
+  file_path: /config/www/pcs1_cam5.jpg
+
+- platform: local_file
+  name: pcs1_cam6_latest
+  file_path: /config/www/pcs1_cam6.jpg
+
+- platform: local_file
+  name: pcs1_cam7_latest
+  file_path: /config/www/pcs1_cam7.jpg
+  
+  
     
 # Add sliders control to Home Assistant to set position, speed and velocity of the stepper motor
 input_number:
-  time_diff:
-    name: time_diff
-    initial: 0
-    min: -3
-    max: 3
-    step: 1
+  #time_diff:
+  #  name: time_diff
+  #  initial: 0
+  #  min: -3
+  #  max: 3
+  #  step: 1
   
   pcs1_kinematics_pinionwheel_count_difference_error:
     name: pcs1.kinematics_pinionwheel_count_difference_error
-    initial: 10
     min: 0
     max: 10
     step: 1 
     
   pcs1_fan_power:
     name: pcs1.fan_power
-    initial: 0
     min: 0
     max: 100
     step: 1 
   
   pcs1_led_power_safety_factor:
     name: pcs1.led_power_safety_factor
-    initial: 1.0
     min: 0
     max: 1
     step: 0.01
   
   pcs1_led_white_brightness:
     name: pcs1.led_white_brightness
-    initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_white_brightness_min:
     name: pcs1.led_white_brightness_min
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_white_brightness_max:
     name: pcs1.led_white_brightness_max
-    initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_white_brightness_max_winter:
     name: pcs1.led_white_brightness_max_winter
-    initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_white_brightness_max_summer:
     name: pcs1.led_white_brightness_max_summer
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_white_brightness_camera_mode:
     name: pcs1.led_white_brightness_camera_mode
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_red_brightness:
     name: pcs1.led_red_brightness
-    initial: 0
     min: 0
     max: 100
     step: 1
 
   pcs1_led_red_brightness_min:
     name: pcs1.led_red_brightness_min
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_red_brightness_max:
     name: pcs1.led_red_brightness_max
-    initial: 0
     min: 0
     max: 100
     step: 1
 
   pcs1_led_red_brightness_max_winter:
     name: pcs1.led_red_brightness_max_winter
-    initial: 0
     min: 0
     max: 100
     step: 1
 
   pcs1_led_red_brightness_max_summer:
     name: pcs1.led_red_brightness_max_summer
-    initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_red_brightness_camera_mode:
     name: pcs1.led_red_brightness_camera_mode
-    initial: 0
     min: 0
     max: 100
     step: 1
   
   pcs1_led_blue_brightness:
     name: pcs1.led_blue_brightness
-    initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_blue_brightness_min:
     name: pcs1.led_blue_brightness_min
-    initial: 0
     min: 0
     max: 100
     step: 1 
     
   pcs1_led_blue_brightness_max:
     name: pcs1.led_blue_brightness_max
-    initial: 0
     min: 0
     max: 100
     step: 1 
@@ -544,126 +586,108 @@ input_number:
     
   pcs1_led_blue_brightness_max_winter:
     name: pcs1.led_blue_brightness_max_winter
-    initial: 0
     min: 0
     max: 100
     step: 1 
 
   pcs1_led_blue_brightness_max_summer:
     name: pcs1.led_blue_brightness_max_summer
-    initial: 0
     min: 0
     max: 100
     step: 1 
   
   pcs1_led_blue_brightness_camera_mode:
     name: pcs1.led_blue_brightness_camera_mode
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_green_brightness:
     name: pcs1.led_green_brightness
-    initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_green_brightness_min:
     name: pcs1.led_green_brightness_min
-    initial: 0
     min: 0
     max: 100
     step: 1  
     
   pcs1_led_green_brightness_max:
     name: pcs1.led_green_brightness_max
-    initial: 0
     min: 0
     max: 100
     step: 1  
     
   pcs1_led_green_brightness_max_winter:
     name: pcs1.led_green_brightness_max_winter
-    initial: 0
     min: 0
     max: 100
     step: 1     
 
   pcs1_led_green_brightness_max_summer:
     name: pcs1.led_green_brightness_max_summer
-    initial: 0
     min: 0
     max: 100
     step: 1  
     
   pcs1_led_green_brightness_camera_mode:
     name: pcs1.led_green_brightness_camera_mode
-    initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_uv_brightness:
     name: pcs1.led_uv_brightness
-    initial: 0
     min: 0
     max: 100
     step: 1    
 
   pcs1_led_uv_brightness_min:
     name: pcs1.led_uv_brightness_min
-    initial: 0
     min: 0
     max: 100
     step: 1 
     
   pcs1_led_uv_brightness_max:
     name: pcs1.led_uv_brightness_max
-    initial: 0
     min: 0
     max: 100
     step: 1  
 
   pcs1_led_uv_brightness_max_winter:
     name: pcs1.led_uv_brightness_max_winter
-    initial: 0
     min: 0
     max: 100
     step: 1
 
   pcs1_led_uv_brightness_max_summer:
     name: pcs1.led_uv_brightness_max_summer
-    initial: 0
     min: 0
     max: 100
     step: 1
     
   pcs1_led_uv_brightness_camera_mode:
     name: pcs1.led_uv_brightness_camera_mode
-    initial: 0
     min: 0
     max: 100
     step: 1 
   
   pcs1_date_growth_period_2_percentage:
     name: pcs1.date_growth_period_2_percentage
-    initial: 0.5
     min: 0
     max: 1
     step: 0.05
   
   pcs1_date_growth_period_3_days:
     name: pcs1.date_growth_period_3_days
-    initial: 0
     min: 0
     max: 365
     step: 1
     
   pcs1_pump_duration_percent:
     name: pcs1.pump_duration_percent
-    initial: 5
     min: 0
     max: 100
     step: 0.01
@@ -673,22 +697,16 @@ input_number:
 input_text:
   pcs1_plant1_name:
     name: pcs1.plant1_name
-    initial: empty_plantgear
   pcs1_plant2_name:
     name: pcs1.plant2_name
-    initial: empty_plantgear
   pcs1_plant3_name:
     name: pcs1.plant3_name
-    initial: empty_plantgear
   pcs1_plant4_name:
     name: pcs1.plant4_name
-    initial: empty_plantgear
   pcs1_plant5_name:
     name: pcs1.plant5_name
-    initial: empty_plantgear
   pcs1_plant6_name:
     name: pcs1.plant6_name
-    initial: empty_plantgear    
 
 input_datetime:
   #both_date_and_time:
@@ -757,32 +775,32 @@ input_datetime:
   
   
   ## old entities for testing purposes
-  date_test:
-    name: date_test
-    has_date: true
-    has_time: true
-
-  day_length_delay:
-    name: day_length_delay
-    has_date: false
-    has_time: true
-
-  day_length:
-    name: day_length
-    has_date: false
-    has_time: true
-  day_start:
-    name: day_start
-    has_date: false
-    has_time: true
-  day_middle:
-    name: day_middle
-    has_date: false
-    has_time: true
-  day_end:
-    name: day_end
-    has_date: false
-    has_time: true
+ #date_test:
+ #  name: date_test
+ #  has_date: true
+ #  has_time: true
+ #
+ #day_length_delay:
+ #  name: day_length_delay
+ #  has_date: false
+ #  has_time: true
+ #
+ #day_length:
+ #  name: day_length
+ #  has_date: false
+ #  has_time: true
+ #day_start:
+ #  name: day_start
+ #  has_date: false
+ #  has_time: true
+ #day_middle:
+ #  name: day_middle
+ #  has_date: false
+ #  has_time: true
+ #day_end:
+ #  name: day_end
+ #  has_date: false
+ #  has_time: true
 
 # Example configuration.yaml entry
 sensor:
@@ -814,7 +832,6 @@ sensor:
 
   - platform: average
     name: "pcs1.led_panel.average_temperature"
-    duration: 00:01:00
     entities:
       - sensor.pcs1_led_panel_fan_140mm_average_temperature
       - sensor.pcs1_led_panel_fan_80mm_average_temperature
@@ -832,27 +849,41 @@ sensor:
       - sensor.pcs1_led1_dallas_fan_140mm_3_temperature
       - sensor.pcs1_led1_dallas_fan_140mm_4_temperature
 
-  - platform: average
-    name: "pcs1.led_panel.average_max_temperature"
-    duration: 00:01:00
-    entities:
-      - sensor.pcs1_led_panel_max_temperature
-
-  - platform: average
-    name: "pcs1.outside.average_temperature"
-    duration: 00:01:00
-    entities:
-      - sensor.pcs1_pwm_dallas_2_temperature
-
-  - platform: average
-    name: "pcs1.electronics_area.average_temperature"
-    duration: 00:01:00
-    entities:
+  - platform: min_max
+    type: max
+    name: "pcs1.max_temperature"
+    entity_ids:
+      - sensor.pcs1_led1_dallas_fan_80mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_80mm_4_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_1_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_2_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_3_temperature
+      - sensor.pcs1_led1_dallas_fan_140mm_4_temperature
+      - sensor.pcs1_cam1_bme280_1_temperature
+      - sensor.pcs1_cam3_bme280_1_temperature
+      - sensor.pcs1_cam4_bme280_1_temperature
+      - sensor.pcs1_cam5_bme280_1_temperature
+      - sensor.pcs1_cam6_bme280_1_temperature
+      - sensor.pcs1_kin_dallas_4_temperature
       - sensor.pcs1_pwm_dallas_1_temperature
-
+      - sensor.pcs1_pwm_dallas_2_temperature
+      - sensor.pcs1_pwm_dallas_24_36v_case_temperature
+      - sensor.pcs1_shellyflood1_temperature
+      
+  - platform: min_max
+    type: max
+    name: "pcs1.growth_chamber.max_temperature"
+    entity_ids:
+      - sensor.pcs1_cam1_bme280_1_temperature
+      - sensor.pcs1_cam3_bme280_1_temperature
+      - sensor.pcs1_cam4_bme280_1_temperature
+      - sensor.pcs1_cam5_bme280_1_temperature
+      - sensor.pcs1_cam6_bme280_1_temperature
+      
   - platform: average
     name: "pcs1.growth_chamber.average_temperature"
-    duration: 00:01:00
     entities:
       - sensor.pcs1_cam1_bme280_1_temperature
       - sensor.pcs1_cam3_bme280_1_temperature
@@ -862,7 +893,6 @@ sensor:
 
   - platform: average
     name: "pcs1.growth_chamber.average_humidity"
-    duration: 00:01:00
     entities:
       - sensor.pcs1_cam1_bme280_1_humidity
       - sensor.pcs1_cam3_bme280_1_humidity
@@ -872,7 +902,6 @@ sensor:
 
   - platform: average
     name: "pcs1.growth_chamber.average_pressure"
-    duration: 00:01:00
     entities:
       - sensor.pcs1_cam1_bme280_1_pressure
       - sensor.pcs1_cam3_bme280_1_pressure
@@ -882,7 +911,6 @@ sensor:
 
   - platform: average
     name: "pcs1.growth_chamber.average_illuminance"
-    duration: 00:00:5
     entities:
       - sensor.pcs1_cam1_bh1750_1_illuminance
       - sensor.pcs1_cam3_bh1750_1_illuminance
@@ -899,9 +927,3 @@ sensor:
       - sensor.pcs1_cam4_bh1750_1_illuminance
       - sensor.pcs1_cam5_bh1750_1_illuminance
       - sensor.pcs1_cam6_bh1750_1_illuminance
-
-  - platform: average
-    name: "pcs1.growth_chamber.average_max_illuminance"
-    duration: 00:00:5
-    entities:
-      - sensor.pcs1_growth_chamber_max_illuminance
